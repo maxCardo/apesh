@@ -9,3 +9,4 @@ const getStockData = async (tikr) => await axios({
 })
 
 
+module.exports = {getStockData}
