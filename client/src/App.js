@@ -1,9 +1,10 @@
 import React, {Fragment} from 'react';
 import './App.css';
-import { Router } from 'express';
-import { Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.css';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import Navbar from './components/common/Navbar';
+
+import Navbar from './components/common/navbar/Navbar';
 import Landing from './components/custom/Landing'
 
 const App = () => {
@@ -19,8 +20,6 @@ const App = () => {
     </Router>
   );
 }
-
-
 
 
 export default App;

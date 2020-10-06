@@ -1,8 +1,14 @@
 const express = require('express')
 const path = require('path');
-
 const app = express()
+const cors = require('cors');
 
+app.use(cors());
+//Init middle ware. replaces bodyParser
+app.use(express.json({extended:false}));
+
+
+app.use('api/user', require ('./api/user'))
 
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {

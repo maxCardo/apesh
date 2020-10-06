@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { loadUser, logout } from '../../actions/auth';
-import { getCookie } from '../../util/cookies';
-import PropTypes from 'prop-types';
+import { loadUser, logout } from '../../../actions/auth';
+//import { getCookie } from '../../util/cookies';
+import './style.css'
 
 const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
-  useEffect(() => {
-    loadUser();
-  });
+  // useEffect(() => {
+  //   loadUser();
+  // });
   const handleLogout = () => {
     logout();
   };
@@ -56,9 +56,8 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
   );
   const guestLinks = (
     <ul>
-      {/* <li><Link to='/profiles'>Renters</Link></li>
-            <li><Link to="/register">Owners</Link></li>
-            <li><Link to="/login">Vendors</Link></li> */}
+      <li><Link to='/watchlist'>Watchlist</Link></li>
+      <li><Link to="/lookup">Stock Lookup</Link></li>
       <li>
         <Link to='/login'>Login</Link>
       </li>
@@ -67,15 +66,15 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
 
   let links = guestLinks;
 
-  if (isAuthenticated || (loginInProgress && getCookie('sid'))) {
-    links = authLinks;
-  }
+  // if (isAuthenticated || (loginInProgress && getCookie('sid'))) {
+  //   links = authLinks;
+  // }
 
   return (
     <nav className='navbar bg-dark'>
       <h2>
         <Link to='/'>
-          <i className='fas fa-code'></i> ReThink PM
+          <i className='fas fa-code'></i> Apesh Trading Co.
         </Link>
       </h2>
       {links}
@@ -84,5 +83,9 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
 };
 
 
+const mapStateToProps = state => ({
+  auth: state.auth
+
+})
 
 export default connect(mapStateToProps, { logout, loadUser })(Navbar);

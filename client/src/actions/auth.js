@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_IN_PROGRESS, REGISTER_SUCCESS, REGISTER_FAIL, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
-import {createErrorAlert} from './alert'
+import { LOGIN_SUCCESS, LOGIN_FAIL, LOGIN_IN_PROGRESS, USER_LOADED, AUTH_ERR0R, LOGOUT } from './type';
+//import {createErrorAlert} from './alert'
 
 //Load User
 export const loadUser = () => async dispatch => {
@@ -46,7 +46,7 @@ export const login = (email, password) => async dispatch => {
 
         if (errors) {
           console.log(errors)
-            errors.forEach(error => dispatch(createErrorAlert(error.msg, 'login')))
+            //errors.forEach(error => dispatch(createErrorAlert(error.msg, 'login')))
         }
         dispatch({
             type: LOGIN_FAIL
