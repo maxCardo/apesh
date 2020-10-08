@@ -1,4 +1,5 @@
 const {getStockData, getBlnceSheet} = require('./server/services/fmp')
+const { fmpKey } = require('../config/creds');
 
 
 const test = async () => {
