@@ -8,5 +8,12 @@ const getStockData = async (tikr) => await axios({
     method: 'get',
 })
 
+const getBlnceSheet = async (tikr) => await axios({
+    url: `https://fmpcloud.io/api/v3/balance-sheet-statement/${tikr}?period=quarter&apikey=${fmpKey}`,
+    method: 'get',
+})
 
-module.exports = {getStockData}
+
+
+
+module.exports = {getStockData, getBlnceSheet}
