@@ -2,12 +2,14 @@ const express = require('express')
 const path = require('path');
 const app = express()
 const cors = require('cors');
+const dbConnect = require('./db/db');
 const {getStockData} = require('./services/fmp')
 
 app.use(cors());
 //Init middle ware. replaces bodyParser
 app.use(express.json({extended:false}));
 
+dbConnect()
 
 app.use('api/user', require ('./api/user'))
 
