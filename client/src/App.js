@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import Navbar from './components/common/navbar/Navbar';
 import Landing from './components/custom/Landing'
+import Lookup from './components/custom/Lookup'
 
 const App = () => {
   
@@ -16,6 +17,7 @@ const App = () => {
       <Fragment>
         <Navbar/>
         <Route exact path = '/'  component = {Landing}/>
+        <Route exact path='/lookup' component={Lookup}/>
       </Fragment>
     </Router>
   );
