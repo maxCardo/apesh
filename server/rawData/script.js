@@ -11,7 +11,7 @@ async function parseCsv(filePath) {
   });
 }
 
-
+//load list of tickers from csvs and combine
 const getTickers = async () => {
     try {
         const nyse = await parseCsv('./server/rawData/NYSE_20201030.csv');
@@ -33,5 +33,27 @@ const getTickers = async () => {
         console.error(err);
     }
 }
+
+//load csv tickers onto db: Not complete
+const loadTickers = async () => {
+  const tickers = await getTickers();
+  const arr = tickers.slice(0, 2);
+  //const quote = await getStockData(tickers[0].ticker);
+
+  console.log(tickers[0]);
+
+  arr.forEach((record) => {
+    try {
+      const company = new Company({
+        ticker: record.ticker,
+        exchange: record.exchange,
+      });
+      company.save();
+    } catch (err) {
+      console.error(err);
+    }
+  });
+  console.log('done');
+};
 
 module.exports = {getTickers}
