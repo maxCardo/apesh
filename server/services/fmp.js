@@ -23,4 +23,35 @@ const getQuote = async (tikr) =>await axios({
     method: 'get',
 })
 
-module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote}
+// @desc: returns 30 of the top movers
+const getTopMovers = async () =>await axios({
+  url: `https://fmpcloud.io/api/v3/actives?apikey=${fmpKey}`,
+  method: 'get',
+});
+
+// @desc: returns 30 of top gainers
+const getTopGainers = async () =>await axios({
+  url: `https://fmpcloud.io/api/v3/actives?apikey=${fmpKey}`,
+  method: 'get',
+});
+
+// @desc: returns 30 of top losers
+const getTopLosers = async () =>await axios({
+  url: `https://fmpcloud.io/api/v3/actives?apikey=${fmpKey}`,
+  method: 'get',
+});
+
+// @desc: get all tickers in exchage. Available: nyse, nasdaq, etf
+const getAll = async (exchange) =>await axios({
+  url: `https://fmpcloud.io/api/v3/quotes/${exchange}?apikey=${fmpKey}`,
+  method: 'get',
+});
+
+// @desc: 
+const getDelisted = async (exchange) =>await axios({
+  url: `https://fmpcloud.io/api/v3/delisted-companies?apikey=${fmpKey}`,
+  method: 'get',
+});
+
+
+module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getTopMovers, getTopGainers, getTopLosers, getAll, getDelisted}
