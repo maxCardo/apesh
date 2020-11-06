@@ -144,7 +144,7 @@ const test = async () => {
 const runTest = () => {
   createRecordsFromCSV()
 }
-runTest()
+//runTest()
 
 
 
