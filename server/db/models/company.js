@@ -4,18 +4,15 @@ const companySchema = new mongoose.Schema({
   ticker: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
-  companyName: {
-      type: String
-  },
-  exchange: {
-    type: String
-  }, 
-  industry: {
-    type: String
-  },
-
+  companyName: String,
+  exchange: String,
+  sector: String,
+  industry: String,
+  website: String,
+  description: String,
+  fullTimeEmployees: Number,
 });
 
 module.exports = Chat = mongoose.model('Companies', companySchema);

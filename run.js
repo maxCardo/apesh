@@ -3,6 +3,7 @@ const Company = require('./server/db/models/company');
 const { getAll, getPastQuote, getBlnceSheet, getStockData, getQuote} = require('./server/services/fmp');
 const { fmpKey } = require('./server/config/creds');
 const { getTickers } = require('./server/rawData/script');
+const {createRecordsFromCSV} = require('./server/scripts/stocks')
 
 //dbConnect();
 
@@ -137,7 +138,13 @@ const test = async () => {
     }, i* 1000);
   });  
 };
-test()
 
-module.exports = {getTickers}
+//test()
+
+const runTest = () => {
+  createRecordsFromCSV()
+}
+runTest()
+
+
 

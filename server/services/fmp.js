@@ -73,4 +73,18 @@ const getAll = async (exchange) =>{
   }
 }
 
-module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getAll}
+// @desc: get company profile (returns price and volume as well)
+const getCompanyProf = async (tikr) =>{
+  try {
+    const res = await axios({
+      url: `https://fmpcloud.io/api/v3/profile/${tikr}?apikey=${fmpKey}`,
+      method: 'get',
+    });
+    return res.data  
+  } catch (err) {
+    console.log('error fired on getCompanyProf');
+    
+  }
+}
+
+module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getAll, getCompanyProf}
