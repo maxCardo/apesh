@@ -15,6 +15,7 @@ const getStockData = async (tikr) =>{
   }
 }
 
+// @desc:
 const getBlnceSheet = async (tikr) =>{
   try {
    const res = await axios({
@@ -29,6 +30,7 @@ const getBlnceSheet = async (tikr) =>{
    
 }
 
+// @desc:
 const getPastQuote = async (tikr, startDate, endDate) =>{
   try {
     const res = await axios({
@@ -43,6 +45,7 @@ const getPastQuote = async (tikr, startDate, endDate) =>{
   }
 }
 
+// @desc:
 const getQuote = async (tikr) =>{
   try {
    const res = await axios({

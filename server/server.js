@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path');
 const app = express()
 const cors = require('cors');
+const setUpCron = require('./trigger/_trigger')
 const dbConnect = require('./db/db');
 const {getStockData} = require('./services/fmp')
 
@@ -9,6 +10,7 @@ app.use(cors());
 //Init middle ware. replaces bodyParser
 app.use(express.json({extended:false}));
 
+setUpCron()
 dbConnect()
 
 app.use('api/user', require ('./api/user'))

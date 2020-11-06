@@ -20,7 +20,7 @@ const test = async () => {
   const nyse = await getAll('nyse');
   const market = [...nyse, ...nasdaq].filter(record => activeTkrsArr.includes(record.symbol) === true && record.price > 1 )
 
-  const losers = market.sort((a,b) => a.changesPercentage - b.changesPercentage).slice(0,15)
+  const losers = market.sort((a,b) => a.changesPercentage - b.changesPercentage).slice(0,50)
 
 
 
@@ -89,10 +89,10 @@ const test = async () => {
        }
 
        //set "intrinsic" value of stock
-       console.log('eps: ', eps);
-       console.log('growth: ', growth);
-       console.log('PE: ', peRatio);
-       console.log('discount: ', discount);
+       //console.log('eps: ', eps);
+       //console.log('growth: ', growth);
+       //console.log('PE: ', peRatio);
+       //console.log('discount: ', discount);
        const value = ((eps * growth + eps) * peRatio) / (1 + discount);
 
        //set buy params
@@ -109,11 +109,11 @@ const test = async () => {
        } else {
          debtPass = false;
        }
-       console.log('preCovid: ',preCovid);
-       console.log('value: ', value);
+       //console.log('preCovid: ',preCovid);
+       //console.log('value: ', value);
        //compare value to pre crash levels
        var crashComp = preCovid/ value;
-       console.log(crashComp);
+       //console.log(crashComp);
        var crashCompPass = false;
        if (crashComp > covidCrashCap) {
          crashCompPass = true;
