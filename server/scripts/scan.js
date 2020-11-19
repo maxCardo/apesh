@@ -1,5 +1,5 @@
 const Market = require('../db/models/company')
-const WatchItem = require('../db/models/stategy/watchlist')
+const WatchItem = require('../db/models/stratigy/watchlist')
 const {activeTickers} = require('./stocks')
 const {getPastQuote, getBlnceSheet, getStockData, getQuote} = require('../services/fmp');
 
