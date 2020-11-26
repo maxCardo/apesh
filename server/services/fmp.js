@@ -59,6 +59,19 @@ const getQuote = async (tikr) =>{
   }
 }
 
+// @desc: histocial price last trade day
+const getIdxQuote = async (tikr) => {
+  try {
+    const res = await axios({
+      url: `https://fmpcloud.io/api/v3/historical-price-full/${tikr}?timeseries=1&apikey=${fmpKey}`,
+      method: 'get',
+    });
+    return res.data
+  } catch (err) {
+    console.log('errror fired getQuote');
+
+  }
+}
 // @desc: get all tickers in exchage. Available: nyse, nasdaq, etf
 const getAll = async (exchange) =>{
   try {
@@ -87,4 +100,4 @@ const getCompanyProf = async (tikr) =>{
   }
 }
 
-module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getAll, getCompanyProf}
+module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getAll, getCompanyProf, getIdxQuote}

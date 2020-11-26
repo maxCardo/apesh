@@ -1,5 +1,6 @@
-const {getQuote} = require('../services/fmp')
+const {getQuote, getPastQuote, getIdxQuote} = require('../services/fmp')
 const Index = require('../db/models/marketIndex')
+const mrktidx = require('../db/models/mrktidx')
 
 
 const dailyIndexesRec = async () => {
@@ -37,4 +38,55 @@ const dailyIndexesRec = async () => {
     return `Ran record index on ${run.length} records`
 }
 
-module.exports = {dailyIndexesRec}
+const historicalIndexRec = async () => {
+    const indexs = await getPastQuote('^VIX, ^IXIC, ^NYA', '2019-01-01', '2020-11-26')
+    //console.log(indexs.historicalStockList);
+    const run = indexs.historicalStockList.map(async (index) => {
+        let record
+        record = await mrktidx.findOne({ ticker: index.symbol })
+        if (!record) {
+            record = new mrktidx({
+                ticker: index.symbol,
+                name: index.symbol
+            });
+        } 
+        try {
+            //console.log(index.historical);
+            record.history = index.historical
+        } catch (error) {
+            console.error(error);
+        }
+        
+        record.save();
+    })
+    //return `Ran record index on ${run.length} records`
+}
+
+const dailyIdxRec = async () => {
+    const indexs = await getIdxQuote('^VIX, ^IXIC, ^NYA')
+    //console.log(indexs.historicalStockList);
+    const run = indexs.historicalStockList.map(async (index) => {
+        let record
+        record = await mrktidx.findOne({ ticker: index.symbol })
+        if (!record) {
+            record = new mrktidx({
+                ticker: index.symbol,
+                name: index.symbol
+            });
+        }
+        const newRecord = index.historical[0]
+        if (newRecord.date != record.history[0].date) {
+            record.history.unshift(newRecord)
+            console.log('new record for ', record.ticker);
+        }else {
+            console.log('else fired on record ' , record.ticker );
+        }
+
+        record.save();
+    })
+    return `Ran new record index on ${run.length} records`
+}
+
+
+
+module.exports = {dailyIndexesRec, dailyIdxRec}

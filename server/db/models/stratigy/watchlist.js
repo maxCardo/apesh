@@ -39,4 +39,4 @@ const watchlistSchema = new mongoose.Schema({
   }]
 })
 
-module.exports = Chat = mongoose.model('Watchlist', watchlistSchema);
+module.exports = mongoose.model('Watchlist', watchlistSchema);
