@@ -214,9 +214,9 @@ const shortScan = (searchArr, searchParams) => {
                 
 
                 //save if company meets scan standard
-                if (upsidePass && debtPass) {
+                if (upsidePass && debtPass && value > 1) {
                     console.log('yes: ', record.symbol);
-                    console.log('upside: ', upsidePass, 'crashComp: ', crashCompPass, 'debt: ', debtPass);
+                    console.log('upside: ', upsidePass, 'debt: ', debtPass);
                     const watchItem = new WatchItem({
                         list: 'first_short',
                         symbol: record.symbol,
@@ -232,6 +232,7 @@ const shortScan = (searchArr, searchParams) => {
                 } else {
                     console.log('no', record.symbol);
                     console.log('upside: ', upsidePass, 'debt: ', debtPass);
+                    console.log('value: ', value);
                 }
             } catch (err) {
                 console.log('error fired on ', record.symbol);

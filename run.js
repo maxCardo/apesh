@@ -1,15 +1,15 @@
 const dbConnect = require('./server/db/db');
-const {singleLookup} = require('./server/scripts/stocks')
-const {runFirstScan, runShortScan} = require('./server/scripts/scan')
-const {postDiscord} = require('./server/services/discord');
-const { dailyIdxRec } = require('./server/scripts/indexes');
- 
+const watchList = require('./server/db/models/stratigy/watchlist');
+const { runShortScan } = require('./server/scripts/scan');
+
 
 dbConnect();
 
-const runTest = () => {
+const runTest = async () => {
   console.log('running test');
-  runShortScan()
+  //runShortScan()
+  const res = await watchList.find({list: 'first_short'})
+  console.log(res);
 
 }
 
