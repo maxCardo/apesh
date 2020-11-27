@@ -21,6 +21,24 @@ const activeTickers = async () => {
   return losers
 };
 
+//@desc: load csv tickers and return arr of tickers
+const topGainers = async () => {
+    const tickers = await getTickers();
+    const tickersArr = tickers.map(record => record.ticker)
+    const nasdaq = await getAll('nasdaq');
+    const nyse = await getAll('nyse');
+    const market = [...nyse, ...nasdaq].filter(
+        (record) =>
+            tickersArr.includes(record.symbol) === true &&
+            record.price > 2 &&
+            record.price < 100
+    );
+
+    const gainers = market.sort((a, b) => b.changesPercentage - a.changesPercentage).slice(0, 200)
+    //const searchP
+    return gainers
+};
+
 
 const createRecordsFromCSV = async () => {
     const csvData = await activeTickers()
@@ -169,4 +187,4 @@ const singleLookup = async (tikr) => {
     
 }
 
-module.exports = {createRecordsFromCSV, activeTickers, singleLookup}
+module.exports = {createRecordsFromCSV, activeTickers, singleLookup, topGainers}

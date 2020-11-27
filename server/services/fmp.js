@@ -8,10 +8,11 @@ const getStockData = async (tikr) =>{
       url: `https://fmpcloud.io/api/v3/key-metrics/${tikr}?limit=3&apikey=${fmpKey}`,
       method: 'get',
     });
+    console.log(`https://fmpcloud.io/api/v3/key-metrics/${tikr}?limit=3&apikey=${fmpKey}`);
     return res.data  
   } catch (err) {
     console.log('error fires getStockData');
-    //console.error(err);
+    console.error(err);
   }
 }
 

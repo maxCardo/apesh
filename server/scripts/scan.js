@@ -1,6 +1,6 @@
 const Market = require('../db/models/company')
 const WatchItem = require('../db/models/stratigy/watchlist')
-const {activeTickers} = require('./stocks')
+const {activeTickers, topGainers} = require('./stocks')
 const {getPastQuote, getBlnceSheet, getStockData, getQuote} = require('../services/fmp');
 
 const runFirstScan = async() => {
@@ -9,6 +9,12 @@ const runFirstScan = async() => {
     const x = tickers
     const res = await firstScan(x)
     
+}
+
+const runShortScan = async() => {
+    const tickers = await topGainers()
+    //console.log('length: ', tickers);
+    await shortScan(tickers)
 }
 
 const firstScan = (searchArr, searchParams) => {
@@ -128,8 +134,114 @@ const firstScan = (searchArr, searchParams) => {
         }, i * 1000);
     });
 };
+
+const shortScan = (searchArr, searchParams) => {
+
+    //ToDO: refactor below vars into search param. dynamic vars will be replaced with multible searches
+    //static target vars
+    const capPE = 13
+    const upsideMin = 0
+    const debtMin = .5  //can be a search param
+    //dynamic vars
+
+    //loop through array of records
+    searchArr.forEach(async (record, i) => {
+        await setTimeout(async () => {
+            //ToDO: if already on list dont run record ???
+            //get external API data from fmp
+            try {
+                const kpi = await getStockData(record.symbol);
+                const balanceSheet = await getBlnceSheet(record.symbol);
+                const quote = await getQuote(record.symbol);
+
+                //set vars from fmp data
+                let growth = kpi.reduce((total, next) => total + next.roic, 0) / kpi.length;
+                let peRatio = kpi.reduce((total, next) => total + next.peRatio, 0) / kpi.length;
+                const eps = kpi[0].netIncomePerShare;
+                const debt = balanceSheet[0].totalDebt;
+                const cash = balanceSheet[0].cashAndCashEquivalents;
+                const debtCoverage = cash / debt;
+                const price = quote[0].price;
+
+                console.log('price: ', price);
+                console.log('eps', eps);
+                console.log('PE Ratio: ', peRatio);
+                console.log('Growth: ', growth);
+                console.log(kpi.map(x => x.roic));
+                console.log('Cash: ', cash);
+                console.log('debt: ', debt);
+                console.log('D/C Ratio: ', debtCoverage);
+
+                //set adjusted vars based on static target vars
+                const epsAdj = eps < 0 ? 0 : eps
+                if (peRatio < capPE) {
+                    peRatio = capPE;
+                } else if (peRatio < 0) {
+                    peRatio = capPE;
+                }
+                if (growth < 0) {
+                    growth = 0;
+                }
+
+
+                console.log('Adj Growth: ', growth);
+                console.log('Cap PE: ', capPE);
+                console.log('adj pe: ', peRatio);
+                console.log('adj eps: ', epsAdj);
+                
+                //set "intrinsic" value of stock
+                const value = ((epsAdj * growth + epsAdj) * peRatio);
+
+
+                console.log('value: ', value);
+
+                console.log('--------------------------------------------------------------------------------------------------------------------');
+
+                //set buy params
+                var upside = (price - value) / value;
+                var upsidePass;
+                if (upside >= upsideMin) {
+                    upsidePass = true;
+                } else {
+                    upsidePass = false;
+                }
+                var debtPass;
+                if (debtCoverage <= debtMin) {
+                    debtPass = true;
+                } else {
+                    debtPass = false;
+                }
+                
+
+                //save if company meets scan standard
+                if (upsidePass && debtPass) {
+                    console.log('yes: ', record.symbol);
+                    console.log('upside: ', upsidePass, 'crashComp: ', crashCompPass, 'debt: ', debtPass);
+                    const watchItem = new WatchItem({
+                        list: 'first_short',
+                        symbol: record.symbol,
+                        status: 'new',
+                        value: value,
+                        notes: [{
+                            type: 'log',
+                            content: 'first scan found this company'
+                        }]
+                    })
+                    await watchItem.save()
+
+                } else {
+                    console.log('no', record.symbol);
+                    console.log('upside: ', upsidePass, 'debt: ', debtPass);
+                }
+            } catch (err) {
+                console.log('error fired on ', record.symbol);
+                console.error(err);
+            }
+        }, i * 1000);
+    });
+};
     
 
-module.exports = {runFirstScan}
+module.exports = {runFirstScan, runShortScan}
 
 

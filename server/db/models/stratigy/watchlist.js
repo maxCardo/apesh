@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const watchlistSchema = new mongoose.Schema({
   //user, ref to user of stratigy 
+  list: String,
   symbol: {  // can remove once we start saving company _id  on scan
     type: String,
     unique: true
