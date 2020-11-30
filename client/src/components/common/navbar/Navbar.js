@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { loadUser, logout } from '../../../actions/auth';
@@ -54,6 +54,7 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
       </li>
     </ul>
   );
+  
   const guestLinks = (
     <ul>
       <li><Link to='/watchlist'>Watchlist</Link></li>
