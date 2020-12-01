@@ -132,9 +132,9 @@ img {
 .container-b {
   /* max-width: 1100px; */
   /* background: #28a745; */
-  margin: auto;
+  /* margin: auto; */
   overflow: auto;
-  padding-top: 8vh;
+  /* padding-top: 8vh; */
   /* new */
   height: 100vh;
 }
