@@ -1,5 +1,7 @@
 const cron = require('node-cron')
 const {dailyIndexesRec, dailyIdxRec} = require('../scripts/indexes')
+const {topGainers, topLosers} = require('../scripts/search')
+const {firstScan, shortScan} = require('../scripts/scan')
 const {postDiscord} = require('../services/discord')
 
 function setUpCron(){
@@ -7,7 +9,7 @@ function setUpCron(){
 
   // @sch: Daily Sun - Sat 5:30am EST 10am UST;
   // @desc: 
-  cron.schedule('30 10 * * 1-5', async () => {
+  cron.schedule('05 21 * * 1-5', async () => {
     try {
       const res = await dailyIndexesRec()
       postDiscord({text: res})
@@ -22,6 +24,86 @@ function setUpCron(){
       postDiscord({ text: `Error on daily indexes route: ${error}` });
     }
   });
+
+  // @sch: Daily Sun - Sat 4:10pm EST 10am UST;
+  // @desc: run first scan on 200 top loosers after market close
+  cron.schedule('10 21 * * 1-5', async () => {
+    try {
+      const losers = await topLosers()
+
+      try {
+        const scan = await firstScan(losers)
+        postDiscord({ text: `First scan ran on losers ${scan.length} records added` });  
+      } catch (error) {
+        postDiscord({ text: `Error on daily first scan losers route: ${error}` });
+      }
+
+    } catch (error) {
+      postDiscord({ text: `Error aquiring gainers/losers: ${error}` });
+    }
+
+  });
+
+  // @sch: Daily Sun - Sat 4:20pm EST 10am UST;
+  // @desc: run first scan on gainers at market close
+  cron.schedule('20 21 * * 1-5', async () => {
+    try {
+      const gainers = await topGainers()
+
+      try {
+        const scan = await firstScan(gainers)
+        postDiscord({ text: `First scan ran on gainers ${scan.length} records added` });
+      } catch (error) {
+        postDiscord({ text: `Error on daily first scan gainers route: ${error}` });
+      }
+
+    } catch (error) {
+      postDiscord({ text: `Error aquiring gainers/losers: ${error}` });
+    }
+
+  });
+
+  // @sch: Daily Sun - Sat 4:20pm EST 10am UST;
+  // @desc: run short scan on market losers after market close
+  cron.schedule('30 21 * * 1-5', async () => {
+    try {
+      const losers = await topLosers()
+    
+      try {
+        const scan = await shortScan(losers)
+        postDiscord({ text: `Short scan ran on losers ${scan.length} records added` });
+      } catch (error) {
+        postDiscord({ text: `Error on daily first scan losers route: ${error}` });
+      }
+
+    } catch (error) {
+      postDiscord({ text: `Error aquiring gainers/losers: ${error}` });
+    }
+
+  });
+
+  // @sch: Daily Sun - Sat 4:20pm EST 10am UST;
+  // @desc: run short scan on market gainers after market close
+  cron.schedule('25 8 * * 1-5', async () => {
+    try {
+      const gainers = await topGainers()
+
+      try {
+        const scan = await shortScan(gainers)
+        postDiscord({ text: `Short scan ran on gainers ${scan.length} records added` });
+      } catch (error) {
+        postDiscord({ text: `Error on daily first scan gainers route: ${error}` });
+      }
+
+    } catch (error) {
+      postDiscord({ text: `Error aquiring gainers/losers: ${error}` });
+    }
+
+  });
+
 }
+
+
+
 
 module.exports = setUpCron

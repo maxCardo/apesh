@@ -1,28 +1,13 @@
 const Market = require('../db/models/company')
 const WatchItem = require('../db/models/stratigy/watchlist')
-const {activeTickers, topGainers} = require('./stocks')
 const {getPastQuote, getBlnceSheet, getStockData, getQuote} = require('../services/fmp');
 
-const runFirstScan = async() => {
-    const tickers = await activeTickers()
-    console.log('length: ', tickers.length);
-    const x = tickers
-    const res = await firstScan(x)
-    
-}
 
-const runShortScan = async() => {
-    const tickers = await topGainers()
-    //console.log('length: ', tickers);
-    await shortScan(tickers)
-}
-
-const firstScan = (searchArr, searchParams) => {
+const firstScan = async (searchArr, searchParams) => {
     
     //ToDO: refactor below vars into search param. dynamic vars will be replaced with multible searches
     //static target vars
     const capPE = 14.5
-    const covidCrashCap = .7  //can become search param
     const upsideMin = 0
     const debtMax = .5  //can be a search param
     //dynamic vars
@@ -37,18 +22,16 @@ const firstScan = (searchArr, searchParams) => {
     };
 
     //loop through array of records
-    searchArr.forEach(async (record, i) => {
-        await setTimeout(async () => {
+    const ops = await searchArr.filter(async (record, i) => {
+        setTimeout(async () => {
             //ToDO: if already on list dont run record ???
             //get external API data from fmp
             try {
                 const kpi = await getStockData(record.symbol);
                 const balanceSheet = await getBlnceSheet(record.symbol);
-                const preC19 = await getPastQuote(record.symbol, '2020-2-20');
                 const quote = await getQuote(record.symbol);
 
                 //set vars from fmp data
-                let preCovid = preC19.historical[0].close
                 let growth = kpi.reduce((total, next) => total + next.roic, 0) / kpi.length;
                 let peRatio = kpi.reduce((total, next) => total + next.peRatio, 0) / kpi.length;
                 const eps = kpi[0].netIncomePerShare;
@@ -99,21 +82,15 @@ const firstScan = (searchArr, searchParams) => {
                 } else {
                     debtPass = false;
                 }
-                //compare value to pre crash levels
-                var crashComp = preCovid / value;
-                var crashCompPass = false;
-                if (crashComp > covidCrashCap) {
-                    crashCompPass = true;
-                } else {
-                    crashCompPass = false;
-                }
+                
 
                 //save if company meets scan standard
-                if (upsidePass && crashCompPass && debtPass) {
+                if (upsidePass  && debtPass) {
                     console.log('yes: ', record.symbol);
-                    console.log('upside: ', upsidePass, 'crashComp: ', crashCompPass, 'debt: ', debtPass);
+                    console.log('upside: ', upsidePass, 'debt: ', debtPass);
                     const watchItem = new WatchItem({
                         symbol: record.symbol,
+                        list: 'first_scan',
                         status: 'new',
                         value: value,
                         notes: [{
@@ -122,10 +99,11 @@ const firstScan = (searchArr, searchParams) => {
                         }]
                     })
                     await watchItem.save()
-                    
+                    console.log('added on');
+                    return watchItem
                 }else{
                     console.log('no', record.symbol);
-                    console.log('upside: ', upsidePass, 'crashComp: ', crashCompPass, 'debt: ', debtPass);                 
+                    console.log('upside: ', upsidePass, 'debt: ', debtPass);                 
                 }
             } catch (err) {
                 console.log('error fired on ', record.symbol);
@@ -133,9 +111,10 @@ const firstScan = (searchArr, searchParams) => {
             }
         }, i * 1000);
     });
+    return ops
 };
 
-const shortScan = (searchArr, searchParams) => {
+const shortScan = async (searchArr, searchParams) => {
 
     //ToDO: refactor below vars into search param. dynamic vars will be replaced with multible searches
     //static target vars
@@ -145,8 +124,8 @@ const shortScan = (searchArr, searchParams) => {
     //dynamic vars
 
     //loop through array of records
-    searchArr.forEach(async (record, i) => {
-        await setTimeout(async () => {
+    const ops = await searchArr.map(async (record, i) => {
+        setTimeout(async () => {
             //ToDO: if already on list dont run record ???
             //get external API data from fmp
             try {
@@ -183,7 +162,6 @@ const shortScan = (searchArr, searchParams) => {
                     growth = 0;
                 }
 
-
                 console.log('Adj Growth: ', growth);
                 console.log('Cap PE: ', capPE);
                 console.log('adj pe: ', peRatio);
@@ -191,10 +169,7 @@ const shortScan = (searchArr, searchParams) => {
                 
                 //set "intrinsic" value of stock
                 const value = ((epsAdj * growth + epsAdj) * peRatio);
-
-
                 console.log('value: ', value);
-
                 console.log('--------------------------------------------------------------------------------------------------------------------');
 
                 //set buy params
@@ -215,8 +190,8 @@ const shortScan = (searchArr, searchParams) => {
 
                 //save if company meets scan standard
                 if (upsidePass && debtPass && value > 1) {
-                    console.log('yes: ', record.symbol);
-                    console.log('upside: ', upsidePass, 'debt: ', debtPass);
+                    //console.log('yes: ', record.symbol);
+                    //console.log('upside: ', upsidePass, 'debt: ', debtPass);
                     const watchItem = new WatchItem({
                         list: 'first_short',
                         symbol: record.symbol,
@@ -228,6 +203,7 @@ const shortScan = (searchArr, searchParams) => {
                         }]
                     })
                     await watchItem.save()
+                    return watchItem
 
                 } else {
                     console.log('no', record.symbol);
@@ -240,9 +216,10 @@ const shortScan = (searchArr, searchParams) => {
             }
         }, i * 1000);
     });
+    return ops
 };
     
 
-module.exports = {runFirstScan, runShortScan}
+module.exports = {firstScan, shortScan}
 
 
