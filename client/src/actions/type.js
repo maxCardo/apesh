@@ -4,3 +4,5 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERR0R = 'AUTH_ERROR';
 export const LOGOUT = 'LOGOUT';
+
+export const SET_WATCHLIST = 'SET_WATCHLIST'
