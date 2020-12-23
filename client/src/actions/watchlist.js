@@ -10,7 +10,7 @@ export const getWatchlist = () => async dispatch => {
             payload: res.data
         })
     } catch (err) {
-        dispatch(createErrorAlert(err.message, 'Get Watchlist'))
+        console.error(err);
     }
 }
 

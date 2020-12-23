@@ -2,12 +2,13 @@ import React, {Component} from 'react'
 import Header from './Header'
 import Pagination from './Pagination';
 import commonMappers from './commonMappers';
-import {filterData, getData} from "../../../util/commonFunctions";
+import {filterData, getData} from "./commonFunctions";
 import './style.css'
 
 //TODO: Default sortBy is not working
 export class Table extends Component {
   constructor(props) {
+    console.log(props.data);
     super(props);
     const headers = Table.processHeaders(props);
     this.filter = this.props.filter ? this.props.filter : ''

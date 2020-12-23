@@ -2,7 +2,7 @@ import {SET_WATCHLIST} from '../actions/type'
 
 const initialState = {
     loading: true,
-    watchlist: []
+    list: []
 }
 
 export default function (state = initialState, action) {
@@ -11,7 +11,7 @@ export default function (state = initialState, action) {
         case SET_WATCHLIST:
             return {
                 ...state,
-                watchlist: payload,
+                list: payload,
                 loading: false
             }
         default:

@@ -1,19 +1,25 @@
 const express = require('express')
 const path = require('path');
-const app = express()
 const cors = require('cors');
 const setUpCron = require('./trigger/_trigger')
 const dbConnect = require('./db/db');
 const {getStockData} = require('./services/fmp')
 
-app.use(cors());
+const app = express()
+app.use(cors()); 
 //Init middle ware. replaces bodyParser
 app.use(express.json({extended:false}));
 
 setUpCron()
 dbConnect()
 
-app.use('api/user', require ('./api/user'))
+app.get('/test', (req, res) => {
+    console.log('running test api call');
+    res.status(200).send('got it')
+})
+
+app.use('/api/user', require ('./api/user'))
+app.use('/api/watchlist', require('./api/watchlist'))
 
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {
@@ -24,7 +30,6 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(file);
     });
 }
-
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Server is up on port ${port}`));
