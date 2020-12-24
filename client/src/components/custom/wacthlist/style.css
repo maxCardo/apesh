@@ -1,0 +1,13 @@
+
+
+
+
+.tableWithActions td:last-child {
+  width: 1px;
+}
+.tableWithActions td:last-child a:hover {
+  text-decoration: none !important;
+}
+.tableWithActions td:last-child > div {
+  display: flex;
+}

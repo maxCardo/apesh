@@ -11,6 +11,10 @@ const watchlistSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  hot:{
+    type: Boolean,
+    default: false
+  },
   status: String,
   company: {
     type: mongoose.Schema.Types.ObjectId,

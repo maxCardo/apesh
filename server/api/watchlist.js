@@ -26,4 +26,16 @@ router.get('/', async (req, res) => {
 })
 
 
+// @route:
+// @desc: 
+// @ access:
+router.put('/removeItem/:id', async (req, res) => {
+    console.log('running delete rt');
+    console.log(req.params.id);
+    //const res = await Watchlist.findByIdAndDelete(req.params.id)
+    //console.log(res);
+    
+})
+
+
 module.exports = router
