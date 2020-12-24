@@ -20,6 +20,7 @@ const watchlistSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  price: Number,
   value: Number, 
   strikePrice: Number,
   notes: [{

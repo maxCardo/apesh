@@ -2,12 +2,16 @@ import React from 'react'
 
 const headers = [
     {
-        label: 'Company',
+        label: 'Status',
         accessor: 'symbol'
     },
     {
-        label: 'Status',
+        label: 'Date Added',
         accessor: 'status',
+    },
+    {
+        label: 'value',
+        accessor: 'value',
     },
     {
         label: 'value',
