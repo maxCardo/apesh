@@ -2,20 +2,27 @@ import React from 'react'
 
 const headers = [
     {
-        label: 'Status',
+        label: 'Date Added',
+        accessor: 'dateAdded',
+        mapper: 'date'
+    },
+    {
+        label: 'List',
+        accessor: 'list'
+    },
+    {
+        label: 'symbol',
         accessor: 'symbol'
     },
     {
-        label: 'Date Added',
-        accessor: 'status',
-    },
-    {
         label: 'value',
         accessor: 'value',
+        mapper: 'money'
     },
     {
-        label: 'value',
-        accessor: 'value',
+        label: 'Price',
+        accessor: 'price',
+        mappper: 'money'
     },
 ]
 

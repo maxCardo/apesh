@@ -5,15 +5,6 @@ import headers from './headers'
 import {getWatchlist} from '../../../actions/watchlist'
 import watchlist from '../../../reducers/watchlist';
 
-// const data = [
-//   {
-//     symbol: 'test',
-//     status: 'new',
-//     value: 10000
-
-//   }
-// ]
-
 
 const Watchlist = ({watchlist: {loading, list}, getWatchlist}) => {
   
