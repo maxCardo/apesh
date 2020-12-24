@@ -1,24 +1,24 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux'
 import Table from '../../common/Table/_Table'
 import IconButton from '../../common/IconButton/_IconButton'
 import './style.css'
-import {getWatchlist, removeItem} from '../../../actions/watchlist'
+import {getWatchlist, removeItem, likeItem} from '../../../actions/watchlist'
 
 
-const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem}) => {
+const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeItem}) => {
   
   useEffect(() => {
     getWatchlist()
     
   },[])
 
-  const testFunc = (i) => {
-    console.log('running test func');
-    console.log(i);
-  }
-
   const headers = [
+    {
+      label: 'Like',
+      accessor: 'hot',
+      mapper: (data) => data === true ? 'true' : 'false'
+    },
     {
       label: 'Date Added',
       accessor: 'dateAdded',
@@ -53,16 +53,14 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem}) => {
             id='property-details-tooltip'
             iconClass='fas fa-list'
             variant='action-button'
-            onClickFunc={() => removeItem(item._id)}
+            onClickFunc={() => likeItem(item._id)}
           />
           <IconButton placement='bottom'
             tooltipContent='Trash'
             id='property-details-tooltip'
             iconClass='fas fa-link'
             variant='action-button'
-            onClickFunc={() => {
-              console.log('hit second button');
-            }}
+            onClickFunc={() => removeItem(item._id)}
           />
         </div>
       )
@@ -90,4 +88,4 @@ const mapStateToProps = state => ({
   watchlist: state.watchlist
 })
 
-export default connect(mapStateToProps, {getWatchlist, removeItem})(Watchlist);
+export default connect(mapStateToProps, {getWatchlist, removeItem, likeItem})(Watchlist);

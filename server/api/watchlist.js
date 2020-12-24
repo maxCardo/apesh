@@ -25,16 +25,24 @@ router.get('/', async (req, res) => {
     }
 })
 
-
 // @route:
 // @desc: 
 // @ access:
 router.put('/removeItem/:id', async (req, res) => {
     console.log('running delete rt');
     console.log(req.params.id);
-    //const res = await Watchlist.findByIdAndDelete(req.params.id)
-    //console.log(res);
-    
+    const record = await Watchlist.findByIdAndDelete(req.params.id)
+    res.status(200).send(record._id)    
+})
+
+// @route:
+// @desc: 
+// @ access:
+router.put('/like/:id', async (req, res) => {
+    console.log('running route for ', req.params.id);
+    const record = await Watchlist.findByIdAndUpdate(req.params.id, {hot: true}, {new: true})
+    console.log('record: ', record);
+    res.status(200).send(record)
 })
 
 
