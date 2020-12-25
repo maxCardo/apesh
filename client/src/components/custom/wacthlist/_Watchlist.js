@@ -20,6 +20,22 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
       mapper: (data) => data === true ? 'true' : 'false'
     },
     {
+      label: 'Company',
+      accessor: 'company.companyName'
+    },
+    {
+      label: 'symbol',
+      accessor: 'symbol'
+    },
+    {
+      label: 'Sector',
+      accessor: 'company.sector'
+    },
+    {
+      label: 'Industry',
+      accessor: 'company.industry'
+    },
+    {
       label: 'Date Added',
       accessor: 'dateAdded',
       mapper: 'date'
@@ -29,8 +45,8 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
       accessor: 'list'
     },
     {
-      label: 'symbol',
-      accessor: 'symbol'
+      label: 'POA',
+      accessor: 'priceWhenAdded'
     },
     {
       label: 'value',
@@ -38,7 +54,7 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
       mapper: 'money'
     },
     {
-      label: 'Price',
+      label: 'Current Price',
       accessor: 'price',
       mappper: 'money'
     },
