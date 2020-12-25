@@ -9,7 +9,7 @@ function setUpCron(){
 
   // @sch: Daily Sun - Sat 5:30am EST 10am UST;
   // @desc: 
-  cron.schedule('05 21 * * 1-5', async () => {
+  cron.schedule('35 12 * * 1-5', async () => {
     try {
       const res = await dailyIndexesRec()
       postDiscord({text: res})
@@ -27,7 +27,7 @@ function setUpCron(){
 
   // @sch: Daily Sun - Sat 4:10pm EST 10am UST;
   // @desc: run first scan on 200 top loosers after market close
-  cron.schedule('10 21 * * 1-5', async () => {
+  cron.schedule('13 12 * * 1-5', async () => {
     try {
       const losers = await topLosers()
 
@@ -46,7 +46,7 @@ function setUpCron(){
 
   // @sch: Daily Sun - Sat 4:20pm EST 10am UST;
   // @desc: run first scan on gainers at market close
-  cron.schedule('20 21 * * 1-5', async () => {
+  cron.schedule('20 12 * * 1-5', async () => {
     try {
       const gainers = await topGainers()
 
@@ -65,7 +65,7 @@ function setUpCron(){
 
   // @sch: Daily Sun - Sat 4:20pm EST 10am UST;
   // @desc: run short scan on market losers after market close
-  cron.schedule('30 21 * * 1-5', async () => {
+  cron.schedule('30 12 * * 1-5', async () => {
     try {
       const losers = await topLosers()
     
@@ -84,7 +84,7 @@ function setUpCron(){
 
   // @sch: Daily Sun - Sat 4:20pm EST 10am UST;
   // @desc: run short scan on market gainers after market close
-  cron.schedule('25 8 * * 1-5', async () => {
+  cron.schedule('25 12 * * 1-5', async () => {
     try {
       const gainers = await topGainers()
 

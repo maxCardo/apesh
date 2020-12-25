@@ -9,7 +9,7 @@ const router = express.Router()
 // @ access: pulic - todo: make privite in future
 router.get('/', async (req, res) => {
     try {
-        const watchlist = await Watchlist.find()
+        const watchlist = await Watchlist.find().populate('company')
         const quote = await getQuote(watchlist.map(x => x.symbol).toString())
         const newList = await watchlist.map((item) => {
             const price = quote.find(elem => elem.symbol === item.symbol).price

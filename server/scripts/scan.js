@@ -1,5 +1,6 @@
 const Market = require('../db/models/company')
 const WatchItem = require('../db/models/stratigy/watchlist')
+const Company = require('../db/models/company')
 const {getPastQuote, getBlnceSheet, getStockData, getQuote} = require('../services/fmp');
 
 
@@ -88,18 +89,7 @@ const firstScan = async (searchArr, searchParams) => {
                 if (upsidePass  && debtPass) {
                     console.log('yes: ', record.symbol);
                     console.log('upside: ', upsidePass, 'debt: ', debtPass);
-                    const watchItem = new WatchItem({
-                        symbol: record.symbol,
-                        list: 'first_scan',
-                        status: 'new',
-                        value: value,
-                        notes: [{
-                            type:'log',
-                            content: 'first scan found this company' 
-                        }]
-                    })
-                    await watchItem.save()
-                    console.log('added on');
+                    const watchItem = await addToWatchList('first_scan', record.symbol, price, value)
                     return watchItem
                 }else{
                     console.log('no', record.symbol);
@@ -192,17 +182,7 @@ const shortScan = async (searchArr, searchParams) => {
                 if (upsidePass && debtPass && value > 1) {
                     //console.log('yes: ', record.symbol);
                     //console.log('upside: ', upsidePass, 'debt: ', debtPass);
-                    const watchItem = new WatchItem({
-                        list: 'first_short',
-                        symbol: record.symbol,
-                        status: 'new',
-                        value: value,
-                        notes: [{
-                            type: 'log',
-                            content: 'first scan found this company'
-                        }]
-                    })
-                    await watchItem.save()
+                    const watchItem = await addToWatchList('first_short', record.symbol, price, value)
                     return watchItem
 
                 } else {
@@ -218,6 +198,24 @@ const shortScan = async (searchArr, searchParams) => {
     });
     return ops
 };
+
+const addToWatchList = async (list, symbol, price, value) => {
+    const company = await Company.findOne({symbol: symbol})
+    const watchItem = new WatchItem({
+        list,
+        symbol,
+        company: company._id,
+        priceWhenAdded: price,
+        status: 'new',
+        value: value,
+        notes: [{
+            type: 'log',
+            content: `added to ${list}`
+        }]
+    })
+    await watchItem.save()
+    return watchItem
+}
     
 
 module.exports = {firstScan, shortScan}

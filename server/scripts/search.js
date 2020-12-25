@@ -16,9 +16,9 @@ const activeTickers = async () => {
       record.price < 100
   );
 
-  const losers = market.sort((a,b) => a.changesPercentage - b.changesPercentage).slice(0,200)
+  //const tickers = market.sort((a,b) => a.changesPercentage - b.changesPercentage).slice(0,200)
   //const searchP
-  return losers
+  return market
 };
 
 //@desc: load csv tickers and return arr of tickers

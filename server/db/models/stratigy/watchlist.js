@@ -24,6 +24,7 @@ const watchlistSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
+  priceWhenAdded: Number,
   price: Number,
   value: Number, 
   strikePrice: Number,

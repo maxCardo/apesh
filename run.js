@@ -1,8 +1,11 @@
 const dbConnect = require('./server/db/db');
-const WatchList = require('./server/db/models/stratigy/watchlist');
+
 const { runShortScan } = require('./server/scripts/scan');
 const {getQuote} = require('./server/services/fmp')
+const {loadCompanies} = require('./server/scripts/company')
 
+const WatchList = require('./server/db/models/stratigy/watchlist');
+const Company = require('./server/db/models/company')
 
 dbConnect();
 
@@ -21,11 +24,25 @@ const testingApi = () => {
 }
 
 const sandbox = async() => {
-    const res = await WatchList.updateMany({}, {hot: false})
-    console.log(res);
+
+    const rec = await WatchList.find({company: {$exists: false}}).countDocuments()
+    console.log(rec);
+
+    // const watchlist = await WatchList.find()
+    // watchlist.forEach(async (item, i) => {
+    //     try {
+    //         const company = await Company.findOne({ symbol: item.symbol })
+    //         item.company = company._id
+    //         await item.save()
+    //         console.log(`update record ${i + 1} of ${watchlist.length}`)    
+    //     } catch (err) {
+    //         console.log(`update record ${i + 1} of ${watchlist.length}`);
+    //         console.error(err);    
+    //     }
+    // })
 }
 
-sandbox()
+//sandbox()
 
 
 
