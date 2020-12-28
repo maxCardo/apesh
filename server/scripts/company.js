@@ -1,7 +1,7 @@
 const {activeTickers} = require('./search')
-const {getCompanyProf} = require('../services/fmp')
-
+const {getCompanyProf, getHistoricalPriceData, getCompanyNews} = require('../services/fmp') 
 const Company = require('../db/models/company')
+
 
 const loadCompanies = async () => {
     const tikrs = await (await activeTickers())
@@ -36,5 +36,76 @@ const loadCompanies = async () => {
     })
 }
 
-module.exports = {loadCompanies}
+
+//supportFunctions
+const arrAvg = arr => (arr.reduce((a, b) => a + b, 0) / arr.length).toFixed(2)
+const arrMax = arr => Math.max(...arr);
+const arrMin = arr => Math.min(...arr);
+const arrSum = arr => arr.reduce((a, b) => a + b, 0)
+const getStanDev = (array) => {
+    const n = array.length
+    const mean = array.reduce((a, b) => a + b) / n
+    return (Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)).toFixed(3)
+}
+const getDataObj = (arr) => {
+    const sumOfPrice = arrSum(arr.map(record => record.close))
+    const sumOfVol = arrSum(arr.map(record => record.volume))
+    console.log(sumOfPrice, sumOfVol);
+
+    const priceArr = []
+    arr.forEach(({ open, high, low }) => {
+        if (open === high | open === low) {
+            priceArr.push(high, low)
+        } else {
+            priceArr.push(open, high, low)
+        }
+    })
+
+    const obj = {
+        price: arrAvg(arr.map((record) => { return (record.high + record.low) / 2 })),
+        high: arrMax(arr.map(record => record.high)),
+        low: arrMin(arr.map(record => record.high)),
+        volume: arrAvg(arr.map(record => record.volume)),
+        vwap: arrAvg(arr.map(record => record.vwap)),
+        volatility: getStanDev(priceArr), 
+        avgDayVolat: arrAvg(arr.map((record) => { return (record.high - record.low) / 2 })),
+         
+    }
+    obj.volatPct = obj.volatility/obj.price
+    obj.avgDayValatPct = obj.avgDayVolat/obj.price
+
+    return obj
+}
+
+const marketDailyUpdate = async () => {
+    const companies = await Company.find().limit(2)
+    companies.forEach(async   (company, i) => {
+        try {
+            console.log(`running update on record ${i} or ${companies.length} `);
+            const {historical: data} = await getHistoricalPriceData(company.symbol)
+            const lastRec = data[0]
+            const volatility = (lastRec.high - lastRec.low)/2
+            company.lastClose = {
+                price: lastRec.close,
+                high: lastRec.high,
+                low: lastRec.low,
+                volume: lastRec.volume,
+                vwap: lastRec.vwap,
+                volatility,
+                volatPct: (volatility / arrAvg([lastRec.high, lastRec.low])).toFixed(3)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+            }
+            console.log(company.lastClose);
+            const avgFive = getDataObj(data.slice(0,5))
+            console.log(avgFive);
+                
+        } catch (err) {
+            console.error(err);
+        }
+        //call past quotes api for vol and
+        //call news API for mentions 
+    })
+}
+
+
+module.exports = {loadCompanies, marketDailyUpdate}
 
