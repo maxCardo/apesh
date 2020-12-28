@@ -3,7 +3,10 @@ const mongoose = require('mongoose');
 const companySchema = new mongoose.Schema({
   data: {
     dailyUnpdate:{
-      date : Date,
+      date : {
+        type: Date,
+        default: Date.now
+      },
       ran: Boolean,
       success: Boolean
     }

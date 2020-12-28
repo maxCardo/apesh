@@ -50,7 +50,6 @@ const getStanDev = (array) => {
 const getDataObj = (arr) => {
     const sumOfPrice = arrSum(arr.map(record => record.close))
     const sumOfVol = arrSum(arr.map(record => record.volume))
-    console.log(sumOfPrice, sumOfVol);
 
     const priceArr = []
     arr.forEach(({ open, high, low }) => {
@@ -71,8 +70,8 @@ const getDataObj = (arr) => {
         avgDayVolat: arrAvg(arr.map((record) => { return (record.high - record.low) / 2 })),
          
     }
-    obj.volatPct = obj.volatility/obj.price
-    obj.avgDayValatPct = obj.avgDayVolat/obj.price
+    obj.volatPct = (obj.volatility/obj.price).toFixed(3)
+    obj.avgDayValatPct = (obj.avgDayVolat/obj.price).toFixed(3)
 
     return obj
 }
@@ -84,23 +83,26 @@ const marketDailyUpdate = async () => {
             console.log(`running update on record ${i} or ${companies.length} `);
             const {historical: data} = await getHistoricalPriceData(company.symbol)
             const lastRec = data[0]
-            const volatility = (lastRec.high - lastRec.low)/2
+            const volatility = arrAvg([lastRec.high - lastRec.low])
             company.lastClose = {
                 price: lastRec.close,
                 high: lastRec.high,
                 low: lastRec.low,
                 volume: lastRec.volume,
-                vwap: lastRec.vwap,
+                vwap: (lastRec.vwap).toFixed(2),
                 volatility,
                 volatPct: (volatility / arrAvg([lastRec.high, lastRec.low])).toFixed(3)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
             }
-            console.log(company.lastClose);
-            const avgFive = getDataObj(data.slice(0,5))
-            console.log(avgFive);
-                
+            company.average_5 = getDataObj(data.slice(0, 5))
+            company.average_10 = getDataObj(data.slice(0, 10))
+            company.average_22 = getDataObj(data.slice(0, 22))
+            company.data.dailyUpdates = {ran: true, success: true}
+                            
         } catch (err) {
             console.error(err);
+            company.data.dailyUpdates = { ran: true, success: false }
         }
+        company.save()
         //call past quotes api for vol and
         //call news API for mentions 
     })
