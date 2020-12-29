@@ -122,6 +122,28 @@ const marketDailyUpdate = async () => {
     })
 }
 
+const updateJustNews = async () => {
+    const companies = await Company.find()
+    companies.forEach(async (company, i) => {
+        setTimeout(async () => {
+            console.log(`running new update on record ${i + 1} or ${companies.length} `);
+            try {
+                const mentions = await getCompanyNews(company.symbol, 50, 30)
+                company.mentions = {
+                    last_24: mentions.filter(record => new Date(record.publishedDate) >= moment().subtract(1, 'd')).length,
+                    last_7: mentions.filter(record => new Date(record.publishedDate) >= moment().subtract(7, 'd')).length,
+                    last_15: mentions.filter(record => new Date(record.publishedDate) >= moment().subtract(15, 'd')).length,
+                    last_30: mentions.filter(record => new Date(record.publishedDate) >= moment().subtract(30, 'd')).length
+                }
+                company.data.dailyNews = { ran: true, success: true }
+            } catch (err) {
+                console.error(err);
+                company.data.dailyNews = { ran: true, success: false }
+            }
+            company.save()
+        }, i * 500)
+    })
+}
 
-module.exports = {loadCompanies, marketDailyUpdate}
+module.exports = {loadCompanies, marketDailyUpdate, updateJustNews}
 
