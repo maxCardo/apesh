@@ -1,3 +1,4 @@
+const moment = require('moment')
 const {activeTickers} = require('./search')
 const {getCompanyProf, getHistoricalPriceData, getCompanyNews} = require('../services/fmp') 
 const Company = require('../db/models/company')
@@ -77,34 +78,47 @@ const getDataObj = (arr) => {
 }
 
 const marketDailyUpdate = async () => {
-    const companies = await Company.find().limit(2)
+    const companies = await Company.find()
     companies.forEach(async   (company, i) => {
-        try {
-            console.log(`running update on record ${i} or ${companies.length} `);
-            const {historical: data} = await getHistoricalPriceData(company.symbol)
-            const lastRec = data[0]
-            const volatility = arrAvg([lastRec.high - lastRec.low])
-            company.lastClose = {
-                price: lastRec.close,
-                high: lastRec.high,
-                low: lastRec.low,
-                volume: lastRec.volume,
-                vwap: (lastRec.vwap).toFixed(2),
-                volatility,
-                volatPct: (volatility / arrAvg([lastRec.high, lastRec.low])).toFixed(3)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+        setTimeout(async () => {
+            console.log(`running update on record ${i+1} or ${companies.length} `);
+            try {
+                const { historical: data } = await getHistoricalPriceData(company.symbol)
+                const lastRec = data[0]
+                const volatility = arrAvg([lastRec.high - lastRec.low])
+                company.lastClose = {
+                    price: lastRec.close,
+                    high: lastRec.high,
+                    low: lastRec.low,
+                    volume: lastRec.volume,
+                    vwap: (lastRec.vwap).toFixed(2),
+                    volatility,
+                    volatPct: (volatility / arrAvg([lastRec.high, lastRec.low])).toFixed(3)
+                }
+                company.average_5 = getDataObj(data.slice(0, 5))
+                company.average_10 = getDataObj(data.slice(0, 10))
+                company.average_22 = getDataObj(data.slice(0, 22))
+                company.data.dailyUpdate = { ran: true, success: true }
+
+            } catch (err) {
+                console.error(err);
+                company.data.dailyUpdate = { ran: true, success: false }
             }
-            company.average_5 = getDataObj(data.slice(0, 5))
-            company.average_10 = getDataObj(data.slice(0, 10))
-            company.average_22 = getDataObj(data.slice(0, 22))
-            company.data.dailyUpdates = {ran: true, success: true}
-                            
-        } catch (err) {
-            console.error(err);
-            company.data.dailyUpdates = { ran: true, success: false }
-        }
-        company.save()
-        //call past quotes api for vol and
-        //call news API for mentions 
+            try {
+                const mentions = await getCompanyNews(company.symbol, 50, 30)
+                company.mentions = {
+                    last_24: mentions.filter(record => new Date(record.publishedDate) >= moment().subtract(1, 'd')).length,
+                    last_7: mentions.filter(record => new Date(record.publishedDate) >= moment().subtract(7, 'd')).length,
+                    last_15: mentions.filter(record => new Date(record.publishedDate) >= moment().subtract(15, 'd')).length,
+                    last_30: mentions.filter(record => new Date(record.publishedDate) >= moment().subtract(30, 'd')).length
+                }
+                company.data.dailyNews = { ran: true, success: true }
+            } catch (err) {
+                console.error(err);
+                company.data.dailyNews = { ran: true, success: false }
+            }
+            company.save()
+        }, i * 500)
     })
 }
 

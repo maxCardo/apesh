@@ -107,8 +107,6 @@ const getCompanyProf = async (tikr) =>{
 const getCompanyNews = async (tikr,limit,backDate) => {
   limit = !limit ? 25 : limit
   backDate = !backDate ? 30 : backDate
-  console.log(limit);
-  console.log(backDate); 
   try {
     const res = await axios({
       url: `https://fmpcloud.io/api/v3/stock_news?tickers=${tikr}&limit=${limit}&apikey=${fmpKey}`,

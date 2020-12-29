@@ -2,14 +2,23 @@ const mongoose = require('mongoose');
 
 const companySchema = new mongoose.Schema({
   data: {
-    dailyUnpdate:{
+    dailyUpdate:{
       date : {
         type: Date,
         default: Date.now
       },
       ran: Boolean,
       success: Boolean
+    },
+    dailyNews:{
+      date: {
+        type: Date,
+        default: Date.now
+      },
+      ran: Boolean,
+      success: Boolean
     }
+
   },
   symbol: {
     type: String,
