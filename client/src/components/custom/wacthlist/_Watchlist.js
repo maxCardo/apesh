@@ -56,7 +56,16 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
     {
       label: 'Current Price',
       accessor: 'price',
-      mappper: 'money'
+      mapper: 'money'
+    },
+    {
+      reactComponent: true,
+      label: 'Upside',
+      render: (item) => (
+        <div>
+          <p>{`${(item.value - item.price).toFixed(2)} / ${(((item.value - item.price)/item.price)*100).toFixed(1)}%`}</p>
+        </div>
+      )
     },
     {
       reactComponent: true,
