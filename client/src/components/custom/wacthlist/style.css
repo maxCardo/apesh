@@ -9,3 +9,19 @@
 .tableWithActions td:last-child > div {
   display: flex;
 }
+
+.DetailModal__container.modal-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.tableWithActions {
+  padding: 20px;
+}
+
+.tableWithActions > div {
+  overflow: auto;
+}
