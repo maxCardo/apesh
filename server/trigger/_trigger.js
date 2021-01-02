@@ -2,14 +2,27 @@ const cron = require('node-cron')
 const {dailyIndexesRec, dailyIdxRec} = require('../scripts/indexes')
 const {topGainers, topLosers} = require('../scripts/search')
 const {firstScan, shortScan} = require('../scripts/scan')
+const {marketDailyUpdate} = require('../scripts/company')
 const {postDiscord} = require('../services/discord')
 
 function setUpCron(){
   console.log('cron running')
+  // @sch: Daily Sun - Sat 4:00am EST;
+  // @desc: daily updates
+  cron.schedule('00 9 * * 1-5', async () => {
+    try {
+      marketDailyUpdate()
+      postDiscord({ text: `running market daily updates` });
 
-  // @sch: Daily Sun - Sat 5:30am EST 10am UST;
-  // @desc: 
-  cron.schedule('35 12 * * 1-5', async () => {
+    } catch (error) {
+      postDiscord({ text: `Error on daily updates: ${error}` });
+    }
+
+  });
+
+  // @sch: Daily Mon - Fri 5:00am;
+  // @desc: Update Daily Indexes
+  cron.schedule('00 10 * * 1-5', async () => {
     try {
       const res = await dailyIndexesRec()
       postDiscord({text: res})
@@ -102,8 +115,5 @@ function setUpCron(){
   });
 
 }
-
-
-
 
 module.exports = setUpCron

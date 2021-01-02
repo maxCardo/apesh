@@ -1,8 +1,9 @@
+const moment = require('moment')
 const dbConnect = require('./server/db/db');
 
 const { runShortScan } = require('./server/scripts/scan');
-const {getQuote} = require('./server/services/fmp')
-const {loadCompanies} = require('./server/scripts/company')
+const {getQuote, getCompanyNews} = require('./server/services/fmp')
+const {marketDailyUpdate} = require('./server/scripts/company')
 
 const WatchList = require('./server/db/models/stratigy/watchlist');
 const Company = require('./server/db/models/company')
@@ -25,8 +26,8 @@ const testingApi = () => {
 
 const sandbox = async() => {
 
-    const rec = await WatchList.find({company: {$exists: false}}).countDocuments()
-    console.log(rec);
+    // const rec = await WatchList.find({company: {$exists: false}}).countDocuments()
+    // console.log(rec);
 
     // const watchlist = await WatchList.find()
     // watchlist.forEach(async (item, i) => {
@@ -40,9 +41,32 @@ const sandbox = async() => {
     //         console.error(err);    
     //     }
     // })
+
+    //get news on ticker props tickr record limit (default 25), num days back to search (default 30)  
+    // const res = await getCompanyNews('AAPL',100,30)
+    // const day = moment().subtract(1, 'd')
+    // const week = moment().subtract(7, 'days')
+    // const bWeek = moment().subtract(15, 'd')
+    // const month = moment().subtract(30, 'd')
+    // console.log(day < new Date());
+
+    // console.log(res.length);
+    // const last24 = res.filter(record => new Date(record.publishedDate) >= moment().subtract(1, 'd'))
+    // const lastWeek = res.filter(record => new Date(record.publishedDate) >= moment().subtract(7, 'd'))
+    // const last2Week = res.filter(record => new Date(record.publishedDate) >= moment().subtract(15, 'd'))
+    // const lastMonth = res.filter(record => new Date(record.publishedDate) >= moment().subtract(30, 'd'))
+    // console.log('last24: ', last24.length);
+    // console.log('last24: ', lastWeek.length);
+    // console.log('last24: ', last2Week.length);
+    // console.log('last24: ', lastMonth.length);
+
+    //marketDailyUpdate()
+
+    const res = await Company.find({'data.dailyNews.success': true})
+    console.log(res.length);
 }
 
-//sandbox()
+sandbox()
 
 
 

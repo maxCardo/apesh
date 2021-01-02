@@ -1,5 +1,7 @@
 const axios = require('axios')
+const moment = require('moment')
 const {fmpKey} = require('../config/creds')
+
 
 // @desc: get data on single ticker by quarter
 const getStockData = async (tikr) =>{
@@ -101,4 +103,38 @@ const getCompanyProf = async (tikr) =>{
   }
 }
 
-module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getAll, getCompanyProf, getIdxQuote}
+// @desc: get latist news on company
+const getCompanyNews = async (tikr,limit,backDate) => {
+  limit = !limit ? 25 : limit
+  backDate = !backDate ? 30 : backDate
+  try {
+    const res = await axios({
+      url: `https://fmpcloud.io/api/v3/stock_news?tickers=${tikr}&limit=${limit}&apikey=${fmpKey}`,
+      method: 'get',
+    });
+    const fromDate = moment().subtract(backDate, 'd')
+    const result = res.data.filter((news) => new Date(news.publishedDate) > fromDate) 
+    return result
+
+  } catch (err) {
+    console.log('error fired on getCompanyProf');
+    console.error(err);
+
+  }
+}
+
+const getHistoricalPriceData = async (tikr, timeSeries = 30) => {
+  try {
+    const res = await axios({
+      url: `https://fmpcloud.io/api/v3/historical-price-full/${tikr}?timeseries=${timeSeries}&apikey=${fmpKey}`,
+      method: 'get',
+    });
+    return res.data
+
+  } catch (err) {
+    console.log('error fired getPastQuote');
+
+  }
+}
+
+module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getAll, getCompanyProf, getIdxQuote, getCompanyNews, getHistoricalPriceData}

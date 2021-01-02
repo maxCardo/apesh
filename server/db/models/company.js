@@ -1,6 +1,25 @@
 const mongoose = require('mongoose');
 
 const companySchema = new mongoose.Schema({
+  data: {
+    dailyUpdate:{
+      date : {
+        type: Date,
+        default: Date.now
+      },
+      ran: Boolean,
+      success: Boolean
+    },
+    dailyNews:{
+      date: {
+        type: Date,
+        default: Date.now
+      },
+      ran: Boolean,
+      success: Boolean
+    }
+
+  },
   symbol: {
     type: String,
     required: true,
@@ -33,7 +52,57 @@ const companySchema = new mongoose.Schema({
       type: Date,
       default: Date.now,
     },
-  }],  
+  }],
+  lastClose: {
+    price: Number,
+    high: Number,
+    low: Number,
+    volume: Number,
+    vwap: Number,
+    volatility: Number,
+    volatPct: Number
+
+  },
+  average_5:{
+    price: Number,
+    high: Number,
+    low: Number,
+    volume: Number,
+    vwap: Number,
+    volatility: Number,
+    volatPct: Number,
+    avgDayVolat: Number,
+    avgDayValatPct: Number
+  },
+  average_10: {
+    price: Number,
+    high: Number,
+    low: Number,
+    volume: Number,
+    vwap: Number,
+    volatility: Number,
+    volatPct: Number,
+    avgDayVolat: Number,
+    avgDayValatPct: Number
+  },
+  average_22: {
+    price: Number,
+    high: Number,
+    low: Number,
+    volume: Number,
+    vwap: Number,
+    volatility: Number,
+    volatPct: Number,
+    avgDayVolat: Number,
+    avgDayValatPct: Number
+  },
+  mentions: {
+    last_24: Number,
+    last_7: Number,
+    last_15: Number,
+    last_30: Number 
+  }
+
 });
 
 
