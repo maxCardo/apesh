@@ -1,7 +1,6 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import React, {useState} from "react";
-import {connect} from "react-redux";
 import {getWatchlist, likeItem, removeItem} from "../../../actions/watchlist";
 import {Col, Container, Row, Badge} from "react-bootstrap";
 import {AreaChart} from "@carbon/charts-react";
@@ -63,7 +62,7 @@ const DetailsModal = ({closeModal, showModal, company}) => {
         }
     ]);
 
-    const [options, setUptions] = useState({
+    const [options, setOptions] = useState({
         "title": "Area (time series - natural curve)",
         "axes": {
             "bottom": {
@@ -83,50 +82,53 @@ const DetailsModal = ({closeModal, showModal, company}) => {
     company && company.company && company.company.companyName && console.log(company);
 
     return (
-        <Modal.Dialog size="xl" onClose={() => closeModal()} hidden={!showModal} className='DetailModal__container'>
-            <Modal.Header  closeButton>
-                <Modal.Title>{company && company.company && company.company.companyName} Details</Modal.Title>
-            </Modal.Header>
+            <Modal size="xl" onClose={() => closeModal()} onHide={() => closeModal()} show={showModal} className='DetailsModal'>
+                <Modal.Header  closeButton>
+                    <Modal.Title>{company && company.company && company.company.companyName} Details</Modal.Title>
+                </Modal.Header>
 
-            <Modal.Body>
-                <Container>
-                    <Row>
-                        <Col xs={12}>
-                            {company && company.company && company.company.symbol}
-                            <Badge variant='secondary'>{company && company.status}</Badge>
-                        </Col>
-                        <Col>
-                            <img style={{maxHeight: '80px', width: 'auto'}} src={company && company.company && company.company.image} alt=""/>
-                            <ul>
-                                <li>Company Name: {company && company.company && company.company.companyName}</li>
-                                <li>Industry</li>
-                                <li>Sector</li>
-                                <li>Price: {company && company.company && company.company.lastClose && company.company.lastClose.price} </li>
-                                <li>52 Week High/Low</li>
-                                <li>Cash</li>
-                                <li>Debt:</li>
-                                <li>Cash/Debt Ratio</li>
-                                <li></li>
-                            </ul>
-                        </Col>
-                        <Col>
-                            <AreaChart
-                                data={data}
-                                options={options}>
-                            </AreaChart>
-                        </Col>
-                    </Row>
-                </Container>
-                <p>Modal body text goes here.</p>
-            </Modal.Body>
+                <Modal.Body>
+                    <Container>
+                        <Row>
+                            <Col xs={12}>
+                                {company && company.company && company.company.symbol}
+                                <Badge variant='secondary'>{company && company.status}</Badge>
+                            </Col>
+                            <Col>
+                                <img style={{maxHeight: '80px', width: 'auto'}} src={company && company.company && company.company.image} alt=""/>
+                                <ul>
+                                    <li>Company Name: <a  rel="noopener noreferrer" target='_blank' href={company && company.company && company.company.website}>
+                                        {company && company.company && company.company.companyName}
+                                    </a>
+                                    </li>
+                                    <li>Industry: {company && company.company && company.company.industry}</li>
+                                    <li>Sector: {company && company.company && company.company.sector}</li>
+                                    <li>Price: {company && company.company && company.company.lastClose && company.company.lastClose.price} - this is last close</li>
+                                    <li>52 Week High/Low</li>
+                                    <li>Cash: cant find</li>
+                                    <li>Debt: cant find</li>
+                                    <li>Cash/Debt Ratio n/a</li>
+                                    <li></li>
+                                </ul>
+                            </Col>
+                            <Col>
+                                <AreaChart
+                                    data={data}
+                                    options={options}>
+                                </AreaChart>
+                            </Col>
+                        </Row>
+                    </Container>
+                    <p className='DetailsModal__description'>{company && company.company && company.company.description && company.company.description}</p>
+                </Modal.Body>
 
-            <Modal.Footer>
-                <Button onClick={closeModal} variant="secondary">Close</Button>
-                <Button onClick={() => {
-                    console.log('Go to details page')
-                }} variant="primary">More Details</Button>
-            </Modal.Footer>
-        </Modal.Dialog>
+                <Modal.Footer>
+                    <Button onClick={closeModal} variant="secondary">Close</Button>
+                    <Button onClick={() => {
+                        console.log('Go to details page')
+                    }} variant="primary">More Details</Button>
+                </Modal.Footer>
+            </Modal>
     )
 }
 

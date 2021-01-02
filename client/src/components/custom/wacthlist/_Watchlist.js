@@ -2,12 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
 import Table from '../../common/Table/_Table'
 import IconButton from '../../common/IconButton/_IconButton'
+import DetailsModal from "./DetailsModal";
 import './style.css'
 import {getWatchlist, removeItem, likeItem} from '../../../actions/watchlist'
 
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import DetailsModal from "./DetailsModal";
 
 const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeItem}) => {
 
@@ -69,9 +67,16 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
       render: (item) => (
         <div>
           <IconButton placement='bottom'
+                      tooltipContent='Details'
+                      id='property-details-tooltip'
+                      iconClass='fas fa-cube'
+                      variant='action-button'
+                      onClickFunc={() => startShowDetailFlow(item)}
+          />
+          <IconButton placement='bottom'
             tooltipContent='Like'
             id='property-details-tooltip'
-            iconClass='fas fa-list'
+            iconClass='fas fa-star'
             variant='action-button'
             onClickFunc={() => likeItem(item._id)}
           />

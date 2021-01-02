@@ -10,12 +10,13 @@
   display: flex;
 }
 
-.DetailModal__container.modal-dialog {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+.DetailsModal .modal-body {
+  max-height: 54vh;
+  overflow: auto;
+}
+
+.DetailsModal__description {
+  margin-top: 40px;
 }
 
 .tableWithActions {
