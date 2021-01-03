@@ -1,4 +1,3 @@
-import React from 'react'
 
 export const filterData = function (data, filterString, headers, level = 0) {
     const newData = data.filter((elem) => {
