@@ -172,7 +172,8 @@ export class Table extends Component {
               key={`row-${index}`}
               style={{cursor: this.props.onClickRow ? 'pointer' : ''}}
               onClick={this.props.onClickRow ? () => this.props.onClickRow(dataItem) : () => {
-
+                /* TODO: On row click, show modal with dataItem data, check if propagation is stopped in buttons in row */
+                console.log(dataItem);
               }}
             >
               {this.state.headers.map((header, index) => (

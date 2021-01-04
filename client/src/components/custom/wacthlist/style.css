@@ -9,3 +9,20 @@
 .tableWithActions td:last-child > div {
   display: flex;
 }
+
+.DetailsModal .modal-body {
+  max-height: 54vh;
+  overflow: auto;
+}
+
+.DetailsModal__description {
+  margin-top: 40px;
+}
+
+.tableWithActions {
+  padding: 20px;
+}
+
+.tableWithActions > div {
+  overflow: auto;
+}

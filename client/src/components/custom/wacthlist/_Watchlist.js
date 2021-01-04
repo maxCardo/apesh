@@ -1,13 +1,15 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
 import Table from '../../common/Table/_Table'
 import IconButton from '../../common/IconButton/_IconButton'
+import DetailsModal from "./DetailsModal";
 import './style.css'
 import {getWatchlist, removeItem, likeItem} from '../../../actions/watchlist'
 
 
 const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeItem}) => {
-  
+
+
   useEffect(() => {
     getWatchlist()
     
@@ -74,9 +76,16 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
       render: (item) => (
         <div>
           <IconButton placement='bottom'
+                      tooltipContent='Details'
+                      id='property-details-tooltip'
+                      iconClass='fas fa-cube'
+                      variant='action-button'
+                      onClickFunc={() => startShowDetailFlow(item)}
+          />
+          <IconButton placement='bottom'
             tooltipContent='Like'
             id='property-details-tooltip'
-            iconClass='fas fa-list'
+            iconClass='fas fa-star'
             variant='action-button'
             onClickFunc={() => likeItem(item._id)}
           />
@@ -92,10 +101,25 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
     }
   ]
 
+  const [selectedCompany, setSelectedCompany] = useState({});
+  const [showModal, setShowModal] = useState(false);
+
+  const startShowDetailFlow = (company) => {
+    setSelectedCompany(company);
+    setShowModal(true);
+  }
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedCompany({});
+  }
+
+
+
   return loading ?(
     <div>loading...</div>
   ):(
-    <div className = 'tableWithActions'>  
+    <div className='tableWithActions relative'>
       <Table
         //key={tablePageSize}
         //pageSize={tablePageSize}
@@ -103,8 +127,11 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
         fontSize={12}
         data={list}
         headers={headers}
-      //onClickRow={(item) => startShowDetailFlow(item)}
+        onClickRow={(item) => startShowDetailFlow(item)}
       />
+      {selectedCompany && (
+          <DetailsModal showModal={showModal} closeModal={closeModal} company={selectedCompany} />
+      )}
     </div>
   );
 };
