@@ -6,6 +6,7 @@ import './style.css'
 const MarketDash = () => {
     const [chartData, setChartData] = useState();
 
+
     const chart = () => {
         setChartData({
             labels: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
@@ -110,6 +111,14 @@ export default MarketDash
 
 
 
+    return (
+        <div>
+            test
+        </div>
+    );
+};
+
+export default MarketDash;
 
 
 
