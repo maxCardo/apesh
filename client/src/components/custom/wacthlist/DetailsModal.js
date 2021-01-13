@@ -118,8 +118,8 @@ const DetailsModal = ({closeModal, showModal, company}) => {
                                 </AreaChart>
                             </Col>
                         </Row>
+                        <p className='DetailsModal__description'>{company && company.company && company.company.description && company.company.description}</p>
                     </Container>
-                    <p className='DetailsModal__description'>{company && company.company && company.company.description && company.company.description}</p>
                 </Modal.Body>
 
                 <Modal.Footer>

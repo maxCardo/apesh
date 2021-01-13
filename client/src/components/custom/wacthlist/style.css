@@ -11,7 +11,7 @@
 }
 
 .DetailsModal .modal-body {
-  max-height: 54vh;
+  height: 70vh;
   overflow: auto;
 }
 
@@ -22,7 +22,16 @@
 .tableWithActions {
   padding: 20px;
 }
-
+.modal-dialog.modal-xl {
+  max-width: 90%;
+  margin-top: 0;
+}
+.modal-dialog.modal-xl .modal-content {
+  margin-top: 5vh;
+}
+.DetailsModal.modal.show {
+  overflow: hidden;
+}
 .tableWithActions > div {
   overflow: auto;
 }
