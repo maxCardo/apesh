@@ -19,7 +19,13 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
     {
       label: 'Like',
       accessor: 'hot',
-      mapper: (data) => data === true ? 'true' : 'false'
+      mapper: (data) => data === true ? 
+      <div>
+          <i className='fas fa-star' style={{ fontSize: 15, color: 'blue' }}></i>
+      </div> :
+      <div>
+          <i className='far fa-star' style={{ fontSize: 15, color: 'blue' }}></i> 
+      </div>      
     },
     {
       label: 'Company',
@@ -85,14 +91,14 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
           <IconButton placement='bottom'
             tooltipContent='Like'
             id='property-details-tooltip'
-            iconClass='fas fa-star'
+            iconClass='fas fa-thumbs-up'
             variant='action-button'
             onClickFunc={() => likeItem(item._id)}
           />
           <IconButton placement='bottom'
             tooltipContent='Trash'
             id='property-details-tooltip'
-            iconClass='fas fa-link'
+            iconClass='fas fa-trash'
             variant='action-button'
             onClickFunc={() => removeItem(item._id)}
           />
