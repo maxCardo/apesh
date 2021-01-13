@@ -109,16 +109,3 @@ export default MarketDash
 
 
 
-
-
-    return (
-        <div>
-            test
-        </div>
-    );
-};
-
-export default MarketDash;
-
-
-
