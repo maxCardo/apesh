@@ -2,11 +2,10 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import React, {useState} from "react";
 import {getWatchlist, likeItem, removeItem} from "../../../actions/watchlist";
-import {Col, Container, Row, Badge, Tabs, TabContainer} from "react-bootstrap";
+import {Col, Container, Row, Badge, Tabs, TabContainer, Tab, Nav} from "react-bootstrap";
 import {AreaChart} from "@carbon/charts-react";
 
 import "@carbon/charts/styles.css";
-import Tab from "@carbon/charts/styles/vendor/carbon-components/es/components/tabs/tabs";
 
 
 const DetailsModal = ({closeModal, showModal, company}) => {
@@ -89,56 +88,72 @@ const DetailsModal = ({closeModal, showModal, company}) => {
                 <Modal.Title>{company && company.company && company.company.companyName} Profile</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Tabs defaultActiveKey="details" id="uncontrolled-tab-example">
-                    <Tab eventKey="details" title="Details">
-                        <TabContainer>
-                            <Row>
-                                <Col xs={12}>
-                                    {company && company.company && company.company.symbol}
-                                    <Badge variant='secondary'>{company && company.status}</Badge>
-                                </Col>
-                                <Col>
-                                    <img style={{maxHeight: '80px', width: 'auto'}}
-                                         src={company && company.company && company.company.image} alt=""/>
-                                    <ul>
-                                        <li>Company Name: <a rel="noopener noreferrer" target='_blank'
-                                                             href={company && company.company && company.company.website}>
-                                            {company && company.company && company.company.companyName}
-                                        </a>
-                                        </li>
-                                        <li>Industry: {company && company.company && company.company.industry}</li>
-                                        <li>Sector: {company && company.company && company.company.sector}</li>
-                                        <li>Price: {company && company.company && company.company.lastClose && company.company.lastClose.price} -
-                                            this is last close
-                                        </li>
-                                        <li>52 Week High/Low</li>
-                                        <li>Cash: cant find</li>
-                                        <li>Debt: cant find</li>
-                                        <li>Cash/Debt Ratio n/a</li>
-                                        <li></li>
-                                    </ul>
-                                </Col>
+                <Container fluid>
+                    <Row>
+                        <Col xs={12}>
+                            {company && company.company && company.company.symbol}
+                            <Badge variant='secondary'>{company && company.status}</Badge>
+                        </Col>
+                        <Col>
+                            <img style={{maxHeight: '80px', width: 'auto'}}
+                                 src={company && company.company && company.company.image} alt=""/>
+                            <ul>
+                                <li>Company Name: <a rel="noopener noreferrer" target='_blank'
+                                                     href={company && company.company && company.company.website}>
+                                    {company && company.company && company.company.companyName}
+                                </a>
+                                </li>
+                                <li>Industry: {company && company.company && company.company.industry}</li>
+                                <li>Sector: {company && company.company && company.company.sector}</li>
+                                <li>Price: {company && company.company && company.company.lastClose && company.company.lastClose.price} -
+                                    this is last close
+                                </li>
+                                <li>52 Week High/Low</li>
+                                <li>Cash: cant find</li>
+                                <li>Debt: cant find</li>
+                                <li>Cash/Debt Ratio n/a</li>
+                                <li></li>
+                            </ul>
+                        </Col>
+                        <Col>
+                            <AreaChart
+                                data={data}
+                                options={options}>
+                            </AreaChart>
+                        </Col>
+                        <Col xs={12}>
+                            <hr/>
+                        </Col>
+                        <Col xs={12}>
+                            <Tab.Container defaultActiveKey="description">
+                                <Nav className='nav-tabs'>
+                                    <Nav.Item>
+                                        <Nav.Link eventKey="description">Company Description</Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link eventKey="other">Other things</Nav.Link>
+                                    </Nav.Item>
+                                    <Nav.Item>
+                                        <Nav.Link eventKey="longTermAnalysis">Analytics</Nav.Link>
+                                    </Nav.Item>
+                                </Nav>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="description">
+                                        <p className='DetailsModal__description'>{company && company.company && company.company.description && company.company.description}</p>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="other">
+                                        <p className='DetailsModal__description'>Stuff</p>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="longTermAnalysis" title="Long term analysis">
+                                        <p className='DetailsModal__description'>Things</p>
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </Tab.Container>
+                        </Col>
+                    </Row>
 
-                            </Row>
+                </Container>
 
-                        </TabContainer>
-                    </Tab>
-                    <Tab eventKey="description" title="Description">
-                        <p className='DetailsModal__description'>{company && company.company && company.company.description && company.company.description}</p>
-                    </Tab>
-                    <Tab eventKey="longTermAnalysis" title="Long term analysis">
-                        <Row>
-                            <Col xs={12}>
-                                <h4>Some more</h4>
-                                <p>stuff</p>
-                                <AreaChart
-                                    data={data}
-                                    options={options}>
-                                </AreaChart>
-                            </Col>
-                        </Row>
-                    </Tab>
-                </Tabs>
             </Modal.Body>
 
             <Modal.Footer>
