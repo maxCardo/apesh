@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Line, Bar } from 'react-chartjs-2';
 import './style.css'
@@ -46,35 +47,65 @@ const MarketDash = () => {
         chart();
     }, []);
 
+    const BarSection = () => {
+        return (
+            <>
+                <Bar data={chartData} options={
+                    {
+                        scales: {
+                            yAxes: [{
+                                id: 'A',
+                                type: 'linear',
+                                position: 'left',
+                            }, {
+                                id: 'B',
+                                type: 'linear',
+                                position: 'right',
+                                ticks: {
+                                    max: 100,
+                                    min: 0
+                                }
+                            }]
+                        }
+                    }
+                } />
+            </>
+        )
+    }
+
     return (
-        <div>
-            test
-        </div>
-    );
-};
+        <>
+            <div className="main_container">
+                <div className="section_one">
+                    <div className="chart_one" >
 
-export default MarketDash;
+                        <BarSection />
+                    </div>
+                    <div className="chart_section_two" >
+                        <div><BarSection /></div>
+                        <div><BarSection /></div>
+                        <div><BarSection /></div>
+                    </div>
+
+                    <div className="chart_section_three">
+                        <div><BarSection /></div>
+                        <div><BarSection /></div>
+                    </div>
+                </div>
+                <div className="section_two">
+                    <h1>Here goes the table</h1>
+                </div>
+
+            </div>
 
 
-// <Bar data={chartData} options={
-//     {
-//         scales: {
-//             yAxes: [{
-//                 id: 'A',
-//                 type: 'linear',
-//                 position: 'left',
-//             }, {
-//                 id: 'B',
-//                 type: 'linear',
-//                 position: 'right',
-//                 ticks: {
-//                     max: 100,
-//                     min: 0
-//                 }
-//             }]
-//         }
-//     }
-// } />
+
+        </>
+    )
+}
+
+export default MarketDash
+
 
 
 
