@@ -22,9 +22,23 @@
 }
 
 .DetailsModal__description {
-  margin-top: 40px;
+  padding: 20px 12px;
 }
-
+.DetailsModal .modal-content {
+  padding: 12px 12px 12px 12px;
+}
+.DetailsModal__tabsWrap {
+  padding: 12px;
+}
+.DetailsModal .tab-pane {
+  height: 35.75vh;
+  overflow: auto;
+}
+.DetailsModal img {
+  max-height: 40px;
+  width: auto;
+  margin-right: 16px;
+}
 .tableWithActions {
   padding: 20px;
 }
@@ -68,7 +82,7 @@
   text-overflow: ellipsis;
   border-bottom: 2px solid #e0e0e0;
   transition: border 70ms cubic-bezier(.2,0,.38,.9),outline 70ms cubic-bezier(.2,0,.38,.9);
-  border-bottom: 2px solid #888;
+  border-bottom: 2px solid #ededfe;
 }
 .nav-item .nav-link.active {
   border-bottom-color: #6f9dd4;
@@ -76,4 +90,19 @@
 .nav-link:hover {
   color: #161616;
   border-bottom: 2px solid #8d8d8d;
+}
+.nav-tabs {
+  border-bottom-color: transparent;
+}
+.modal-footer {
+  display: flex;
+  align-items: center;
+}
+.modal-footer {
+  border-top-color: transparent;
+}
+@media (min-width: 768px) {
+  .flex {
+    display: flex;
+  }
 }
