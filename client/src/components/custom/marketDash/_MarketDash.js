@@ -1,10 +1,10 @@
-
-import React, { useState, useEffect } from 'react';
-import { Line, Bar } from 'react-chartjs-2';
+import React, {useState, useEffect} from 'react';
+import {Line, Bar} from 'react-chartjs-2';
 import './style.css'
+import {Col, Container, Row} from "react-bootstrap";
 
 const MarketDash = () => {
-    const [chartData, setChartData] = useState();
+    const [chartData, setChartData] = useState({});
 
 
     const chart = () => {
@@ -68,39 +68,46 @@ const MarketDash = () => {
                             }]
                         }
                     }
-                } />
+                }/>
             </>
         )
     }
 
+    const handleChartClick = () => {
+        console.log('chart clicked!');
+    }
+
     return (
-        <>
-            <div className="main_container">
-                <div className="section_one">
-                    <div className="chart_one" >
-
-                        <BarSection />
+        <Container fluid className='MarketDash'>
+            <Row>
+                <Col md={6}>
+                    <div className="MarketDash__mainChart">
+                        <BarSection/>
                     </div>
-                    <div className="chart_section_two" >
-                        <div><BarSection /></div>
-                        <div><BarSection /></div>
-                        <div><BarSection /></div>
+                    <div className="MarketDash__chartNav">
+                        <div className='MarketDash__chartLink' onClick={handleChartClick}>
+                            <BarSection/>
+                            <h5>Dow Jones</h5>
+                        </div>
+                        <div className='MarketDash__chartLink'>
+                            <BarSection/>
+                            <h5>Nasdaq</h5>
+                        </div>
+                        <div className='MarketDash__chartLink'>
+                            <BarSection/>
+                            <h5>S&P500</h5>
+                        </div>
                     </div>
-
-                    <div className="chart_section_three">
-                        <div><BarSection /></div>
-                        <div><BarSection /></div>
+                    <div className="MarketDash__lowerCharts">
+                        <div><BarSection/></div>
+                        <div><BarSection/></div>
                     </div>
-                </div>
-                <div className="section_two">
-                    <h1>Here goes the table</h1>
-                </div>
-
-            </div>
-
-
-
-        </>
+                </Col>
+                <Col md={6}>
+                    <h2 className='text-center'>Here goes the table</h2>
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

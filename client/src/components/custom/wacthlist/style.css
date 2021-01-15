@@ -101,6 +101,10 @@
 .modal-footer {
   border-top-color: transparent;
 }
+.DetailsModal__tabsWrap .tab-content {
+  max-height: 19.35vh;
+  overflow: auto;
+}
 @media (min-width: 768px) {
   .flex {
     display: flex;

@@ -55,4 +55,16 @@
     border: 1px solid black;
   
   }
-  
+
+  .NarketDash {
+      overflow: hidden;
+  }
+  .MarketDash__chartNav {
+      display: flex;
+  }
+  .MarketDash__chartLink {
+      width: 33.333%;
+  }
+  .MarketDash__lowerCharts {
+      display:flex;
+  }
