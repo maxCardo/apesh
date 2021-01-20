@@ -5,11 +5,11 @@ const {getPastQuote, getBlnceSheet, getStockData, getQuote} = require('../servic
 
 
 const firstScan = async (searchArr, searchParams) => {
-    
+    const {name, upside} = searchParams    
     //ToDO: refactor below vars into search param. dynamic vars will be replaced with multible searches
     //static target vars
     const capPE = 14.5
-    const upsideMin = 0
+    const upsideMin = upside
     const debtMax = .5  //can be a search param
     //dynamic vars
     let growthCap;
@@ -89,7 +89,7 @@ const firstScan = async (searchArr, searchParams) => {
                 if (upsidePass  && debtPass) {
                     console.log('yes: ', record.symbol);
                     console.log('upside: ', upsidePass, 'debt: ', debtPass);
-                    const watchItem = await addToWatchList('first_scan', record.symbol, price, value)
+                    const watchItem = await addToWatchList(name, record.symbol, price, value)
                     return watchItem
                 }else{
                     console.log('no', record.symbol);
@@ -105,11 +105,11 @@ const firstScan = async (searchArr, searchParams) => {
 };
 
 const shortScan = async (searchArr, searchParams) => {
-
+    const { name, upside } = searchParams    
     //ToDO: refactor below vars into search param. dynamic vars will be replaced with multible searches
     //static target vars
     const capPE = 13
-    const upsideMin = 0
+    const upsideMin = upside
     const debtMin = .5  //can be a search param
     //dynamic vars
 
@@ -182,7 +182,7 @@ const shortScan = async (searchArr, searchParams) => {
                 if (upsidePass && debtPass && value > 1) {
                     //console.log('yes: ', record.symbol);
                     //console.log('upside: ', upsidePass, 'debt: ', debtPass);
-                    const watchItem = await addToWatchList('first_short', record.symbol, price, value)
+                    const watchItem = await addToWatchList(name, record.symbol, price, value)
                     return watchItem
 
                 } else {
