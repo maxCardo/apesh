@@ -20,6 +20,7 @@ app.get('/test', (req, res) => {
 
 app.use('/api/user', require ('./api/user'))
 app.use('/api/watchlist', require('./api/watchlist'))
+app.use('/api/company', require('./api/company'))
 
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {
