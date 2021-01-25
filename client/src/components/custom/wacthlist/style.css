@@ -102,7 +102,7 @@
   border-top-color: transparent;
 }
 .DetailsModal__tabsWrap .tab-content {
-  max-height: 19.35vh;
+  max-height: 19.25vh;
   overflow: auto;
 }
 @media (min-width: 768px) {

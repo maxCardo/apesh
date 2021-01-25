@@ -158,9 +158,9 @@ const MarketDash = () => {
 
     let allCharts = allChartOptions.map((item, thenumber) => {
         return (
-            <div className={`MarketDash__chartLink `} key={`chartLink-${thenumber}`} onClick={() => handleChartClick(thenumber)}>
+            <div className={`MarketDash__chartLink ${(checkActiveChart(thenumber)) ? 'active' : ''}`} key={`chartLink-${thenumber}`} onClick={() => handleChartClick(thenumber)}>
                 <BarSection newData={allChartOptions[thenumber]}/>
-                <h5> woohoo</h5>
+                <h5>{allChartOptions[thenumber].name} woohoo</h5>
             </div>
         )
     })
