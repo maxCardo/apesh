@@ -45,7 +45,7 @@ function setUpCron(){
       const losers = await topLosers()
 
       try {
-        const scan = await firstScan(losers)
+        const scan = await firstScan(losers, {name: 'first_losers', upside: .6})
         postDiscord({ text: `First scan ran on losers ${scan.length} records added` });  
       } catch (error) {
         postDiscord({ text: `Error on daily first scan losers route: ${error}` });
@@ -64,7 +64,7 @@ function setUpCron(){
       const gainers = await topGainers()
 
       try {
-        const scan = await firstScan(gainers)
+        const scan = await firstScan(gainers, { name: 'first_gainers', upside: .6 })
         postDiscord({ text: `First scan ran on gainers ${scan.length} records added` });
       } catch (error) {
         postDiscord({ text: `Error on daily first scan gainers route: ${error}` });
@@ -83,7 +83,7 @@ function setUpCron(){
       const losers = await topLosers()
     
       try {
-        const scan = await shortScan(losers)
+        const scan = await shortScan(losers, { name: 'short_losers', upside: .6 })
         postDiscord({ text: `Short scan ran on losers ${scan.length} records added` });
       } catch (error) {
         postDiscord({ text: `Error on daily first scan losers route: ${error}` });
@@ -102,7 +102,7 @@ function setUpCron(){
       const gainers = await topGainers()
 
       try {
-        const scan = await shortScan(gainers)
+        const scan = await shortScan(gainers, { name: 'short_gainers', upside: .6 })
         postDiscord({ text: `Short scan ran on gainers ${scan.length} records added` });
       } catch (error) {
         postDiscord({ text: `Error on daily first scan gainers route: ${error}` });
