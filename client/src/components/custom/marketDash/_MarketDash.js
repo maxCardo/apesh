@@ -2,10 +2,26 @@ import React, {useState, useEffect} from 'react';
 import {Line, Bar, Doughnut} from 'react-chartjs-2';
 import './style.css'
 import {Col, Container, Row, Table} from "react-bootstrap";
+import BarSection from "./BarSection";
 
 const MarketDash = () => {
-    const [chartData, setChartData] = useState({});
-    const [selectedChart, setSelectedChart] = useState(0);
+    const [chartData, setChartData] = useState();
+    const [selectedChart, setSelectedChart] = useState( {
+        name: 'Nasdaq',
+        label: 'Select a chart',
+        data: [0, 0, 0, 0, 0],
+        yAxisID: 'B',
+        order: 2,
+        backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+        ],
+        borderWidth: 4,
+    });
     const [chartLinkData, setChartLinkData] = useState([]);
 
     let allChartOptions = [
@@ -41,13 +57,14 @@ const MarketDash = () => {
                     borderWidth: 4,
                 },
             ],
+            name: 'Nikkei',
         },
         {
             labels: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
             datasets: [
                 {
                     label: 'level of thickness',
-                    data: [32, 45, 12, 76, 69],
+                    data: [0, 11, 22, 33, 44],
                     yAxisID: 'B',
                     order: 2,
                     backgroundColor: [
@@ -74,13 +91,14 @@ const MarketDash = () => {
                     borderWidth: 4,
                 },
             ],
+            name: 'S&P500',
         },
         {
             labels: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
             datasets: [
                 {
                     label: 'level of thickness',
-                    data: [32, 45, 12, 76, 69],
+                    data: [95, 77, 52, 45, 27],
                     yAxisID: 'B',
                     order: 2,
                     backgroundColor: [
@@ -107,59 +125,29 @@ const MarketDash = () => {
                     borderWidth: 4,
                 },
             ],
+            name: 'Nasdaq'
         },
     ]
 
+    const chart = () => {
+        setChartData(selectedChart);
+    }
+
     useEffect(() => {
-        const chart = () => {
-            setChartData(allChartOptions[selectedChart]);
-        }
 
         chart();
     }, []);
 
-    const BarSection = ({newData}) => {
-        return (
-            <>
-                {(newData.name === 'Nasdaq' || newData.name === 'S&P500' || newData.name === 'nikkei') ? (<Bar data={newData} options={
-                    {
-                        scales: {
-                            yAxes: [{
-                                id: 'A',
-                                type: 'linear',
-                                position: 'left',
-                            }, {
-                                id: 'B',
-                                type: 'linear',
-                                position: 'right',
-                                ticks: {
-                                    max: 100,
-                                    min: 0
-                                }
-                            }]
-                        }
-                    }
-                }/>) : ''}
-            </>
-        )
-    }
+
 
     const handleChartClick = (index) => {
         setChartData(allChartOptions[index])
     }
 
-    const checkActiveChart = (index) => {
-        if (chartData.name === allChartOptions[index].name) {
-            return true;
-        }
-
-        return false;
-    }
-
     let allCharts = allChartOptions.map((item, thenumber) => {
         return (
             <div className={`MarketDash__chartLink `} key={`chartLink-${thenumber}`} onClick={() => handleChartClick(thenumber)}>
-                <BarSection newData={allChartOptions[thenumber]}/>
+                <BarSection newData={item}/>
                 <h5> woohoo</h5>
             </div>
         )
@@ -172,9 +160,6 @@ const MarketDash = () => {
                 <Col md={6}>
                     <div className="MarketDash__mainChart">
                         <BarSection newData={chartData}/>
-                    </div>
-                    <div className="MarketDash__chartNav">
-                        {allCharts}
                     </div>
                     <div className="MarketDash__lowerCharts">
                         <Col xs={6}>
@@ -216,6 +201,9 @@ const MarketDash = () => {
                     </Table>
 
                 </Col>
+                <div className="MarketDash__chartNav">
+                    {allCharts}
+                </div>
             </Row>
         </Container>
     )

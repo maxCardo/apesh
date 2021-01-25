@@ -63,7 +63,11 @@
       display: flex;
   }
   .MarketDash__chartLink {
-      width: 33.333%;
+      width: 16.6666%;
+  }
+  .MarketDash__chartLink canvas {
+      height: auto !important;
+      width: 100% !important;
   }
   .MarketDash__lowerCharts {
       display:flex;
