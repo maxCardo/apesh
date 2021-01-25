@@ -61,9 +61,12 @@
   }
   .MarketDash__chartNav {
       display: flex;
+      overflow-x: auto;
+      max-width: 100%;
   }
   .MarketDash__chartLink {
       width: 16.6666%;
+      min-width: 260px;
   }
   .MarketDash__chartLink canvas {
       height: auto !important;
