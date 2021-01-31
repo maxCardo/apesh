@@ -1,3 +1,9 @@
+:root {
+  --cds-body-short-01-font-size: '16px';
+  --cds-body-short-01-font-weight: 400;
+  --cds-body-short-01-line-height: 1.29;
+  --cds-body-short-01-letter-spacing: .16px;
+}
 
 
 .tableWithActions td:last-child {
@@ -11,18 +17,96 @@
 }
 
 .DetailsModal .modal-body {
-  max-height: 54vh;
+  height: 70vh;
   overflow: auto;
 }
 
 .DetailsModal__description {
-  margin-top: 40px;
+  padding: 20px 12px;
 }
-
+.DetailsModal .modal-content {
+  padding: 12px 12px 12px 12px;
+}
+.DetailsModal__tabsWrap {
+  padding: 12px;
+}
+.DetailsModal .tab-pane {
+  height: 35.75vh;
+  overflow: auto;
+}
+.DetailsModal img {
+  max-height: 40px;
+  width: auto;
+  margin-right: 16px;
+}
 .tableWithActions {
   padding: 20px;
 }
-
+.modal-dialog.modal-xl {
+  max-width: 90%;
+  margin-top: 0;
+}
+.modal-dialog.modal-xl .modal-content {
+  margin-top: 5vh;
+}
+.DetailsModal.modal.show {
+  overflow: hidden;
+}
 .tableWithActions > div {
   overflow: auto;
+}
+.nav-tabs .nav-link {
+  box-sizing: border-box;
+  margin: 0 12px 0 0;
+  font-family: inherit;
+  vertical-align: initial;
+  display: inline-block;
+  padding: 8px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  font-size: var(--cds-body-short-01-font-size,.875rem);
+  font-weight: var(--cds-body-short-01-font-weight,400);
+  line-height: var(--cds-body-short-01-line-height,1.29);
+  letter-spacing: var(--cds-body-short-01-letter-spacing,.16px);
+  color: #222;
+  width: 10rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: left;
+  text-decoration: none;
+  text-overflow: ellipsis;
+  border-bottom: 2px solid #e0e0e0;
+  transition: border 70ms cubic-bezier(.2,0,.38,.9),outline 70ms cubic-bezier(.2,0,.38,.9);
+  border-bottom: 2px solid #ededfe;
+}
+.nav-item .nav-link.active {
+  border-bottom-color: #6f9dd4;
+}
+.nav-link:hover {
+  color: #161616;
+  border-bottom: 2px solid #8d8d8d;
+}
+.nav-tabs {
+  border-bottom-color: transparent;
+}
+.modal-footer {
+  display: flex;
+  align-items: center;
+}
+.modal-footer {
+  border-top-color: transparent;
+}
+.DetailsModal__tabsWrap .tab-content {
+  max-height: 19.25vh;
+  overflow: auto;
+}
+@media (min-width: 768px) {
+  .flex {
+    display: flex;
+  }
 }

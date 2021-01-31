@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
 import Table from '../../common/Table/_Table'
 import IconButton from '../../common/IconButton/_IconButton'
-import DetailsModal from "./DetailsModal";
+import DetailsModal from "./detailsModal/DetailsModal";
 import './style.css'
 import {getWatchlist, removeItem, likeItem} from '../../../actions/watchlist'
 
@@ -21,10 +21,10 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
       accessor: 'hot',
       mapper: (data) => data === true ? 
       <div>
-          <i className='fas fa-star' style={{ fontSize: 15, color: 'blue' }}></i>
+          <i className='fas fa-star' style={{ fontSize: 15, color: '#6f9dd4' }}></i>
       </div> :
       <div>
-          <i className='far fa-star' style={{ fontSize: 15, color: 'blue' }}></i> 
+          <i className='far fa-star' style={{ fontSize: 15, color: '#6f9dd4' }}></i>
       </div>      
     },
     {

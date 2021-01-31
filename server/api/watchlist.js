@@ -26,8 +26,8 @@ router.get('/', async (req, res) => {
 })
 
 // @route:
-// @desc: 
-// @ access:
+// @desc: delete item from watchlist
+// @ access: Public
 router.put('/removeItem/:id', async (req, res) => {
     console.log('running delete rt');
     console.log(req.params.id);
@@ -36,8 +36,8 @@ router.put('/removeItem/:id', async (req, res) => {
 })
 
 // @route:
-// @desc: 
-// @ access:
+// @desc: like watchlist item
+// @ access: Public
 router.put('/like/:id', async (req, res) => {
     console.log('running route for ', req.params.id);
     const record = await Watchlist.findByIdAndUpdate(req.params.id, {hot: true}, {new: true})
