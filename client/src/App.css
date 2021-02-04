@@ -137,7 +137,7 @@ img {
   /* padding-top: 8vh; */
   /* new */
   height: 100vh;
-} */
+}
 
 /* Text Styles*/
 .x-large {
@@ -440,8 +440,6 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.7rem 2rem;
-  position: fixed;
   z-index: 1;
   width: 100%;
   height: 8%;
