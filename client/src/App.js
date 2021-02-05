@@ -18,7 +18,7 @@ const App = () => {
     <Router>
       <Fragment>
         <Navbar />
-        <section className='container-b' style={{ position: 'relative', overflow: 'scroll' }}>
+        <section className='container-b'>
           <Route exact path='/' component={Landing} />
           <Route exact path='/lookup' component={Lookup} />
           {/* <Route exact path='/company_profile' component={CompanyProfile} /> */}
