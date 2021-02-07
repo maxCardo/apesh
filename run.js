@@ -1,9 +1,9 @@
 const moment = require('moment')
 const dbConnect = require('./server/db/db');
 
-const { runShortScan } = require('./server/scripts/scan');
-const {getQuote, getCompanyNews} = require('./server/services/fmp')
+const {getQuote, getCompanyNews, getEarningsCal, getEarningsRes} = require('./server/services/fmp')
 const {marketDailyUpdate} = require('./server/scripts/company')
+const {loadAllCompanies} = require('./server/scripts/company')
 
 const WatchList = require('./server/db/models/stratigy/watchlist');
 const Company = require('./server/db/models/company')
@@ -62,8 +62,14 @@ const sandbox = async() => {
 
     //marketDailyUpdate()
 
-    const res = await Company.find({'data.dailyNews.success': true})
-    console.log(res.length);
+    //const res = await getEarningsRes('FLY')
+
+    //console.log(res);
+    //loadAllCompanies()
+
+    const res = await Company.find({symbol: 'AAPL'})
+    console.log(res);
+
 }
 
 sandbox()

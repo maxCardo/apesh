@@ -13,7 +13,23 @@ const companySchema = new mongoose.Schema({
     dailyNews:{
       date: {
         type: Date,
-        default: Date.now
+        default: Date.now,
+      },
+      ran: Boolean,
+      success: Boolean
+    },
+    bs:{
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      ran: Boolean,
+      success: Boolean
+    },
+    earnings: {
+      date: {
+        type: Date,
+        default: Date.now,
       },
       ran: Boolean,
       success: Boolean
