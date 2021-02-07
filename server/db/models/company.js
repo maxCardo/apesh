@@ -35,7 +35,19 @@ const companySchema = new mongoose.Schema({
   ceo: String, 
   fullTimeEmployees: Number,
   image: String,
-  lastEarnings: Date,
+  lastEarnings: Date, //depricated: replace by lastReporting.date
+  lastReporting: {
+    date: Date,
+    estEPS: Number,
+    actEPS: Number
+  },
+  nextReporting: {
+    date: Date,
+    estEPS: Number 
+  }, 
+  cash: Number,
+  debt: Number,
+  cashDebtRatio: Number,
   history: [{
     type: {
       //note, log etc
@@ -101,7 +113,25 @@ const companySchema = new mongoose.Schema({
     last_7: Number,
     last_15: Number,
     last_30: Number 
-  }
+  },
+  notes: [
+    {
+      type: {
+        type: String,
+      },
+      content: {
+        type: String,
+      },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 
 });
 
