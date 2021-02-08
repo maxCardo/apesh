@@ -23,7 +23,7 @@ router.get('/details/:tkr', async (req, res) => {
 // @route:
 // @desc: get single stock lookup
 // @ access: Public
-router.get('lookup/:tkr', async (req, res) => {
+router.get('/lookup/:tkr', async (req, res) => {
     try {
         const ticker = req.params.tkr
         const company = await Company.findOne({ symbol: ticker })
