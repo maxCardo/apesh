@@ -33,7 +33,16 @@ const companySchema = new mongoose.Schema({
       },
       ran: Boolean,
       success: Boolean
-    }
+    },
+    kpi: {
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      ran: Boolean,
+      success: Boolean
+    },
+
 
   },
   symbol: {
@@ -64,6 +73,9 @@ const companySchema = new mongoose.Schema({
   cash: Number,
   debt: Number,
   cashDebtRatio: Number,
+  growth: Number,
+  peRatio: Number,
+  eps: Number,
   history: [{
     type: {
       //note, log etc

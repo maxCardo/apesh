@@ -1,6 +1,6 @@
 const moment = require('moment')
 const {activeTickers, allActiveTickers} = require('./search')
-const {getCompanyProf, getHistoricalPriceData, getCompanyNews, getBlnceSheet, getEarningsRes} = require('../services/fmp') 
+const {getCompanyProf, getHistoricalPriceData, getCompanyNews, getBlnceSheet, getEarningsRes, getStockData} = require('../services/fmp') 
 const Company = require('../db/models/company')
 
 //@desc create DB records of companies from csv  : !depricated
@@ -98,6 +98,8 @@ const loadAllCompanies = async () => {
         }, i * 500)
     })
 }
+
+
 
 
 
@@ -211,10 +213,29 @@ const updateJustNews = async () => {
     })
 }
 
-//@desc: Update company records for companies that have reported
-const updateReporting = () => {
-    
+//@desc: update records selected with kpi data
+const updateKPIData = async (companies) => {
+    companies.forEach(async (company, i) => {
+        setTimeout(async() => {
+            try {
+                const kpi = await getStockData(company.symbol);
+                company.growth = kpi.reduce((total, next) => total + next.roic, 0) / kpi.length;
+                company.peRatio = kpi.reduce((total, next) => total + next.peRatio, 0) / kpi.length;
+                company.eps = kpi[0].netIncomePerShare;
+                company.data.kpi = { ran: true, success: true }
+                console.log(`success record ${i + 1} of ${companies.length}`);
+            } catch (err) {
+                console.log(`----error record ${i + 1} of ${companies.length}`);
+                console.log(company.symbol)
+                console.error(err);
+                company.data.kpi = { ran: true, success: false, error: err }
+                console.log(`----error record ${i + 1} of ${companies.length}`);
+            }
+            console.log(company.symbol);
+            company.save()
+        },i * 250)      
+    })
 }
 
-module.exports = {loadCompanies, marketDailyUpdate, updateJustNews, loadAllCompanies}
+module.exports = {loadCompanies, marketDailyUpdate, updateJustNews, loadAllCompanies, updateKPIData}
 

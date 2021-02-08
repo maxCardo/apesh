@@ -98,16 +98,12 @@ const DetailsModal = ({closeModal, showModal, company, selectedCompany:{details:
                className='DetailsModal'>
             <Modal.Header closeButton>
                 <img src={company && company.company && company.company.image} alt=""/>
-                <Modal.Title>{company && company.company && company.company.companyName}</Modal.Title>
+                <Modal.Title>{company && company.company && company.company.companyName} : {company && company.company && company.company.symbol}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Container fluid>
-                    <div>
-                        {company && company.company && company.company.symbol}
-                        {/* <Badge variant='secondary'>{company && company.status}</Badge> */}
-                    </div>
                     <Row>
-                        <Col>
+                        <Col style={{ fontSize: 'small' }}>
                             <ul>
                                 <li>Company Name: <a rel="noopener noreferrer" target='_blank'
                                                      href={company && company.company && company.company.website}>
@@ -117,13 +113,22 @@ const DetailsModal = ({closeModal, showModal, company, selectedCompany:{details:
                                 <li>Sector: {company && company.company && company.company.sector}</li>
                                 <li>Industry: {company && company.company && company.company.industry}</li>
                                 <li>Price: {company && company.company && company.company.lastClose && company.company.lastClose.price} (last close)</li>
-                                <li>Cash: cant find</li>
-                                <li>Debt: cant find</li>
-                                <li>Cash/Debt Ratio: n/a</li>
+                                <br/>
+                                <li>Cash: {company && company.company && company.company.cash}</li>
+                                <li>Debt: {company && company.company && company.company.debt}</li>
+                                <li>Cash/Debt Ratio: {company && company.company && company.company.cashDebtRatio}</li>
+                                <br/>
                                 <li>Mentions - Last 24hr: {company && company.company && company.company.mentions.last_24}</li>
                                 <li>Mentions - Last 7/15/30 days: {company && company.company && company.company.mentions.last_7}/{company && company.company && company.company.mentions.last_15}/{company && company.company && company.company.mentions.last_30}</li>
-                                <li>Last Earnings: {company && company.company && dayjs(company.company.lastEarnings).format('MM/DD/YYYY')}</li>
-                                <li></li>
+                                <br/>
+                                <li>Last Earnings: {company && company.company && company.company.lastReporting && dayjs(company.company.lastReporting.date).format('MM/DD/YYYY')}</li>
+                                <li>EPS Expected: {company && company.company && company.company.lastReporting && `${company.company.lastReporting.estEPS} | Actual: ${company.company.lastReporting.actEPS} `} </li>
+                                <li>Next Earnings: {company && company.company && company.company.nextReporting ? dayjs(company.company.nextReporting.date).format('MM/DD/YYYY') : 'n/a'}</li>
+                                {company && company.company && company.company.nextReporting ? <li>Expectations: {company.company.nextReporting.estEPS}</li>  : null}
+                                <br/>
+                                <li>Growth:</li>
+                                <li>peRatio:</li>
+                                <li>EPS (last full year):</li>
                             </ul>
                         </Col>
                         <Col style={{ fontSize: 'small' }}>
