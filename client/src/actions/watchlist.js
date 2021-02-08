@@ -1,5 +1,6 @@
 import { SET_LOADING, SET_WATCHLIST, REMOVE_WATCHLIST_ITEM, UPDATE_WATCHLIST_ITEM, SET_COMPANY_LOADING, SELECT_COMPANY} from './type'
 import axios from 'axios'
+import { select } from 'd3';
 
 
 export const getWatchlist = () => async dispatch => {
@@ -52,10 +53,20 @@ export const setSelectedCompany = (company) => async dispatch => {
             type: SET_COMPANY_LOADING
         })
         const {data} = await axios.get(`/api/company/details/${company.symbol}`);
+        const news = data.news
+        const pricing = data.pricing
+        let selectedCompany = company.company
+        if (!selectedCompany) {
+            console.log('no co');
+            const res = await axios.get(`/api/company/lookup/${company.symbol}`)
+            selectedCompany = res.data
+        }
+
+        
         
         dispatch({
             type: SELECT_COMPANY,
-            payload: {news: data.news, pricing: data.pricing }
+            payload: {news: news, pricing: pricing, company: selectedCompany}
         })
     } catch (err) {
         console.error(err);

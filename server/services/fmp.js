@@ -10,7 +10,6 @@ const getStockData = async (tikr) =>{
       url: `https://fmpcloud.io/api/v3/key-metrics/${tikr}?limit=3&apikey=${fmpKey}`,
       method: 'get',
     });
-    console.log(`https://fmpcloud.io/api/v3/key-metrics/${tikr}?limit=3&apikey=${fmpKey}`);
     return res.data  
   } catch (err) {
     console.log('error fires getStockData');
@@ -18,7 +17,7 @@ const getStockData = async (tikr) =>{
   }
 }
 
-// @desc:
+// @desc: get quarterly balance sheet for selected symbol
 const getBlnceSheet = async (tikr) =>{
   try {
    const res = await axios({
@@ -137,4 +136,34 @@ const getHistoricalPriceData = async (tikr, timeSeries = 30) => {
   }
 }
 
-module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getAll, getCompanyProf, getIdxQuote, getCompanyNews, getHistoricalPriceData}
+//@desc: get upcoming earnings schedualed for next 30 days
+const getEarningsCal = async () => {
+  try {
+    const res = await axios({
+      url: `https://fmpcloud.io/api/v3/earning_calendar?apikey=${fmpKey}`,
+      method: 'get',
+    });
+    return res.data
+
+  } catch (err) {
+    console.log('error fired getPastQuote');
+
+  }
+}
+
+//@desc: get earnings results for seslected symbol
+const getEarningsRes = async (tikr) => {
+  try {
+    const res = await axios({
+      url: `https://fmpcloud.io/api/v3/earnings-surpises/${tikr}?apikey=${fmpKey}`,
+      method: 'get',
+    });
+    return res.data
+
+  } catch (err) {
+    console.log('error fired getPastQuote');
+
+  }
+}
+
+module.exports = {getStockData, getBlnceSheet, getPastQuote, getQuote, getAll, getCompanyProf, getIdxQuote, getCompanyNews, getHistoricalPriceData, getEarningsCal, getEarningsRes}

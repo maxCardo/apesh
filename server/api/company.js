@@ -1,5 +1,6 @@
 const express = require('express')
 const { getCompanyNews, getHistoricalPriceData } = require('../services/fmp')
+const Company = require('../db/models/company')
 
 const router = express.Router()
 
@@ -19,10 +20,19 @@ router.get('/details/:tkr', async (req, res) => {
     }
 })
 
-
-
-
-
+// @route:
+// @desc: get single stock lookup
+// @ access: Public
+router.get('/lookup/:tkr', async (req, res) => {
+    try {
+        const ticker = req.params.tkr
+        const company = await Company.findOne({ symbol: ticker })
+        res.status(200).send(company)
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('err')
+    }
+})
 
 
 module.exports = router

@@ -13,7 +13,7 @@ const PriceVolChart = ({pricing}) => {
             labels: pricing.map(rec => rec.date).reverse(),
             datasets: [
                 {
-                    label: 'level of thickness',
+                    label: 'volume',
                     data: pricing.map(rec => rec.volume/10000).reverse(),
                     yAxisID: 'B',
                     order: 4,

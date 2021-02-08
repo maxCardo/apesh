@@ -111,6 +111,7 @@ const Watchlist = ({watchlist: {loading, list}, getWatchlist, removeItem, likeIt
   const [showModal, setShowModal] = useState(false);
 
   const startShowDetailFlow = (company) => {
+    console.log('company: ', company);
     setSelectedCompany(company);
     setShowModal(true);
   }

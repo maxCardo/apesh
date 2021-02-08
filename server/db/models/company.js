@@ -13,11 +13,36 @@ const companySchema = new mongoose.Schema({
     dailyNews:{
       date: {
         type: Date,
-        default: Date.now
+        default: Date.now,
       },
       ran: Boolean,
       success: Boolean
-    }
+    },
+    bs:{
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      ran: Boolean,
+      success: Boolean
+    },
+    earnings: {
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      ran: Boolean,
+      success: Boolean
+    },
+    kpi: {
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      ran: Boolean,
+      success: Boolean
+    },
+
 
   },
   symbol: {
@@ -35,7 +60,22 @@ const companySchema = new mongoose.Schema({
   ceo: String, 
   fullTimeEmployees: Number,
   image: String,
-  lastEarnings: Date,
+  lastEarnings: Date, //depricated: replace by lastReporting.date
+  lastReporting: {
+    date: Date,
+    estEPS: Number,
+    actEPS: Number
+  },
+  nextReporting: {
+    date: Date,
+    estEPS: Number 
+  }, 
+  cash: Number,
+  debt: Number,
+  cashDebtRatio: Number,
+  growth: Number,
+  peRatio: Number,
+  eps: Number,
   history: [{
     type: {
       //note, log etc
@@ -101,7 +141,25 @@ const companySchema = new mongoose.Schema({
     last_7: Number,
     last_15: Number,
     last_30: Number 
-  }
+  },
+  notes: [
+    {
+      type: {
+        type: String,
+      },
+      content: {
+        type: String,
+      },
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 
 });
 
