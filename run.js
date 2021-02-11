@@ -7,6 +7,7 @@ const {loadAllCompanies, updateKPIData} = require('./server/scripts/company')
 
 const WatchList = require('./server/db/models/stratigy/watchlist');
 const Company = require('./server/db/models/company')
+const Index = require('./server/db/models/marketIndex')
 
 dbConnect();
 
@@ -80,8 +81,20 @@ const sandbox = async() => {
     // console.log('debt: ', debt);
     // console.log(debtCoverage);
 
-    const companies = await Company.find({ 'data.bs.success': true })
-    updateKPIData(companies)
+    //const companies = await Company.find({ 'data.bs.success': true })
+    //updateKPIData(companies)
+
+
+    const indexs = await Index.find()
+
+    indexs.forEach(async (idx) => {
+        console.log(idx.history[0]);
+        //const history = idx.history.reverse()
+        //idx.history = history
+
+        //await idx.save()
+        //console.log('new: ',idx.history[0]);
+    })
 
 
 

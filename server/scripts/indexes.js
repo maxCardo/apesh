@@ -27,7 +27,7 @@ const dailyIndexesRec = async () => {
               previousClose: index.previousClose,
               open: index.open,
               price: index.price,
-              dayLow: index.day,
+              dayLow: index.dayLow,
               dayHigh: index.dayHigh,
               volume: index.volume,
               avgVolume: index.avgVolume,

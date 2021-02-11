@@ -1,8 +1,10 @@
 import React, {useState, useEffect} from 'react';
+import {connect} from 'react-redux'
 import {Line, Bar, Doughnut} from 'react-chartjs-2';
 import './style.css'
 import {Col, Container, Row, Table, Select, Form} from "react-bootstrap";
 import BarSection from "./BarSection";
+import Sector from './Sector'
 
 const MarketDash = () => {
 
@@ -43,7 +45,7 @@ const MarketDash = () => {
     const [selectedChart, setSelectedChart] = useState( {
         name: 'Nasdaq',
         label: 'Select a chart',
-        data: [0, 0, 0, 0, 0],
+        data: [32, 45, 12, 76, 69],
         yAxisID: 'B',
         order: 2,
         backgroundColor: [
@@ -313,16 +315,6 @@ const MarketDash = () => {
             <h4>Market Analysis Dashboard</h4>
             <Row>
                 <Col md={6}>
-                    <div>
-                        <Form.Label>Example select</Form.Label>
-                        <Form.Control as="select" onChange={() => onSelectChange()}>
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
-                        </Form.Control>
-                    </div>
                     <div className="MarketDash__mainChart">
                         <BarSection newData={chartData} options={{
                             scales: {
@@ -385,40 +377,15 @@ const MarketDash = () => {
                     </div>
                 </Col>
                 <Col md={6}>
-                    <h2 className='text-center'>Teh table name</h2>
-                    <Table striped bordered hover size="sm">
-                        <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td colSpan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                        </tbody>
-                    </Table>
+                    <Sector/>   
                 </Col>
             </Row>
         </Container>
     )
 }
+const mapStateToProps = state => ({
+    
+})
 
-export default MarketDash
+
+export default connect(mapStateToProps)(MarketDash)
