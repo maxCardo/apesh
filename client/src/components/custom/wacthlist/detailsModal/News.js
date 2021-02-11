@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Table from '../../../common/Table/_Table'
+import IconButton from '../../../common/IconButton/_IconButton'
 
 
 const News = ({news}) => {
@@ -17,7 +18,31 @@ const News = ({news}) => {
         {
             label: 'Title',
             accessor: 'title'
+        },
+        {
+            label: 'Title',
+            accessor: 'title'
+        },
+
+        {
+            reactComponent: true,
+            label: 'Actions',
+            className: "Marketplace__actions",
+            render: (item) => (
+                <div>  
+                    <IconButton placement='bottom'
+                        tooltipContent='View On Site'
+                        id='link-tooltip'
+                        iconClass='fas fa-link'
+                        variant='link'
+                        href={`${item.url}`}
+                    />
+                    
+                </div>
+            )
         }
+        
+
     ]
     
     return <Table

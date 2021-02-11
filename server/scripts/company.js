@@ -1,9 +1,9 @@
 const moment = require('moment')
-const {activeTickers} = require('./search')
-const {getCompanyProf, getHistoricalPriceData, getCompanyNews} = require('../services/fmp') 
+const {activeTickers, allActiveTickers} = require('./search')
+const {getCompanyProf, getHistoricalPriceData, getCompanyNews, getBlnceSheet, getEarningsRes, getStockData} = require('../services/fmp') 
 const Company = require('../db/models/company')
 
-
+//@desc create DB records of companies from csv  : !depricated
 const loadCompanies = async () => {
     const tikrs = await (await activeTickers())
     tikrs.forEach((tkr, i) => {
@@ -36,6 +36,71 @@ const loadCompanies = async () => {
         }, i * 1000)
     })
 }
+
+//@desc create DB records of companies from csv that do not already have a record. add data on cash and debt for all companies  : !depricated
+const loadAllCompanies = async () => {
+    const tikrs = await (await allActiveTickers())
+    const data = tikrs
+    data.forEach((tkr, i) => {
+        setTimeout(async () => {
+            try {
+                const balanceSheet = await getBlnceSheet(tkr.symbol)
+                const earningsRes = await getEarningsRes(tkr.symbol)
+                let company = await Company.findOne({symbol: tkr.symbol})
+                if (!company) {
+                    const profile = await getCompanyProf(tkr.symbol)
+                    const { symbol, companyName, exchange, exchangeShortName, sector, industry, website, description, ceo, fullTimeEmployees, image, } = profile[0]
+                    company = new Company({
+                        symbol,
+                        companyName,
+                        exchange,
+                        exchangeShortName,
+                        sector,
+                        industry,
+                        website,
+                        description,
+                        ceo,
+                        fullTimeEmployees,
+                        image,
+                        lastEarnings: tkr.earningsAnnouncement,
+                    })
+                    company.history.push({ type: 'log', content: 'created record on db' })
+                    console.log('created new company rec for ', company.symbol);
+                }
+
+                try {
+                    company.debt = balanceSheet[0].totalDebt;
+                    company.cash = balanceSheet[0].cashAndCashEquivalents;
+                    company.cashDebtRatio = company.cash / company.debt;
+                    company.data.bs = { ran: true, success: true}
+                } catch (err) {
+                    console.log('---err bs');
+                    company.data.bs = {ran: true, success: false, error: err}
+                }
+                try {
+                    company.lastReporting = {
+                        date: earningsRes[0].date,
+                        estEPS: earningsRes[0].estimatedEarning,
+                        actEPS: earningsRes[0].actualEarningResult
+                    },
+                    company.data.earnings = { ran: true, success: true}     
+                } catch (err) {
+                    console.log('--- err earnings');
+                    company.data.earnings = { ran: true, success: false, error: err }
+                }
+                await company.save()
+                console.log(`success record ${i + 1} of ${tikrs.length}, ${company.symbol}`);
+
+            } catch (err) {
+                console.log('-------------------error loading ', tkr.symbol);
+                console.error(err);
+            }
+        }, i * 500)
+    })
+}
+
+
+
 
 
 //supportFunctions
@@ -77,6 +142,8 @@ const getDataObj = (arr) => {
     return obj
 }
 
+
+//@desc daily updates for price volume, volitility & mentions for all companies 
 const marketDailyUpdate = async () => {
     const companies = await Company.find()
     companies.forEach(async   (company, i) => {
@@ -122,6 +189,7 @@ const marketDailyUpdate = async () => {
     })
 }
 
+//@desc: daily updates for just news. can be run in morning when pricing data is run after close the prev day and on weekends
 const updateJustNews = async () => {
     const companies = await Company.find()
     companies.forEach(async (company, i) => {
@@ -145,5 +213,29 @@ const updateJustNews = async () => {
     })
 }
 
-module.exports = {loadCompanies, marketDailyUpdate, updateJustNews}
+//@desc: update records selected with kpi data
+const updateKPIData = async (companies) => {
+    companies.forEach(async (company, i) => {
+        setTimeout(async() => {
+            try {
+                const kpi = await getStockData(company.symbol);
+                company.growth = kpi.reduce((total, next) => total + next.roic, 0) / kpi.length;
+                company.peRatio = kpi.reduce((total, next) => total + next.peRatio, 0) / kpi.length;
+                company.eps = kpi[0].netIncomePerShare;
+                company.data.kpi = { ran: true, success: true }
+                console.log(`success record ${i + 1} of ${companies.length}`);
+            } catch (err) {
+                console.log(`----error record ${i + 1} of ${companies.length}`);
+                console.log(company.symbol)
+                console.error(err);
+                company.data.kpi = { ran: true, success: false, error: err }
+                console.log(`----error record ${i + 1} of ${companies.length}`);
+            }
+            console.log(company.symbol);
+            company.save()
+        },i * 250)      
+    })
+}
+
+module.exports = {loadCompanies, marketDailyUpdate, updateJustNews, loadAllCompanies, updateKPIData}
 

@@ -10,7 +10,6 @@ app.use(cors());
 //Init middle ware. replaces bodyParser
 app.use(express.json({extended:false}));
 
-setUpCron()
 dbConnect()
 
 app.get('/test', (req, res) => {
@@ -24,6 +23,7 @@ app.use('/api/company', require('./api/company'))
 
 //serve static assets in production
 if (process.env.NODE_ENV === 'production') {
+    setUpCron()
     app.use(express.static('client/build'));
 
     app.get('*', (req, res) => {

@@ -21,6 +21,16 @@ const activeTickers = async () => {
   return market
 };
 
+//@desc: load csv tickers and return arr of all tickers : !depricated
+const allActiveTickers = async () => {
+    const tickers = await getTickers();
+    const tickersArr = tickers.map(record => record.ticker)
+    const nasdaq = await getAll('nasdaq');
+    const nyse = await getAll('nyse');
+    const market = [...nyse, ...nasdaq].filter((record) => tickersArr.includes(record.symbol) === true);
+    return market
+};
+
 //@desc: load csv tickers and return arr of tickers
 const topGainers = async () => {
     const tickers = await getTickers();
@@ -204,4 +214,4 @@ const singleLookup = async (tikr) => {
     
 }
 
-module.exports = {createRecordsFromCSV, activeTickers, singleLookup, topGainers, topLosers}
+module.exports = {createRecordsFromCSV, activeTickers, singleLookup, topGainers, topLosers, allActiveTickers}
