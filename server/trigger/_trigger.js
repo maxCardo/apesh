@@ -9,7 +9,7 @@ function setUpCron(){
   console.log('cron running')
   
   // @sch: Daily Sun - Sat 4:00am EST;
-  // @desc: daily updates
+  // @desc: daily updates for company data
   cron.schedule('00 9 * * 1-5', async () => {
     try {
       marketDailyUpdate()
@@ -23,7 +23,7 @@ function setUpCron(){
 
   // @sch: Daily Mon - Fri 5:00am;
   // @desc: Update Daily Indexes
-  cron.schedule('00 21 * * 1-5', async () => {
+  cron.schedule('40 21 * * 1-5', async () => {
     try {
       const res = await dailyIndexesRec()
       postDiscord({text: res})
