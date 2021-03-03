@@ -26,8 +26,8 @@ const MarketDash = ({market:{list, loading}, getIndexData}) => {
     })
     
     let allChartOptions  = list.map((idx, i) => {
-        const arrLength = idx.history.length
-        const dataArr = idx.history 
+        const arr = idx.historical
+        const dataArr = arr[0].date > arr[1].date ? arr.reverse() : arr 
         const chartData = {
             labels: dataArr.map(x => dayjs(x.date).format('MM/DD/YY')),
             datasets: [
@@ -53,7 +53,7 @@ const MarketDash = ({market:{list, loading}, getIndexData}) => {
                 {
                     type: 'line',
                     label: 'close',
-                    data: dataArr.map(x => x.price),
+                    data: dataArr.map(x => x.close),
                     yAxisID: 'A',
                     fill: false,
                     order: 1,
@@ -63,7 +63,7 @@ const MarketDash = ({market:{list, loading}, getIndexData}) => {
                 {
                     type: 'line',
                     label: 'high',
-                    data: dataArr.map(x => x.dayHigh),
+                    data: dataArr.map(x => x.high),
                     yAxisID: 'A',
                     fill: false,
                     order: 1,
@@ -73,7 +73,17 @@ const MarketDash = ({market:{list, loading}, getIndexData}) => {
                 {
                     type: 'line',
                     label: 'low',
-                    data: dataArr.map(x => x.dayLow),
+                    data: dataArr.map(x => x.low),
+                    yAxisID: 'A',
+                    fill: false,
+                    order: 1,
+                    borderColor: 'rgba(120, 165, 200, 0.4)',
+                    //borderWidth: 4,
+                },
+                {
+                    type: 'line',
+                    label: 'vwap',
+                    data: dataArr.map(x => x.vwap),
                     yAxisID: 'A',
                     fill: false,
                     order: 1,
@@ -83,7 +93,7 @@ const MarketDash = ({market:{list, loading}, getIndexData}) => {
                
             ],
 
-            name: idx.name,
+            name: idx.symbol,
         }
 
 
@@ -95,6 +105,12 @@ const MarketDash = ({market:{list, loading}, getIndexData}) => {
         getIndexData()
         if (!chartData) {
             setChartData(allChartOptions[0])    
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!chartData) {
+            setChartData(allChartOptions[0])
         }
     }, [list]);
 
@@ -147,7 +163,7 @@ const MarketDash = ({market:{list, loading}, getIndexData}) => {
                     </div>
                     <div className="MarketDash__lowerCharts">
                         <Col xs={6}>
-                            <Vix data={list.filter(x => x.name === 'CBOE Volatility Index')}/>
+                            <Vix data={list.filter(x => x.symbol === '^VIX')}/>
                         </Col>
                         <Col xs={6}>
                             <Bar data={chartData} options={chartOptions}/>

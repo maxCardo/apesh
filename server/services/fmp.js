@@ -62,10 +62,10 @@ const getQuote = async (tikr) =>{
 }
 
 // @desc: histocial price last trade day
-const getIdxQuote = async (tikr) => {
+const getIdxQuote = async (tikr , timeSeries = 1) => {
   try {
     const res = await axios({
-      url: `https://fmpcloud.io/api/v3/historical-price-full/${tikr}?timeseries=1&apikey=${fmpKey}`,
+      url: `https://fmpcloud.io/api/v3/historical-price-full/${tikr}?timeseries=${timeSeries}&apikey=${fmpKey}`,
       method: 'get',
     });
     return res.data
