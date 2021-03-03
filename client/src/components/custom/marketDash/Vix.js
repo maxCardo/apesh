@@ -26,7 +26,8 @@ const Vix = ({data}) => {
 
     useEffect(() => {
         console.log('running use effect');
-        const dataArr = data[0].history
+        console.log(data);
+        const dataArr = data[0].historical
         const vixChart = {
             labels: dataArr.map(x => dayjs(x.date).format('MM/DD/YY')),
             datasets: [
