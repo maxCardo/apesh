@@ -12,7 +12,8 @@ router.get('/', async (req, res) => {
         const watchlist = await Watchlist.find().populate('company')
         const quote = await getQuote(watchlist.map(x => x.symbol).toString())
         const newList = await watchlist.map((item) => {
-            const price = quote.find(elem => elem.symbol === item.symbol).price
+            let itemQuote = quote.find(elem => elem.symbol === item.symbol)
+            const price = itemQuote ? itemQuote.price : 0
             item.price = price
             return item
         })
