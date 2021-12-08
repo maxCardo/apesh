@@ -4,6 +4,7 @@ const dbConnect = require('./server/db/db');
 const {getQuote, getCompanyNews, getEarningsCal, getEarningsRes, getBlnceSheet} = require('./server/services/fmp')
 const {marketDailyUpdate} = require('./server/scripts/company')
 const {loadAllCompanies, updateKPIData} = require('./server/scripts/company')
+const {getUpcomingEarnings} = require('./server/scripts/reporting')
 
 const WatchList = require('./server/db/models/stratigy/watchlist');
 const Company = require('./server/db/models/company')
@@ -85,19 +86,27 @@ const sandbox = async() => {
     //updateKPIData(companies)
 
 
-    const indexs = await Index.find()
+    // const indexs = await Index.find()
 
-    indexs.forEach(async (idx) => {
-        console.log(idx.history[0]);
-        //const history = idx.history.reverse()
-        //idx.history = history
+    // indexs.forEach(async (idx) => {
+    //     console.log(idx.history[0]);
+    //     //const history = idx.history.reverse()
+    //     //idx.history = history
 
-        //await idx.save()
-        //console.log('new: ',idx.history[0]);
-    })
+    //     //await idx.save()
+    //     //console.log('new: ',idx.history[0]);
+    // })
+
+    //search watchlist for records that are not liked and greater then 3 days old
+    //const today = moment().subtract(21,'days').format('MM/DD/YYYY')
+    //console.log('date: ', today);
+    //const watchlist = await WatchList.deleteMany({$and: [{'dateAdded': {$lt: today }}, {hot: false}]})
+    //const watchlist = await WatchList.find()
+    //console.log(watchlist.length);
 
 
-
+    //run upcoming earnings
+    getUpcomingEarnings()
 }
 
 sandbox()

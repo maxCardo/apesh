@@ -199,6 +199,7 @@ const shortScan = async (searchArr, searchParams) => {
     return ops
 };
 
+//@desc: add to scan lead list. "Watchlist will show only those that are liked "
 const addToWatchList = async (list, symbol, price, value) => {
     const company = await Company.findOne({symbol: symbol})
     const watchItem = new WatchItem({
@@ -215,6 +216,11 @@ const addToWatchList = async (list, symbol, price, value) => {
     })
     await watchItem.save()
     return watchItem
+}
+
+//@desc: clear watch list of aged leads that are not liked
+const cleanWatchlist = () => {
+    
 }
     
 
