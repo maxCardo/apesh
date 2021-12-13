@@ -64,11 +64,15 @@ const companySchema = new mongoose.Schema({
   lastReporting: {
     date: Date,
     estEPS: Number,
-    actEPS: Number
+    actEPS: Number,
+    estRev: Number,
+    actRev: Number
+
   },
   nextReporting: {
     date: Date,
-    estEPS: Number 
+    estEPS: Number,
+    estRev: Number 
   }, 
   cash: Number,
   debt: Number,

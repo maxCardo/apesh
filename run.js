@@ -4,7 +4,7 @@ const dbConnect = require('./server/db/db');
 const {getQuote, getCompanyNews, getEarningsCal, getEarningsRes, getBlnceSheet} = require('./server/services/fmp')
 const {marketDailyUpdate} = require('./server/scripts/company')
 const {loadAllCompanies, updateKPIData} = require('./server/scripts/company')
-const {getUpcomingEarnings} = require('./server/scripts/reporting')
+const {getUpcomingEarnings, getValueReporting } = require('./server/scripts/reporting')
 
 const WatchList = require('./server/db/models/stratigy/watchlist');
 const Company = require('./server/db/models/company')
@@ -106,7 +106,15 @@ const sandbox = async() => {
 
 
     //run upcoming earnings
-    getUpcomingEarnings()
+    //getUpcomingEarnings()
+    // const record = await getValueReporting()
+    // console.log(record);
+    // const test = await Company.find({symbol: 'PDPTF'})
+    // console.log('test: ', test);
+    // record.forEach(co => {
+    //     console.log(`Running update for ${co.symbol} reporting ${co.date}`);
+    // });
+
 }
 
 sandbox()
