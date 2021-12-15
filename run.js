@@ -106,7 +106,7 @@ const sandbox = async() => {
 
 
     //run upcoming earnings
-    //getUpcomingEarnings()
+    getUpcomingEarnings()
     // const record = await getValueReporting()
     // console.log(record);
     // const test = await Company.find({symbol: 'PDPTF'})

@@ -50,6 +50,7 @@ const companySchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
+  price: Number,
   companyName: String,
   exchange: String,
   exchangeShortName: String,
@@ -73,7 +74,22 @@ const companySchema = new mongoose.Schema({
     date: Date,
     estEPS: Number,
     estRev: Number 
-  }, 
+  },
+  valuation:[
+    {
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+      by: String,
+      growth: Number,
+      peRatio: Number,
+      eps: Number,
+      growthCap: Number,
+      discount: Number,
+      value: Number,
+    }
+  ],  
   cash: Number,
   debt: Number,
   cashDebtRatio: Number,

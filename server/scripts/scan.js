@@ -222,8 +222,101 @@ const addToWatchList = async (list, symbol, price, value) => {
 const cleanWatchlist = () => {
     
 }
+
+//@desc: assessment similar to a scan but triggerd by upcoming reporting
+const ReportingValueScan = async (searchArr) => {    
+
+    //static target vars
+    const capPE = 14.5 
+    //dynamic vars
+    const growthObj = { tier1: 0.09, tier2: 0.06, tier3: 0.03, tier4: 0.0 };
+    const discountObj = {
+        tier1: 0.1,
+        tier2: 0.15,
+        tier3: 0.25,
+        tier4: 0.35,
+    };
+
+    //loop through array of records
+    searchArr.forEach(async (co, i) => {
+        setTimeout(async () => {
+            try {
+                const rec = await Company.findOne({symbol: co.symbol})
+                if (rec) {
+                    //Update reporting details on record
+                    rec.nextReporting = {
+                        date: co.date,
+                        estEPS: co.epsEstimated,
+                        estRev: co.revenueEstimated
+                    }
+                    //get external API data from fmp
+                    const kpi = await getStockData(rec.symbol);
+                    const balanceSheet = await getBlnceSheet(rec.symbol);
+                    const quote = await getQuote(rec.symbol);
+
+                    //update vars on record with fmp data
+                    rec.growth = kpi.reduce((total, next) => total + next.roic, 0) / kpi.length;
+                    rec.peRatio = kpi.reduce((total, next) => total + next.peRatio, 0) / kpi.length;
+                    rec.eps = kpi[0].netIncomePerShare;
+                    rec.debt = balanceSheet[0].totalDebt;
+                    rec.cash = balanceSheet[0].cashAndCashEquivalents;
+                    rec.cashDebtRatio = rec.cash / rec.debt;
+                    rec.price = quote[0].price;
+
+                    const valuation = {}
+
+                    //set dynamic target vars
+                    let debtCoverage = rec.cashDebtRatio
+                    if (debtCoverage >= 1) {
+                        valuation.growthCap = growthObj.tier1;
+                        valuation.discount = discountObj.tier1;
+                    } else if (debtCoverage < 1 && debtCoverage >= 0.75) {
+                        valuation.growthCap = growthObj.tier2;
+                        valuation.discount = discountObj.tier2;
+                    } else if (debtCoverage < 0.75 && debtCoverage >= 0.5) {
+                        valuation.growthCap = growthObj.tier3;
+                        valuation.discount = discountObj.tier3;
+                    } else {
+                        valuation.growthCap = growthObj.tier4;
+                        valuation.discount = discountObj.tier4;
+                    }
+
+                    //set adjusted vars based on static target vars
+                    if (rec.peRatio > capPE) {
+                        valuation.peRatio = capPE;
+                    } else if (rec.peRatio < 0) {
+                        valuation.peRatio = 0;
+                    }
+                    console.log('growth comp', rec.growth > valuation.growthCap);
+                    console.log(rec.growth);
+                    console.log(valuation.growthCap);
+                    if (rec.growth > valuation.growthCap) {
+                        valuation.growth = valuation.growthCap;
+                        console.log('if hit');
+                    }else{
+                        valuation.growth = rec.growth
+                        console.log('no no no');
+                    }
+
+                    //set "intrinsic" value of stock
+                    valuation.value = ((rec.eps * valuation.growth + rec.eps) * valuation.peRatio) / (1 + valuation.discount);
+                    //valuation.upside = (valuation.value - rec.price) / rec.price;
+                    rec.valuation.unshift(valuation)
+                    rec.history.unshift({type: 'log', content: 'updated valuation on earnings trigger'})
+                    const res = await rec.save()
+                    console.log(`Updated record for ${res.symbol}`);
+                }else{
+                    console.log(`record not found for ${co.symbol} reporting ${co.date}`);  
+                }
+            } catch (err) {
+                console.log('error fired on ', co.symbol);
+                console.error(err);
+            }
+        }, i * 1000);
+    });
+};
     
 
-module.exports = {firstScan, shortScan}
+module.exports = {firstScan, shortScan, ReportingValueScan}
 
 
