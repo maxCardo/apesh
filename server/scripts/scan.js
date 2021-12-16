@@ -255,7 +255,8 @@ const ReportingValueScan = async (searchArr) => {
                     const quote = await getQuote(rec.symbol);
 
                     //update vars on record with fmp data
-                    rec.growth = kpi.reduce((total, next) => total + next.roic, 0) / kpi.length;
+                    rec.growth = kpi.reduce((total, next) => total + next.roe, 0) / kpi.length;
+                    //Note: above does not take into account divid. Expected growth is lower but val offset by the cash dist
                     rec.peRatio = kpi.reduce((total, next) => total + next.peRatio, 0) / kpi.length;
                     rec.eps = kpi[0].netIncomePerShare;
                     rec.debt = balanceSheet[0].totalDebt;
@@ -286,20 +287,23 @@ const ReportingValueScan = async (searchArr) => {
                         valuation.peRatio = capPE;
                     } else if (rec.peRatio < 0) {
                         valuation.peRatio = 0;
+                    }else{
+                        valuation.peRatio = rec.peRatio
                     }
-                    console.log('growth comp', rec.growth > valuation.growthCap);
-                    console.log(rec.growth);
-                    console.log(valuation.growthCap);
+
+                    // console.log('growth comp', rec.growth > valuation.growthCap);
+                    // console.log(rec.growth);
+                    // console.log(valuation.growthCap);
                     if (rec.growth > valuation.growthCap) {
                         valuation.growth = valuation.growthCap;
-                        console.log('if hit');
                     }else{
                         valuation.growth = rec.growth
-                        console.log('no no no');
                     }
 
                     //set "intrinsic" value of stock
-                    valuation.value = ((rec.eps * valuation.growth + rec.eps) * valuation.peRatio) / (1 + valuation.discount);
+                    valuation.futureValue = ((rec.eps * valuation.growth + rec.eps) * valuation.peRatio)  
+                    valuation.currentValue = rec.eps * valuation.peRatio
+                    valuation.buyTarget = valuation.futureValue / (1 + valuation.discount)
                     //valuation.upside = (valuation.value - rec.price) / rec.price;
                     rec.valuation.unshift(valuation)
                     rec.history.unshift({type: 'log', content: 'updated valuation on earnings trigger'})

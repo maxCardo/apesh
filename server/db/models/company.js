@@ -87,7 +87,9 @@ const companySchema = new mongoose.Schema({
       eps: Number,
       growthCap: Number,
       discount: Number,
-      value: Number,
+      currentValue: Number,
+      futureValue: Number,
+      buyTarget: Number
     }
   ],  
   cash: Number,
