@@ -80,7 +80,7 @@ function setUpCron(){
 
    // @sch: Daily Thursday 8:15pm EST 1:15am +1 days UST;
   // @desc: get next weeks reported earnings. 
-  cron.schedule('15 20 * * 4', async () => {
+  cron.schedule('15 20 * * 3', async () => {
     try {
       getUpcomingEarnings()
       postDiscord({ text: `Running upcoming earnings script` });
