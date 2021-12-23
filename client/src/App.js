@@ -9,6 +9,7 @@ import Lookup from './components/custom/Lookup'
 import CompanyProfile from './components/custom/companyProfile/_profile'
 import MarketDash from "./components/custom/marketDash/_MarketDash"
 import Watchlist from './components/custom/wacthlist/_Watchlist'
+import Reporting from './components/custom/reporting/_Reporting'
 
 const App = () => {
   
@@ -24,6 +25,8 @@ const App = () => {
           {/* <Route exact path='/company_profile' component={CompanyProfile} /> */}
           <Route exact path="/market_dash" component={MarketDash} />
           <Route exact path='/watchlist' component={Watchlist} />
+          <Route exact path='/reporting' component={Reporting} />
+
         </section>
       </Fragment>
     </Router>

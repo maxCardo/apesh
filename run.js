@@ -106,14 +106,14 @@ const sandbox = async() => {
 
 
     //run upcoming earnings
-    getUpcomingEarnings()
-    // const record = await getValueReporting()
-    // console.log(record);
-    // const test = await Company.find({symbol: 'PDPTF'})
-    // console.log('test: ', test);
-    // record.forEach(co => {
-    //     console.log(`Running update for ${co.symbol} reporting ${co.date}`);
-    // });
+    //getUpcomingEarnings()
+    const record = await getValueReporting()
+    console.log(record);
+    const test = await Company.find({symbol: 'PDPTF'})
+    console.log('test: ', test);
+    record.forEach(co => {
+        console.log(`Running update for ${co.symbol} reporting ${co.date}`);
+    });
 
 }
 

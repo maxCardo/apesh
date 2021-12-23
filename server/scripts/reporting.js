@@ -26,7 +26,11 @@ const getUpcomingEarnings = async () => {
 //@desc: db quary for UI to find top value co's with upcoming reporting dates
 //ToDO: update daily price call to update upside if value is present
 const getValueReporting = async () => {
-    const records = await Company.find({'nextReporting.date':{$gte:startDate, $lte:endDate}})
+    console.log('running get value reporting');
+    const start = dayjs().format('MM/DD/YYYY')
+    const end = dayjs().endOf('week').format('MM/DD/YYYY')
+    console.log('date: ', start, end);
+    const records = await Company.find({'nextReporting.date':{$gte:start, $lte:end}})
     return records
 }
 

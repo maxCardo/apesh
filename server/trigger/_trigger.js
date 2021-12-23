@@ -78,8 +78,8 @@ function setUpCron(){
 
   });
 
-   // @sch: Daily Sun - Sat 4:20pm EST 10am UST;
-  // @desc: run first scan on gainers at market close
+   // @sch: Daily Thursday 8:15pm EST 1:15am +1 days UST;
+  // @desc: get next weeks reported earnings. 
   cron.schedule('15 20 * * 4', async () => {
     try {
       getUpcomingEarnings()

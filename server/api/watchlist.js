@@ -1,6 +1,8 @@
 const express = require('express')
 const {getQuote} = require('../services/fmp')
+const {getValueReporting} = require('../scripts/reporting')
 const Watchlist = require('../db/models/stratigy/watchlist')
+
 
 const router = express.Router()
 
@@ -46,5 +48,19 @@ router.put('/like/:id', async (req, res) => {
     res.status(200).send(record)
 })
 
+// @route: GET api/watchlist/reporting
+// @desc: get this weeks upcoming reporting
+// @ access: Public
+router.get('/reporting', async (req, res) => {
+    try {
+        const data= await getValueReporting()
+        console.log('data: ', data.length);
+        const dataValue = data.filter(record => record.valuation[0].currentValue >= record.price)
+        res.status(200).send(dataValue)
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('err')
+    }
+})
 
 module.exports = router

@@ -1,8 +1,9 @@
-import { SET_LOADING ,SET_WATCHLIST, REMOVE_WATCHLIST_ITEM, UPDATE_WATCHLIST_ITEM, SET_COMPANY_LOADING, SELECT_COMPANY} from '../actions/type'
+import { SET_LOADING ,SET_WATCHLIST, REMOVE_WATCHLIST_ITEM, UPDATE_WATCHLIST_ITEM, SET_COMPANY_LOADING, SELECT_COMPANY, SET_REPORTING} from '../actions/type'
 
 const initialState = {
     loading: true,
     list: [],
+    reporting: [],
     selectedCompany: {
         loading: true,
         details: {}
@@ -50,6 +51,12 @@ export default function (state = initialState, action) {
                     loading: false,
                     details: payload
                 }
+            }
+        case SET_REPORTING:
+            return {
+                ...state,
+                loading: false,
+                reporting: payload
             }        
         
         default:
