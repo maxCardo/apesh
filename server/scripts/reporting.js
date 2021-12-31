@@ -28,7 +28,7 @@ const getUpcomingEarnings = async () => {
 const getValueReporting = async () => {
     console.log('running get value reporting');
     const start = dayjs().format('MM/DD/YYYY')
-    const end = dayjs().endOf('week').format('MM/DD/YYYY')
+    const end = dayjs().add(7, 'day').format('MM/DD/YYYY')
     console.log('date: ', start, end);
     const records = await Company.find({'nextReporting.date':{$gte:start, $lte:end}})
     return records

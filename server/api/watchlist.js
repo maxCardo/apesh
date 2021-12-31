@@ -56,6 +56,7 @@ router.get('/reporting', async (req, res) => {
         const data= await getValueReporting()
         console.log('data: ', data.length);
         const dataValue = data.filter(record => record.valuation[0].currentValue >= record.price)
+        console.log('Data Value: ', dataValue.map(x => x.mentions));
         res.status(200).send(dataValue)
     } catch (err) {
         console.error(err);

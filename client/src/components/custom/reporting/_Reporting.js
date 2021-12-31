@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux'
 import Table from '../../common/Table/_Table'
 import IconButton from '../../common/IconButton/_IconButton'
-import DetailsModal from '../wacthlist/detailsModal/DetailsModal'
+import DetailsModal from './detailsModal/DetailsModal'
 import './style.css'
 import {getReporting} from '../../../actions/reporting'
 
