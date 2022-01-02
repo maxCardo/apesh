@@ -95,16 +95,15 @@ const Reporting = ({reporting: list, loading, getReporting}) => {
   ]
 
   const [selectedCompany, setSelectedCompany] = useState({});
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({show: false, load: false});
 
   const startShowDetailFlow = (company) => {
-    console.log('company: ', company);
     setSelectedCompany(company);
-    setShowModal(true);
+    setShowModal({show: true, load: true});
   }
 
   const closeModal = () => {
-    setShowModal(false);
+    setShowModal({show:false, load: false});
     setSelectedCompany({});
   }
 
@@ -124,7 +123,7 @@ const Reporting = ({reporting: list, loading, getReporting}) => {
         onClickRow={(item) => startShowDetailFlow(item)}
       />
       {selectedCompany && (
-          <DetailsModal showModal={showModal} closeModal={closeModal} company={selectedCompany} />
+          <DetailsModal showModal={showModal.show} load={showModal.load} closeModal={closeModal} company={selectedCompany} />
       )}
     </div>
   );

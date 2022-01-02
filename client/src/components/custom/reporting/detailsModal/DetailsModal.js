@@ -14,7 +14,7 @@ import News from './News'
 import PriceVolChart from './PriceVolChart'
 
 
-const DetailsModal = ({closeModal, showModal, company, selectedCompany:{details:{news, pricing}, loading}, setSelectedCompany}) => {
+const DetailsModal = ({closeModal, showModal,load, company, selectedCompany:{details:{news, pricing}, loading}, setSelectedCompany}) => {
 
     const [data, setData] = useState([
         {
@@ -97,64 +97,59 @@ const DetailsModal = ({closeModal, showModal, company, selectedCompany:{details:
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
-    return (
+    return load &&(
         <Modal size="xl" onClose={() => closeModal()} onHide={() => closeModal()} show={showModal}
                className='DetailsModal'>
             <Modal.Header closeButton>
-                <img src={company && company.image} alt=""/>
-                <Modal.Title>{company && company.companyName} : {company && company.symbol}</Modal.Title>
+                <img src={company.image} alt=""/>
+                <Modal.Title>{company.companyName} : {company.symbol}</Modal.Title>
             </Modal.Header>
-            <Modal.Body>
-                <Container fluid>
+            <Modal.Body>       
+                    <Container fluid>
                     <Row>
-                        {console.log(company.mentions)}
                         <Col style={{ fontSize: 'small' }}>
                             <ul>
-                                <li>Company Name: <a rel="noopener noreferrer" target='_blank'
-                                                     href={company && company.website}>
-                                    {company && company.companyName}
-                                </a>
-                                </li>
-                                <li>Sector: {company && company.sector}</li>
-                                <li>Industry: {company && company.industry}</li>
-                                <li>Price: {company && company.lastClose && company.lastClose.price} (last close)</li>
+                                <li>Company Name: <a rel="noopener noreferrer" target='_blank' href={company.website}>{company.companyName}</a></li>
+                                <li>Sector: {company.sector}</li>
+                                <li>Industry: {company.industry}</li>
+                                <li>Price: {company.lastClose.price} (last close)</li>
                                 <br/>
-                                <li>Cash: {company && company.cash ? `$${formatNum(company.cash)}`: 'n/a'}</li>
-                                <li>Debt: {company && company.debt ? `$${formatNum(company.debt)}`: 'n/a'}</li>
-                                <li>Cash/Debt Ratio: {company && `${(company.cashDebtRatio*100).toFixed(0)}%`}</li>
+                                <li>Cash: {company.cash ? `$${formatNum(company.cash)}`: 'n/a'}</li>
+                                <li>Debt: {company.debt ? `$${formatNum(company.debt)}`: 'n/a'}</li>
+                                <li>Cash/Debt Ratio: {`${(company.cashDebtRatio*100).toFixed(0)}%`}</li>
                                 <br/>
-                                <li>Mentions - Last 24hr: {company && company.mentions && company.mentions.last_24}</li>
-                                <li>Mentions - Last 7/15/30 days: {company && company.mentions && company.mentions.last_7}/{company && company.mentions && company.mentions.last_15}/{company && company.mentions && company.mentions.last_30}</li>
+                                <li>Mentions - Last 24hr: {company.mentions.last_24}</li>
+                                <li>Mentions - Last 7/15/30 days: {company.mentions.last_7}/{company.mentions.last_15}/{company.mentions.last_30}</li>
                                 <br/>
-                                <li>Last Earnings: {company && company.company && company.company.lastReporting && dayjs(company.company.lastReporting.date).format('MM/DD/YYYY')}</li>
-                                <li>EPS Expected: {company && company.company && company.company.lastReporting && `${company.company.lastReporting.estEPS.toFixed(2)} | Actual: ${company.company.lastReporting.actEPS.toFixed(2)} `} </li>
-                                <li>Next Earnings: {company && company.company && company.company.nextReporting ? dayjs(company.company.nextReporting.date).format('MM/DD/YYYY') : 'n/a'}</li>
-                                {company && company.company && company.company.nextReporting ? <li>Expectations: {company.company.nextReporting.estEPS.toFixed(2)}</li>  : null}
+                                <li>Last Earnings: {dayjs(company.lastReporting.date).format('MM/DD/YYYY')}</li>
+                                <li>EPS Expected: {`${company.lastReporting.estEPS.toFixed(2)} | Actual: ${company.lastReporting.actEPS.toFixed(2)} `} </li>
+                                <li>Next Earnings: {dayjs(company.nextReporting.date).format('MM/DD/YYYY')}</li>
+                                <li>Expectations: {company.nextReporting.estEPS ? company.nextReporting.estEPS.toFixed(2): 'n/a'}</li>
                                 <br/>
-                                <li>Growth (3 yr Avg): {company && company.company && (company.company.growth*100).toFixed(1)}%</li>
-                                <li>peRatio (3 yr Avg): {company && company.company && company.company.peRatio.toFixed(1)}</li>
-                                <li>EPS (last full year): {company && company.company && company.company.eps.toFixed(1)}</li>
+                                <li>Growth (3 yr Avg): {(company.growth*100).toFixed(1)}%</li>
+                                <li>peRatio (3 yr Avg): {company.peRatio.toFixed(1)}</li>
+                                <li>EPS (last full year): {company.eps.toFixed(1)}</li>
                             </ul>
                         </Col>
                         <Col style={{ fontSize: 'small' }}>
                             <ul>
                                 <li><b>5-Day</b></li>
-                                <li>Low-High: {company && company.company && company.company.average_5.low} - {company && company.company && company.company.average_5.high} </li>
-                                <li>V-Wap: {company && company.company && company.company.average_5.vwap}</li>
-                                <li>Volume: {company && company.company && company.company.average_5.volume}</li>
-                                <li>Volatility: {company && company.company && company.company.average_5.volatPct} / {company && company.company && company.company.average_5.avgDayValatPct} </li>
+                                <li>Low-High: {company.average_5.low} - {company.average_5.high} </li>
+                                <li>V-Wap: {company.average_5.vwap}</li>
+                                <li>Volume: {company.average_5.volume}</li>
+                                <li>Volatility: {company.average_5.volatPct} / {company.average_5.avgDayValatPct} </li>
                                 <br/>
                                 <li><b>10-Day</b></li>
-                                <li>Low-High: {company && company.company && company.company.average_10.low} - {company && company.company && company.company.average_10.high} </li>
-                                <li>V-Wap: {company && company.company && company.company.average_10.vwap}</li>
-                                <li>Volume: {company && company.company && company.company.average_10.volume}</li>
-                                <li>Volatility: {company && company.company && company.company.average_10.volatPct} / {company && company.company && company.company.average_10.avgDayValatPct} </li>
+                                <li>Low-High: {company.average_10.low} - {company.average_10.high} </li>
+                                <li>V-Wap: {company.average_10.vwap}</li>
+                                <li>Volume: {company.average_10.volume}</li>
+                                <li>Volatility: {company.average_10.volatPct} / {company.average_10.avgDayValatPct} </li>
                                 <br />
                                 <li><b>22-Day</b></li>
-                                <li>Low-High: {company && company.company && company.company.average_22.low} - {company && company.company && company.company.average_22.high} </li>
-                                <li>V-Wap: {company && company.company && company.company.average_22.vwap}</li>
-                                <li>Volume: {company && company.company && company.company.average_22.volume}</li>
-                                <li>Volatility: {company && company.company && company.company.average_22.volatPct} / {company && company.company && company.company.average_22.avgDayValatPct} </li>
+                                <li>Low-High: {company.average_22.low} - {company.average_22.high} </li>
+                                <li>V-Wap: {company.average_22.vwap}</li>
+                                <li>Volume: {company.average_22.volume}</li>
+                                <li>Volatility: {company.average_22.volatPct} / {company.average_22.avgDayValatPct} </li>
                                 
                             </ul>
                         </Col>
@@ -174,7 +169,7 @@ const DetailsModal = ({closeModal, showModal, company, selectedCompany:{details:
                                 </Nav>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="description">
-                                        <p className='DetailsModal__description'>{company && company.company && company.company.description && company.company.description}</p>
+                                        <p className='DetailsModal__description'>{company.description}</p>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="news">
                                         {loading ? <div>...loading</div> : <News news={news}/> }
@@ -201,11 +196,8 @@ const DetailsModal = ({closeModal, showModal, company, selectedCompany:{details:
                             </Tab.Container>
                         </Col>
                     </Row>
-
                 </Container>
-
             </Modal.Body>
-
             <Modal.Footer>
                 <Button onClick={closeModal} variant="secondary">Close</Button>
             </Modal.Footer>
