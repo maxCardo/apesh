@@ -44,9 +44,9 @@ const Reporting = ({reporting: list, loading, getReporting}) => {
       accessor: 'industry'
     },
     {
-      label: 'value',
-      accessor: 'value',
-      mapper: 'money'
+      label: 'Reporting',
+      accessor: 'nextReporting.date',
+      mapper: 'date'
     },
     {
       label: 'Current Price',
@@ -55,10 +55,19 @@ const Reporting = ({reporting: list, loading, getReporting}) => {
     },
     {
       reactComponent: true,
-      label: 'Value :)',
+      label: 'Value',
       render: (item) => (
         <div>
           <p>{`$${item.valuation[0].currentValue.toFixed(2)}`}</p>
+        </div>
+      )
+    },
+    {
+      reactComponent: true,
+      label: 'Upside',
+      render: (item) => (
+        <div>
+          <p>{`${(item.valuation[0].currentValue - item.price).toFixed(2)} / ${(((item.valuation[0].currentValue - item.price)/item.price)*100).toFixed(1)}%`}</p>
         </div>
       )
     },
