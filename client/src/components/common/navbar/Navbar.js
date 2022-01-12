@@ -57,10 +57,12 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
   
   const guestLinks = (
     <ul>
+      {/* <li><Link to='/scaner'>Scaner</Link></li> */}
       <li><Link to='/watchlist'>Watchlist</Link></li>
       <li><Link to="/reporting">Reporting</Link></li>
       <li><Link to="/lookup">Stock Lookup</Link></li>
       <li><Link to="/Market_dash">Market Dash</Link></li>
+
       
       <li>
         <Link to='/login'>Login</Link>
