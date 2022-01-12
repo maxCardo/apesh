@@ -11,7 +11,7 @@ const router = express.Router()
 // @ access: pulic - todo: make privite in future
 router.get('/', async (req, res) => {
     try {
-        const list = Company.find().limit(10)
+        const list = await Company.find().limit(10)
         console.log('getting and sending compannies: ', list.length)
         res.status(200).send(list)
 

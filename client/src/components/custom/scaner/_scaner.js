@@ -1,12 +1,25 @@
-import React from "react";
+import React, {useEffect} from "react";
+import {connect} from 'react-redux'
 
-const Scanner = props => {
+import {getScanner} from '../../../actions/scanner'
+
+const Scanner = ({scanner: {loading, list}, getScanner}) => {
     
-    return (
+    useEffect(() => {
+        getScanner()
+    },[])
+    
+    return loading ? (<div>...loading</div>) : (
         <div>
             <h1>Hello Scanner</h1>
+            {console.log(list)}
         </div>
     )
 }
 
-export default Scanner
+const mapStateToProps = state => ({
+    scanner: state.scanner
+})
+  
+export default connect(mapStateToProps, {getScanner})(Scanner);
+  
