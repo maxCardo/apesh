@@ -58,6 +58,7 @@ const Navbar = ({ auth: { isAuthenticated, loginInProgress }, logout }) => {
   const guestLinks = (
     <ul>
       <li><Link to='/scanner'>Scanner</Link></li>
+      <li><Link to='/scanner2'>Scanner2</Link></li>
       <li><Link to='/watchlist'>Watchlist</Link></li>
       <li><Link to="/reporting">Reporting</Link></li>
       <li><Link to="/lookup">Stock Lookup</Link></li>
