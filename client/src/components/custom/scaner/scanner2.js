@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {connect} from 'react-redux'
+
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -21,25 +23,58 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
+import {getScanner} from '../../../actions/scanner'
 
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
-];
+const headers = [
+  {
+    label: 'Company',
+    accessor: 'companyName'
+  },
+  {
+    label: 'symbol',
+    accessor: 'symbol'
+  },
+  {
+    label: 'Sector',
+    accessor: 'sector'
+  },
+  {
+    label: 'Industry',
+    accessor: 'industry'
+  },
+  {
+    label: 'value',
+    accessor: 'value',
+    mapper: 'money'
+  },
+  {
+    label: 'Current Price',
+    accessor: 'lastClose.price',
+    mapper: 'money'
+  },
+]
+
+const getData = function (dataItem, header) {
+  if (!dataItem || !header) return null
+  if (header.reactComponent) {
+      return header.render(dataItem)
+  } else {
+      const { accessor } = header
+      if (accessor.includes('.')) {
+          const accessorsArray = accessor.split('.')
+          let item = dataItem;
+          accessorsArray.forEach((accessor) => {
+              if (item) {
+                  item = item[accessor]
+              }
+          })
+          return item
+      } else {
+          return dataItem[accessor]
+      }
+  }
+};
+  
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -92,20 +127,20 @@ function EnhancedTableHead(props) {
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {headers.map((rec) => (
           <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
+            key={rec.label}
+            align={rec.allignRight ? 'right' : 'left'}
+            padding={rec.disablePadding ? 'none' : 'normal'}
+            sortDirection={orderBy === rec.accessor ? order : false}
           >
             <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
+              active={orderBy === rec.accessor}
+              direction={orderBy === rec.accessor ? order : 'asc'}
+              onClick={createSortHandler(rec.label)}
             >
-              {headCell.label}
-              {orderBy === headCell.id ? (
+              {rec.label}
+              {orderBy === rec.accessor ? (
                 <span className={classes.visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </span>
@@ -213,14 +248,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Scanner2() {
+const  Scanner2 = ({scanner: {loading, list}, getScanner}) => {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState();
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  useEffect(() => {
+    getScanner()
+    setOrderBy(headers[0].accessor)
+  },[])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -230,7 +270,7 @@ function Scanner2() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = headers.map((n) => n.accessor);
       setSelected(newSelecteds);
       return;
     }
@@ -272,7 +312,7 @@ function Scanner2() {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
@@ -292,23 +332,23 @@ function Scanner2() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={list.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(list, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.symbol);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.symbol)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.symbol}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -317,13 +357,19 @@ function Scanner2() {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                      {
+                        headers.map(header => (
+                          <TableCell align="left">{getData(row, header)}</TableCell>  
+                        ))
+                      }
+
+                      {/* <TableCell component="th" id={labelId} scope="row" padding="none">
+                        {row.symbol}
                       </TableCell>
                       <TableCell align="right">{row.calories}</TableCell>
                       <TableCell align="right">{row.fat}</TableCell>
                       <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.protein}</TableCell> */}
                     </TableRow>
                   );
                 })}
@@ -338,7 +384,7 @@ function Scanner2() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={list.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -353,5 +399,9 @@ function Scanner2() {
   );
 }
 
+const mapStateToProps = state => ({
+  scanner: state.scanner
+})
 
-export default Scanner2
+
+export default connect(mapStateToProps, {getScanner})(Scanner2)
