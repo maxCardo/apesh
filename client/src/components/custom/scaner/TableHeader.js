@@ -35,6 +35,7 @@ const  TableHeader = ({headers, classes, onSelectAllClick, order, orderBy, numSe
                 active={orderBy === rec.accessor}
                 direction={orderBy === rec.accessor ? order : 'asc'}
                 onClick={createSortHandler(rec.accessor)}
+                //hideSortIcon = {true} //if data is not sortable (reactcomp render in header for exmple we can hide icon and remove on click. could not find way to remove sortability through MUI comp
               >
                 {rec.label}
                 {orderBy === rec.accessor ? (
