@@ -1,11 +1,13 @@
 import React from 'react'
 import { lighten, makeStyles } from '@material-ui/core/styles';
+import { Hidden } from '@material-ui/core';
 
 export const useToolbarStyles = makeStyles((theme) => ({
     root: {
       paddingLeft: theme.spacing(2),
       paddingRight: theme.spacing(1),
     },
+
     highlight:
       theme.palette.type === 'light'
         ? {
@@ -30,6 +32,9 @@ export const useToolbarStyles = makeStyles((theme) => ({
     paper: {
       width: '100%',
       marginBottom: theme.spacing(2),
+    },
+    container: {
+      maxHeight: 700,
     },
     table: {
       minWidth: 750,

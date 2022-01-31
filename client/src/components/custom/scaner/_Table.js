@@ -108,13 +108,14 @@ const  TableComp = ({headers, list, checkbox = true, pagination = true,handleCli
 
         <EnhancedToolbar numSelected={selected.length} classes={useToolbarStyles()} />
         
-        <TableContainer>
+        <TableContainer className={classes.container}>
        
-          <Table
+          <Table 
+            stickyHeader 
+            aria-label="sticky table"
             className={classes.table}
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
-            aria-label="enhanced table"
           >
             <TableHeader
               headers = {headers}
