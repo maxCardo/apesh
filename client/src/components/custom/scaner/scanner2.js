@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, Fragment} from 'react';
 import {connect} from 'react-redux'
 
 import IconButton from '../../common/IconButton/_IconButton'
@@ -66,7 +66,7 @@ const  Scanner2 = ({scanner: {loading, list}, getScanner}) => {
             id='property-details-tooltip'
             iconClass='fas fa-trash'
             variant='action-button'
-            // onClickFunc={() => removeItem(item._id)}
+            onClickFunc={() => removeItem(item._id)}
           />
         </div>
       )
@@ -75,7 +75,7 @@ const  Scanner2 = ({scanner: {loading, list}, getScanner}) => {
 
   const [selectedCompany, setSelectedCompany] = useState({});
   const [showModal, setShowModal] = useState({show: false, load: false});
-
+  const [hit, punch] = useState()
   
   const startShowDetailFlow = (company) => {
     setSelectedCompany(company);
@@ -92,16 +92,27 @@ const  Scanner2 = ({scanner: {loading, list}, getScanner}) => {
     console.log(event, name)
   };
 
+  const removeItem = (res) => {
+    console.log('running remove item')
+    console.log(res)
+    console.log('hit: ', hit)
+    punch(res)
+  }
+  
   return loading ? (<div>loading...</div>) : (
     <div>
+      <div>
         <Table
-        headers={headers}
-        list = {list}
-        handleClickRow={startShowDetailFlow}
-      />
+          headers={headers}
+          list = {list}
+          handleClickRow={startShowDetailFlow}
+          removeItem={removeItem}
+          hit={hit}
+        />
         {selectedCompany && (
           <DetailsModal showModal={showModal.show} load={showModal.load} closeModal={closeModal} company={selectedCompany} />
-      )}
+        )}
+      </div>
     </div>
   )
 }

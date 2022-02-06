@@ -15,28 +15,47 @@ import {useStyles, useToolbarStyles} from './styles'
 import {stableSort, getComparator, getData} from './scripts'
 import TableHeader from './TableHeader';
 import EnhancedToolbar from './EnhancedToolbar';
+import FilterdToolbar from './FilterToolbar';
 
 
-const  TableComp = ({headers, list, checkbox = true, pagination = true,handleClickRow, _orderBy, _rowsPerPage = 10 }) => {
+const  TableComp = ({headers, list, handleClickRow, _orderBy, checkbox = true, pagination = true, filter = true,  _rowsPerPage = 10, hit }) => {
   
   //state for table comp
   const classes = useStyles();
+  const [tableData, setTableData] = useState([]) 
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(_orderBy ? _orderBy : headers[0].accessor);
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(_rowsPerPage);
+  const [sticky, setSticky] = useState(true)
 
-//     //do we need? default setting ?
-//   useEffect(() => {
-//     setOrderBy(headers[0].accessor)
-//   },[])
+  useEffect(() => {
+    console.log('running use effect in table')
+    const data = list.map((rec) => {
+      rec.isActive = true
+      return rec
+    })
+    setTableData(data)
+  },[])
+
+  useEffect(() => {
+    if (hit) {
+      console.log('recording hit')
+      console.log(hit)
+      const n = tableData.filter(x => x._id != hit)
+      setTableData(n)
+      return
+    } 
+    console.log('hit object empty')
+     
+  },[hit])
 
   //funcs for table comp 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = list.map((n) => n.symbol);
+      const newSelecteds = tableData.map((n) => n.symbol);
       setSelected(newSelecteds);
       return;
     }
@@ -85,6 +104,8 @@ const  TableComp = ({headers, list, checkbox = true, pagination = true,handleCli
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
+  const toolbarStyles = useToolbarStyles()
+
 
 //ToDo: work on dynamic function to determain amonnt of space needed: is this neccecery??
   //const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
@@ -94,24 +115,28 @@ const  TableComp = ({headers, list, checkbox = true, pagination = true,handleCli
 
   return (
     <div className={classes.root}>
+      {console.log(tableData)}
       <Paper className={classes.paper}>
         
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, 50, 100]}
           component="div"
-          count={list.length}
+          count={tableData.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
 
-        <EnhancedToolbar numSelected={selected.length} classes={useToolbarStyles()} />
+        
+        {filter ? <FilterdToolbar numSelected={selected.length} filterActive={() => setSticky(!sticky)} checkbox/>: <EnhancedToolbar numSelected={selected.length} classes={toolbarStyles} /> }
+
         
         <TableContainer className={classes.container}>
        
           <Table 
-            stickyHeader 
+            stickyHeader = {sticky}
+            // sticky header creating issues with dropdown 
             aria-label="sticky table"
             className={classes.table}
             aria-labelledby="tableTitle"
@@ -125,10 +150,10 @@ const  TableComp = ({headers, list, checkbox = true, pagination = true,handleCli
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={list.length}
+              rowCount={tableData.length}
             />
             <TableBody>
-              {stableSort(list, getComparator(order, orderBy))
+              {stableSort(tableData, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.symbol);
