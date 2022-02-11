@@ -5,12 +5,11 @@ import Select from 'react-select'
 import './style.css'
 
 
-const FilterdToolbar = ({checkbox, numSelected, filterActive}) => {
+const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal}) => {
 
       //-------------  dep for filter comp ---------------------- //
   const [savedFilters, setSavedFilters] = useState([])
   const [selectedFilter, setSelectedFilter] = useState()
-  const [showFilterModal, setShowFilterModal] = useState()
   const [filters, setFiltes] = useState(undefined)
 
 
@@ -92,7 +91,7 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive}) => {
                 <button onClick={clearFilter}>Clear filter</button>
             </Fragment>
             }
-            <button onClick={() => setShowFilterModal(true)}>
+            <button onClick={() => showFilterModal(true)}>
                 <i className="fas fa-filter"></i>
             </button>
             {

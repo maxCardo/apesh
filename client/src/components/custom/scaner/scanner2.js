@@ -4,14 +4,61 @@ import {connect} from 'react-redux'
 import IconButton from '../../common/IconButton/_IconButton'
 import Table from './_Table'
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
-import {getScanner} from '../../../actions/scanner'
+import {getScanner, getFilterOptions} from '../../../actions/scanner'
+import FilterModal from './filterModel/FilterModal'
+
+const FILTERFIELDS = {
+  // Price: {
+  //   type: {
+  //     label: "This",
+  //     value: "noFilter"
+  //   },
+  //   value: "",
+  //   name: "orThis",
+  //   dataType: "number",
+  //   accessor: "price"
+  // },
+  Exchange: {
+    type: {
+      label: "Don't Filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Exchange",
+    dataType: "array",
+    accessor: "exchangeShortName"
+  },
+  Sector: {
+    type: {
+      label: "Don't Filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Sector",
+    dataType: "array",
+    accessor: "sector"
+  },
+  // Industry: {
+  //   type: {
+  //     label: "Don't Filter",
+  //     value: "noFilter"
+  //   },
+  //   value: "",
+  //   name: "Industry",
+  //   dataType: "array",
+  //   accessor: "industry",
+  //   dependency: 'exchangeShortName'
+  // },
+
+}
 
 
-const  Scanner2 = ({scanner: {loading, list}, getScanner}) => {
+const  Scanner2 = ({scanner: {loading, list, filterOptions}, getScanner, getFilterOptions}) => {
   
   //use effect for coustom comp
   useEffect(() => {
     getScanner()
+    getFilterOptions(FILTERFIELDS)
   },[])
 
   const headers = [
@@ -76,6 +123,9 @@ const  Scanner2 = ({scanner: {loading, list}, getScanner}) => {
   const [selectedCompany, setSelectedCompany] = useState({});
   const [showModal, setShowModal] = useState({show: false, load: false});
   const [hit, punch] = useState()
+
+  //filter
+  const [showFilterModal, setShowFilterModal] = useState(false)
   
   const startShowDetailFlow = (company) => {
     setSelectedCompany(company);
@@ -108,11 +158,19 @@ const  Scanner2 = ({scanner: {loading, list}, getScanner}) => {
           handleClickRow={startShowDetailFlow}
           removeItem={removeItem}
           hit={hit}
+          showFilterModal = {(x) => setShowFilterModal(x)}
         />
         {selectedCompany && (
           <DetailsModal showModal={showModal.show} load={showModal.load} closeModal={closeModal} company={selectedCompany} />
         )}
       </div>
+        <FilterModal
+          show={showFilterModal}
+          filterFields={FILTERFIELDS}
+          options={filterOptions}
+          handleClose={() => setShowFilterModal(false)}
+          //onSubmit={submitFilterModal}
+        />
     </div>
   )
 }
@@ -122,4 +180,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getScanner})(Scanner2)
+export default connect(mapStateToProps, {getScanner, getFilterOptions})(Scanner2)

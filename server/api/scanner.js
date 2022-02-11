@@ -21,5 +21,25 @@ router.get('/', async (req, res) => {
     }
 })
 
+// @route: GET api/watchlist
+// @desc: get items in watchlist
+// @ access: pulic - todo: make privite in future
+router.post('/filterOptions', async (req, res) => {
+    try {
+       const data = req.body
+       const comboArr = Object.keys(data).map(async (x) => {
+        const res = await Company.distinct(data[x].accessor, {[data[x].accessor] : {$nin: ['', null]}})
+        return {key: x, value : res.map(option => ({label: option, value: option}))}
+       })
+       //convert to newsted object format used by component
+       const returnObj = (await Promise.all(comboArr)).reduce((obj, item) => (obj[item.key] = item.value, obj) ,{});
+       res.status(200).send(returnObj)
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('err')
+    }
+})
+
 
 module.exports = router

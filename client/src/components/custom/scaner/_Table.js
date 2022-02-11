@@ -18,7 +18,7 @@ import EnhancedToolbar from './EnhancedToolbar';
 import FilterdToolbar from './FilterToolbar';
 
 
-const  TableComp = ({headers, list, handleClickRow, _orderBy, checkbox = true, pagination = true, filter = true,  _rowsPerPage = 10, hit }) => {
+const  TableComp = ({headers, list, handleClickRow, _orderBy, showFilterModal, checkbox = true, pagination = true, filter = true,  _rowsPerPage = 10, hit }) => {
   
   //state for table comp
   const classes = useStyles();
@@ -129,7 +129,7 @@ const  TableComp = ({headers, list, handleClickRow, _orderBy, checkbox = true, p
         />
 
         
-        {filter ? <FilterdToolbar numSelected={selected.length} filterActive={() => setSticky(!sticky)} checkbox/>: <EnhancedToolbar numSelected={selected.length} classes={toolbarStyles} /> }
+        {filter ? <FilterdToolbar numSelected={selected.length} filterActive={() => setSticky(!sticky)} showFilterModal = {showFilterModal} checkbox/>: <EnhancedToolbar numSelected={selected.length} classes={toolbarStyles} /> }
 
         
         <TableContainer className={classes.container}>

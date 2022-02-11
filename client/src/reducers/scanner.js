@@ -1,8 +1,9 @@
-import { SET_LOADING ,SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM} from '../actions/type'
+import { SET_LOADING ,SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS} from '../actions/type'
 
 const initialState = {
     loading: true,
     list: [],
+    filterOptions: []
 }
 
 export default function (state = initialState, action) {
@@ -31,6 +32,12 @@ export default function (state = initialState, action) {
                 ...state,
                 list: state.list.map(item => item._id === payload._id ? payload : item),
                 loading: false
+            }
+
+        case SET_FILTER_OPTIOINS:
+            return {
+                ...state, 
+                filterOptions: payload,
             }
                        
         default:

@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM } from './type'
+import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS } from './type'
 import axios from 'axios'
 
 
@@ -14,6 +14,21 @@ export const getScanner = () => async dispatch => {
         console.error(err);
     }
 }
+
+//@desc: Loads filter options from dataset 
+export const getFilterOptions = (data) => async dispatch => {
+    try {
+        const res = await axios.post(`/api/scanner/filterOptions`, data);
+        dispatch({
+            type: SET_FILTER_OPTIOINS,
+            payload: res.data
+        })
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
 
 
 //CALLS FROM WATCHLIST COMP ALL COMMENTED OUT
