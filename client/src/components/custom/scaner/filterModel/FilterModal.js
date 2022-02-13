@@ -29,8 +29,6 @@ const FilterModal = ({show, handleClose, filterFields, onSubmit, options}) => {
 
     return (
       <Modal size='lg' show={show} onHide={()=> {handleClose(); setState(filterFields)}}>
-        {console.log('options: ', options)}
-        {console.log('what tihe ',Object.keys(state))}
         <Modal.Header closeButton>
           <Modal.Title>Create filter</Modal.Title>
         </Modal.Header>

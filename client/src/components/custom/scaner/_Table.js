@@ -115,7 +115,6 @@ const  TableComp = ({headers, list, handleClickRow, _orderBy, showFilterModal, c
 
   return (
     <div className={classes.root}>
-      {console.log(tableData)}
       <Paper className={classes.paper}>
         
         <TablePagination
@@ -176,8 +175,8 @@ const  TableComp = ({headers, list, handleClickRow, _orderBy, showFilterModal, c
                         />
                       </TableCell>
                       {
-                        headers.map(header => (
-                          <TableCell align="left" onClick={(event) => handleClickRow(row)}>
+                        headers.map((header, i ) => (
+                          <TableCell align="left" key={i} onClick={(event) => handleClickRow(row)}>
                             {getData(row, header)}
                           </TableCell>  
                         ))

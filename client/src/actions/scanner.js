@@ -28,6 +28,30 @@ export const getFilterOptions = (data) => async dispatch => {
     }
 }
 
+//@desc: reload component with filterd data set on selcted of saved or new filter
+export const fetchFilteredData = (filters, blacklist) => async dispatch => {
+    try {
+        //     dispatch({
+        //     type: SET_LOADING
+        // })
+        //setLoading(true)
+        const data = {filters, blacklist}
+        console.log('runnning fetchFilterd data from actions: ', data)
+        const res = await axios.post(`/api/scanner/loadFilter`, data);
+        console.log('filterRes: ', res)
+        //const listings = res.data.record;
+        //const appliedFilters = res.data.filters
+        //setFilters(appliedFilters)
+        //setListings(listings)
+        //setLoading(false)
+    } catch (err) {
+        console.error(err);
+    }
+    
+    
+    
+}
+
 
 
 

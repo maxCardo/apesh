@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import IconButton from '../../common/IconButton/_IconButton'
 import Table from './_Table'
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
-import {getScanner, getFilterOptions} from '../../../actions/scanner'
+import {getScanner, getFilterOptions, fetchFilteredData} from '../../../actions/scanner'
 import FilterModal from './filterModel/FilterModal'
 
 const FILTERFIELDS = {
@@ -53,7 +53,7 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner2 = ({scanner: {loading, list, filterOptions}, getScanner, getFilterOptions}) => {
+const  Scanner2 = ({scanner: {loading, list, filterOptions}, getScanner, getFilterOptions, fetchFilteredData}) => {
   
   //use effect for coustom comp
   useEffect(() => {
@@ -126,6 +126,17 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions}, getScanner, getFilt
 
   //filter
   const [showFilterModal, setShowFilterModal] = useState(false)
+  //const [selectedFilter, setSelectedFilter] = useState(undefined)
+  
+
+  
+  const submitFilterModal = async (selectedFilters) => {
+    console.log('submit filter: ', selectedFilters)
+    //setSelectedFilter(undefined)
+    fetchFilteredData(selectedFilters)
+    //.then(r => {})
+  }
+
   
   const startShowDetailFlow = (company) => {
     setSelectedCompany(company);
@@ -169,7 +180,7 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions}, getScanner, getFilt
           filterFields={FILTERFIELDS}
           options={filterOptions}
           handleClose={() => setShowFilterModal(false)}
-          //onSubmit={submitFilterModal}
+          onSubmit={submitFilterModal}
         />
     </div>
   )
@@ -180,4 +191,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getScanner, getFilterOptions})(Scanner2)
+export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData})(Scanner2)
