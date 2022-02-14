@@ -5,12 +5,11 @@ import Select from 'react-select'
 import './style.css'
 
 
-const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal}) => {
+const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, filter = []}) => {
 
       //-------------  dep for filter comp ---------------------- //
   const [savedFilters, setSavedFilters] = useState([])
   const [selectedFilter, setSelectedFilter] = useState()
-  const [filters, setFiltes] = useState(undefined)
 
 
   const handleFilterChange = () => {
@@ -63,6 +62,7 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal}) 
 
     return (
         <div className='searchContainer agentsSearchContainer'>
+            {console.log(filter)}
             <div style={{display: 'flex'}}>
             <Select
                 className="marketplace__filter-select"
@@ -83,14 +83,14 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal}) 
             />
             </div>
             <div className='marketplace__filter-icons'>
-            {filters &&
+            {filter.length ?
             <Fragment>
                 {!selectedFilter &&
                 <button onClick={saveFilter}>Save filter</button>
                 }
                 <button onClick={clearFilter}>Clear filter</button>
             </Fragment>
-            }
+            : null}
             <button onClick={() => showFilterModal(true)}>
                 <i className="fas fa-filter"></i>
             </button>

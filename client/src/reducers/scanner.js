@@ -1,9 +1,10 @@
-import { SET_LOADING ,SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS} from '../actions/type'
+import { SET_LOADING ,SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER} from '../actions/type'
 
 const initialState = {
     loading: true,
     list: [],
-    filterOptions: []
+    filterOptions: [],
+    filter: []
 }
 
 export default function (state = initialState, action) {
@@ -38,6 +39,14 @@ export default function (state = initialState, action) {
             return {
                 ...state, 
                 filterOptions: payload,
+            }
+
+        case SET_FILTER:
+            return {
+                ...state,
+                list: payload.record, 
+                filter: payload.filters,
+                loading: false
             }
                        
         default:

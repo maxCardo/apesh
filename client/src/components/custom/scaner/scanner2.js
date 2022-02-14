@@ -53,7 +53,7 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner2 = ({scanner: {loading, list, filterOptions}, getScanner, getFilterOptions, fetchFilteredData}) => {
+const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner, getFilterOptions, fetchFilteredData}) => {
   
   //use effect for coustom comp
   useEffect(() => {
@@ -170,6 +170,7 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions}, getScanner, getFilt
           removeItem={removeItem}
           hit={hit}
           showFilterModal = {(x) => setShowFilterModal(x)}
+          activeFilter = {filter}
         />
         {selectedCompany && (
           <DetailsModal showModal={showModal.show} load={showModal.load} closeModal={closeModal} company={selectedCompany} />

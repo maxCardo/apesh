@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS } from './type'
+import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER } from './type'
 import axios from 'axios'
 
 
@@ -31,25 +31,20 @@ export const getFilterOptions = (data) => async dispatch => {
 //@desc: reload component with filterd data set on selcted of saved or new filter
 export const fetchFilteredData = (filters, blacklist) => async dispatch => {
     try {
-        //     dispatch({
-        //     type: SET_LOADING
-        // })
-        //setLoading(true)
+            dispatch({
+            type: SET_LOADING
+        })
         const data = {filters, blacklist}
-        console.log('runnning fetchFilterd data from actions: ', data)
         const res = await axios.post(`/api/scanner/loadFilter`, data);
-        console.log('filterRes: ', res)
-        //const listings = res.data.record;
-        //const appliedFilters = res.data.filters
-        //setFilters(appliedFilters)
-        //setListings(listings)
-        //setLoading(false)
+        console.log('filterRes: ', res.data)
+        dispatch({
+            type: SET_FILTER,
+            payload: res.data
+        })
+        
     } catch (err) {
         console.error(err);
     }
-    
-    
-    
 }
 
 
