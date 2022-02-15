@@ -1,5 +1,6 @@
 import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER } from './type'
 import axios from 'axios'
+import { dispatch } from 'd3';
 
 
 //@desc: test call returns 10 records to fee table
@@ -47,8 +48,9 @@ export const fetchFilteredData = (filters, blacklist) => async dispatch => {
     }
 }
 
-
-
+export const submitSaveFilter = (name, filter) => async dispatch =>{
+    console.log('running submit save filter from actions: ', name, filter)
+}
 
 //CALLS FROM WATCHLIST COMP ALL COMMENTED OUT
 

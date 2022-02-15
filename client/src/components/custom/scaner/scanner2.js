@@ -4,8 +4,9 @@ import {connect} from 'react-redux'
 import IconButton from '../../common/IconButton/_IconButton'
 import Table from './_Table'
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
-import {getScanner, getFilterOptions, fetchFilteredData} from '../../../actions/scanner'
+import {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter} from '../../../actions/scanner'
 import FilterModal from './filterModel/FilterModal'
+import VarifyMod from './VerifyMod';
 
 const FILTERFIELDS = {
   // Price: {
@@ -53,7 +54,7 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner, getFilterOptions, fetchFilteredData}) => {
+const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter}) => {
   
   //use effect for coustom comp
   useEffect(() => {
@@ -126,6 +127,7 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner,
 
   //filter
   const [showFilterModal, setShowFilterModal] = useState(false)
+  const [showVarMod, setShowVarMod] = useState(false)
   //const [selectedFilter, setSelectedFilter] = useState(undefined)
   
 
@@ -136,7 +138,6 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner,
     fetchFilteredData(selectedFilters)
     //.then(r => {})
   }
-
   
   const startShowDetailFlow = (company) => {
     setSelectedCompany(company);
@@ -147,11 +148,6 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner,
     setShowModal({show:false, load: false});
     setSelectedCompany({});
   }
-
-  const handleClickRow = (event, name) => {
-    console.log('running handle click ')
-    console.log(event, name)
-  };
 
   const removeItem = (res) => {
     console.log('running remove item')
@@ -171,6 +167,7 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner,
           hit={hit}
           showFilterModal = {(x) => setShowFilterModal(x)}
           activeFilter = {filter}
+          saveFilter = {() => setShowVarMod(true)}
         />
         {selectedCompany && (
           <DetailsModal showModal={showModal.show} load={showModal.load} closeModal={closeModal} company={selectedCompany} />
@@ -183,6 +180,11 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner,
           handleClose={() => setShowFilterModal(false)}
           onSubmit={submitFilterModal}
         />
+        <VarifyMod
+          show={showVarMod}
+          handleClose={() => setShowVarMod(false)}
+          handleSubmit={(name) => submitSaveFilter(name, filter)}
+        />
     </div>
   )
 }
@@ -192,4 +194,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData})(Scanner2)
+export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter})(Scanner2)

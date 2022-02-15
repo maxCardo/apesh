@@ -5,7 +5,7 @@ import Select from 'react-select'
 import './style.css'
 
 
-const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, filter = []}) => {
+const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, filter, saveFilter}) => {
 
       //-------------  dep for filter comp ---------------------- //
   const [savedFilters, setSavedFilters] = useState([])
@@ -15,10 +15,6 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, f
   const handleFilterChange = () => {
     console.log('handle Filter Change')
     
-  }
- 
-  const saveFilter = () => {
-    console.log('saveFilter')
   }
 
   const clearFilter = () => {
