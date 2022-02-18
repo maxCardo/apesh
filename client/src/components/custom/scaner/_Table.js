@@ -18,7 +18,7 @@ import EnhancedToolbar from './EnhancedToolbar';
 import FilterdToolbar from './FilterToolbar';
 
 
-const  TableComp = ({headers, list, handleClickRow, _orderBy, showFilterModal, activeFilter, saveFilter, checkbox = true, pagination = true, filter = true,  _rowsPerPage = 10, hit }) => {
+const  TableComp = ({headers, list, handleClickRow, _orderBy, showFilterModal, activeFilter, saveFilter, checkbox = true, pagination = true, filter = true,  _rowsPerPage = 10, hit, selectedFilter, savedFilters, onFilterSelect }) => {
   
   //state for table comp
   const classes = useStyles();
@@ -128,7 +128,19 @@ const  TableComp = ({headers, list, handleClickRow, _orderBy, showFilterModal, a
         />
 
         
-        {filter ? <FilterdToolbar numSelected={selected.length} filterActive={() => setSticky(!sticky)} saveFilter={saveFilter} showFilterModal = {showFilterModal} filter={activeFilter} checkbox/>: <EnhancedToolbar numSelected={selected.length} classes={toolbarStyles} /> }
+        {filter ? 
+          <FilterdToolbar 
+            numSelected={selected.length} 
+            filterActive={() => setSticky(!sticky)} 
+            saveFilter={saveFilter} 
+            showFilterModal = {showFilterModal} 
+            filter={activeFilter} 
+            selected ={selectedFilter} 
+            savedFilters = {savedFilters} 
+            onChange={onFilterSelect} 
+            checkbox
+          /> 
+            : <EnhancedToolbar numSelected={selected.length} classes={toolbarStyles} /> }
 
         
         <TableContainer className={classes.container}>

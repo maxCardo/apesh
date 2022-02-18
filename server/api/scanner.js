@@ -2,6 +2,7 @@ const express = require('express')
 
 
 const Company = require('../db/models/company')
+const TkrFilter = require('../db/models/tkerFilter')
 
 
 const router = express.Router()
@@ -109,7 +110,7 @@ function convertFiltersToQuery(filters) {
   }
 
 // @route: GET /api/scanner/loadFilter
-// @desc: load a new filter or selected saved filter (pageSize functionality is not currently being utilized ny the front end)
+// @desc: load a new filter or selected saved filter (pageSize functionality is not currently being utilized by the front end)
 // @ access: Public * ToDo: update to make private
 router.post('/loadFilter', async (req, res) => {
     try {
@@ -168,10 +169,10 @@ router.post('/loadFilter', async (req, res) => {
         // }
   
         //handle blacklist on front end ???
-        const blacklist = req.body.blacklist
-        if(blacklist) {
-          record = record.filter((listing) => !blacklist.includes(listing._id.toString()))
-        }
+        // const blacklist = req.body.blacklist
+        // if(blacklist) {
+        //   record = record.filter((listing) => !blacklist.includes(listing._id.toString()))
+        // }
 
         //res.status(200).send({ record, filters, hasMore });
         res.status(200).send({ record, filters});
@@ -181,6 +182,33 @@ router.post('/loadFilter', async (req, res) => {
         console.error(error);
         res.status(400).send('server error')
     }
-  });
+});
+
+// @route: post /api/marketPlace/ops/filters
+// @desc: save new filter selected
+// @ access: Public 
+router.post('/saveFilter', async (req, res) => {
+  const {name, filter} = req.body
+  const tkrFilter = new TkrFilter({name, filters: filter})
+  const data = await tkrFilter.save()
+  console.log('saved filter: ', data)
+  res.send({label: data.name})
+})
+
+// @route: get /api/marketPlace/ops/filters
+// @desc: get saved filters when component loads
+// @ access: Public 
+router.get('/savedFilters', async (req, res) => {
+  console.log('running saved filters in backend')
+  const filters = await TkrFilter.find({})
+  const data = filters.map((filter) => ({
+    label: filter.name,
+    value: {filters: filter.filters, _id: filter._id, blacklist: filter.blacklist}
+  }))
+
+  console.log(data)
+  res.send(data)
+})
+
 
 module.exports = router

@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import IconButton from '../../common/IconButton/_IconButton'
 import Table from './_Table'
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
-import {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter} from '../../../actions/scanner'
+import {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters} from '../../../actions/scanner'
 import FilterModal from './filterModel/FilterModal'
 import VarifyMod from './VerifyMod';
 
@@ -54,12 +54,13 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter}) => {
+const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, filter, selected}, getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters}) => {
   
   //use effect for coustom comp
   useEffect(() => {
     getScanner()
     getFilterOptions(FILTERFIELDS)
+    getSavedFilters()
   },[])
 
   const headers = [
@@ -135,7 +136,7 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner,
   const submitFilterModal = async (selectedFilters) => {
     console.log('submit filter: ', selectedFilters)
     //setSelectedFilter(undefined)
-    fetchFilteredData(selectedFilters)
+    fetchFilteredData({filters:selectedFilters})
     //.then(r => {})
   }
   
@@ -166,8 +167,11 @@ const  Scanner2 = ({scanner: {loading, list, filterOptions, filter}, getScanner,
           removeItem={removeItem}
           hit={hit}
           showFilterModal = {(x) => setShowFilterModal(x)}
+          savedFilters = {savedFilters}
           activeFilter = {filter}
           saveFilter = {() => setShowVarMod(true)}
+          selectedFilter = {selected}
+          onFilterSelect={fetchFilteredData}
         />
         {selectedCompany && (
           <DetailsModal showModal={showModal.show} load={showModal.load} closeModal={closeModal} company={selectedCompany} />
@@ -194,4 +198,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter})(Scanner2)
+export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters})(Scanner2)

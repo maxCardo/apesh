@@ -5,25 +5,19 @@ import Select from 'react-select'
 import './style.css'
 
 
-const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, filter, saveFilter}) => {
+const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, filter, saveFilter, selected, savedFilters, onChange}) => {
 
-      //-------------  dep for filter comp ---------------------- //
-  const [savedFilters, setSavedFilters] = useState([])
-  const [selectedFilter, setSelectedFilter] = useState()
-
-
-  const handleFilterChange = () => {
-    console.log('handle Filter Change')
-    
+  const handleFilterChange = (e) => {
+    console.log('handle Filter Change', e)
+    const {label, value: {filters, blacklist}} = e
+    console.log('label: ', label)
+    console.log('filters: ', filters)
+    console.log('blacklist: ', blacklist)
+    onChange(e.value , {label: e.label})    
   }
 
   const clearFilter = () => {
     console.log('clearFilter')
-  }
-
-  //filter string function
-  const setFilterString = () => {
-    console.log('running setFilter string')
   }
 
   //checkbar
@@ -42,12 +36,6 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, f
     console.log('toggle check flow')
   }
 
-  const options = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' }
-  ]
-
   const selectedTest = () => {
     console.log('selected test')
     filterActive()
@@ -58,30 +46,30 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, f
 
     return (
         <div className='searchContainer agentsSearchContainer'>
-            {console.log(filter)}
+            {console.log(selected)}
             <div style={{display: 'flex'}}>
             <Select
                 className="marketplace__filter-select"
-                onChange={handleFilterChange}
+                onChange={e => handleFilterChange(e)}
                 onFocus={selectedTest}
                 onBlur={selectedTest}
                 defaultValue="All"
-                // options={savedFilters}
-                options={options}
+                options={savedFilters}
                 placeholder='Select Filter'
-                value={selectedFilter}
+                value={selected}
             />
-            <input
+            {/* filter string can be added in the future.  */}
+            {/* <input
                 className='form-control searchInput'
                 tabIndex={0}
                 onChange={(e) => setFilterString(e.target.value)}
                 placeholder='Search'
-            />
+            /> */}
             </div>
             <div className='marketplace__filter-icons'>
             {filter.length ?
             <Fragment>
-                {!selectedFilter &&
+                {!selected &&
                 <button onClick={saveFilter}>Save filter</button>
                 }
                 <button onClick={clearFilter}>Clear filter</button>

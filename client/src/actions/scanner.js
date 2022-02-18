@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER } from './type'
+import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS } from './type'
 import axios from 'axios'
 import { dispatch } from 'd3';
 
@@ -11,6 +11,23 @@ export const getScanner = () => async dispatch => {
             type: SET_SCANNER,
             payload: res.data
         })
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+//@desc: get list of saved filters on component load
+//ToDo: make user spacific 
+export const getSavedFilters = () => async dispatch =>{
+    console.log('running get saved filters')
+    try {
+        const res = await axios.get(`/api/scanner/savedFilters`);
+        console.log('savedFiltersRes: ', res.data)
+        dispatch({
+            type: SET_SAVED_FILTERS,
+            payload: res.data
+        })
+    
     } catch (err) {
         console.error(err);
     }
@@ -30,17 +47,21 @@ export const getFilterOptions = (data) => async dispatch => {
 }
 
 //@desc: reload component with filterd data set on selcted of saved or new filter
-export const fetchFilteredData = (filters, blacklist) => async dispatch => {
+export const fetchFilteredData = (data, label) => async dispatch => {
+    console.log('the data: ', data, label)
     try {
             dispatch({
             type: SET_LOADING
         })
-        const data = {filters, blacklist}
         const res = await axios.post(`/api/scanner/loadFilter`, data);
         console.log('filterRes: ', res.data)
         dispatch({
             type: SET_FILTER,
             payload: res.data
+        })
+        dispatch({
+            type: SET_SELECTED_FILTER,
+            payload: label ? label : null
         })
         
     } catch (err) {
@@ -49,8 +70,23 @@ export const fetchFilteredData = (filters, blacklist) => async dispatch => {
 }
 
 export const submitSaveFilter = (name, filter) => async dispatch =>{
-    console.log('running submit save filter from actions: ', name, filter)
+    try {
+        const data = {name, filter}
+        const res = await axios.post(`/api/scanner/saveFilter`, data);
+        console.log('saveFilterRes: ', res.data)
+        dispatch({
+            type: SET_SELECTED_FILTER,
+            payload: res.data
+        })
+    
+    } catch (err) {
+        console.error(err);
+    }
 }
+
+
+
+
 
 //CALLS FROM WATCHLIST COMP ALL COMMENTED OUT
 
