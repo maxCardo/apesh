@@ -5,6 +5,12 @@ export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERR0R = 'AUTH_ERROR';
 export const LOGOUT = 'LOGOUT';
 
+export const SET_ALERT = 'SET_ALERT';
+export const REMOVE_ALERT = 'REMOVE_ALERT';
+export const ALERT_SUCCESS = 'ALERT_SUCCESS'
+export const ALERT_FAILURE = 'ALERT_FAILURE'
+
+
 export const SET_WATCHLIST = 'SET_WATCHLIST'
 export const REMOVE_WATCHLIST_ITEM = 'REMOVE_WATCHLIST_ITEM'
 export const SET_LOADING = 'SET_LOADING'

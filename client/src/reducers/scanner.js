@@ -5,7 +5,7 @@ const initialState = {
     list: [],
     savedFilters: [],
     filterOptions: [],
-    filter: [],
+    activeFilter: [],
     selected: null
 }
 

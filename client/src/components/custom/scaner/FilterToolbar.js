@@ -46,7 +46,6 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, f
 
     return (
         <div className='searchContainer agentsSearchContainer'>
-            {console.log(selected)}
             <div style={{display: 'flex'}}>
             <Select
                 className="marketplace__filter-select"
@@ -89,7 +88,6 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, f
                 </button>
                 </Fragment>
             }
-            {console.log('checkBox:', checkbox)}
             {!checkbox && (
                 <button onClick={toggleCheckFlow}>
                     <i className="fas fa-check-square"></i>

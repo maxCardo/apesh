@@ -1,6 +1,6 @@
 import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS } from './type'
+import {createErrorAlert} from "./alert";
 import axios from 'axios'
-import { dispatch } from 'd3';
 
 
 //@desc: test call returns 10 records to fee table
@@ -84,29 +84,28 @@ export const submitSaveFilter = (name, filter) => async dispatch =>{
     }
 }
 
-
+export const removeItem = (id) => async dispatch => {
+    try {
+        console.log('running remove', id);
+        // dispatch({
+        //     type: SET_LOADING
+        // })
+        //const res = await axios.put(`/api/watchlist/removeItem/${id}`);
+        //console.log(res.data)
+        dispatch(createErrorAlert('what the fulkjlkjfd'))
+        dispatch({
+            type: REMOVE_SCANNER_ITEM,
+            payload: id
+        })
+        
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 
 
 //CALLS FROM WATCHLIST COMP ALL COMMENTED OUT
-
-export const removeItem = (id) => async dispatch => {
-    // try {
-    //     console.log('running remove');
-    //     dispatch({
-    //         type: SET_LOADING
-    //     })
-    //     const res = await axios.put(`/api/watchlist/removeItem/${id}`);
-    //     console.log(res.data)
-    //     dispatch({
-    //         type: REMOVE_WATCHLIST_ITEM,
-    //         payload: res.data
-    //     })
-    // } catch (err) {
-    //     console.error(err);
-    // }
-}
-
 export const likeItem = (id) => async dispatch => {
     // try {
     //     dispatch({

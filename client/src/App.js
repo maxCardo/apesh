@@ -12,6 +12,7 @@ import Watchlist from './components/custom/wacthlist/_Watchlist'
 import Reporting from './components/custom/reporting/_Reporting'
 import Scanner from './components/custom/scaner/_scaner';
 import Scanner2 from './components/custom/scaner/scanner2';
+import Alert from './components/common/Alert'
 
 const App = () => {
   
@@ -30,6 +31,7 @@ const App = () => {
           <Route exact path='/reporting' component={Reporting} />
           <Route exact path='/scanner' component={Scanner} />
           <Route exact path='/scanner2' component={Scanner2} />
+          <Alert/>
         </section>
       </Fragment>
     </Router>

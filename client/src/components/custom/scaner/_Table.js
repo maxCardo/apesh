@@ -31,26 +31,10 @@ const  TableComp = ({headers, list, handleClickRow, _orderBy, showFilterModal, a
   const [rowsPerPage, setRowsPerPage] = useState(_rowsPerPage);
   const [sticky, setSticky] = useState(true)
 
-  useEffect(() => {
-    console.log('running use effect in table')
-    const data = list.map((rec) => {
-      rec.isActive = true
-      return rec
-    })
-    setTableData(data)
-  },[])
 
   useEffect(() => {
-    if (hit) {
-      console.log('recording hit')
-      console.log(hit)
-      const n = tableData.filter(x => x._id != hit)
-      setTableData(n)
-      return
-    } 
-    console.log('hit object empty')
-     
-  },[hit])
+    setTableData(list)
+  },[list])
 
   //funcs for table comp 
   const handleSelectAllClick = (event) => {

@@ -834,3 +834,16 @@ input[type=number]:focus,
 .relative {
   position: relative;
 }
+
+/*Could probably be reworked later to use fixed positioning if we want to use it anywhere as it's own component, I didn't give this much thought it was done in last minute*/
+.invalidAlert,
+.validAlert {
+  bottom: 35%;
+  /* left: 50%; */
+  /* transform: translate(-50%, -50%); */
+  /* position: absolute; */
+  /* box-shadow: 1px 1px 7px rgba(0,0,0,.15),
+  -1px 1px 7px rgba(0,0,0,.15),
+  0px 0px 25px 10px rgba(0,0,0,.142); */
+  /* border: none; */
+}

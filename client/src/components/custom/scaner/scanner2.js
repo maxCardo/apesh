@@ -4,9 +4,10 @@ import {connect} from 'react-redux'
 import IconButton from '../../common/IconButton/_IconButton'
 import Table from './_Table'
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
-import {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters} from '../../../actions/scanner'
+import {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem} from '../../../actions/scanner'
 import FilterModal from './filterModel/FilterModal'
 import VarifyMod from './VerifyMod';
+import { LegendOrientations } from '@carbon/charts/interfaces';
 
 const FILTERFIELDS = {
   // Price: {
@@ -54,14 +55,8 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, filter, selected}, getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters}) => {
+const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, activeFilter, selected}, getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem}) => {
   
-  //use effect for coustom comp
-  useEffect(() => {
-    getScanner()
-    getFilterOptions(FILTERFIELDS)
-    getSavedFilters()
-  },[])
 
   const headers = [
     {
@@ -124,7 +119,6 @@ const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, filter
 
   const [selectedCompany, setSelectedCompany] = useState({});
   const [showModal, setShowModal] = useState({show: false, load: false});
-  const [hit, punch] = useState()
 
   //filter
   const [showFilterModal, setShowFilterModal] = useState(false)
@@ -132,7 +126,13 @@ const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, filter
   //const [selectedFilter, setSelectedFilter] = useState(undefined)
   
 
-  
+  //use effect for coustom comp
+  useEffect(() => {
+    getScanner()
+    getFilterOptions(FILTERFIELDS)
+    getSavedFilters()
+  },[])
+
   const submitFilterModal = async (selectedFilters) => {
     console.log('submit filter: ', selectedFilters)
     //setSelectedFilter(undefined)
@@ -150,12 +150,12 @@ const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, filter
     setSelectedCompany({});
   }
 
-  const removeItem = (res) => {
-    console.log('running remove item')
-    console.log(res)
-    console.log('hit: ', hit)
-    punch(res)
-  }
+  // const removeItem = (res) => {
+  //   console.log('running remove item')
+  //   console.log(res)
+  //   console.log('hit: ', hit)
+  //   punch(res)
+  // }
   
   return loading ? (<div>loading...</div>) : (
     <div>
@@ -165,10 +165,9 @@ const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, filter
           list = {list}
           handleClickRow={startShowDetailFlow}
           removeItem={removeItem}
-          hit={hit}
           showFilterModal = {(x) => setShowFilterModal(x)}
           savedFilters = {savedFilters}
-          activeFilter = {filter}
+          activeFilter = {activeFilter}
           saveFilter = {() => setShowVarMod(true)}
           selectedFilter = {selected}
           onFilterSelect={fetchFilteredData}
@@ -187,7 +186,7 @@ const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, filter
         <VarifyMod
           show={showVarMod}
           handleClose={() => setShowVarMod(false)}
-          handleSubmit={(name) => submitSaveFilter(name, filter)}
+          handleSubmit={(name) => submitSaveFilter(name, activeFilter)}
         />
     </div>
   )
@@ -198,4 +197,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters})(Scanner2)
+export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem})(Scanner2)
