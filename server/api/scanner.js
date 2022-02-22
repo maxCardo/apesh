@@ -143,7 +143,7 @@ router.post('/loadFilter', async (req, res) => {
         console.log('query object:', queryObj)
 
         // //query DB
-        const record = await Company.find(queryObj)
+        let record = await Company.find(queryObj)
 
         //if we make resuable how can we use populate????
 
@@ -169,10 +169,12 @@ router.post('/loadFilter', async (req, res) => {
         // }
   
         //handle blacklist on front end ???
-        // const blacklist = req.body.blacklist
-        // if(blacklist) {
-        //   record = record.filter((listing) => !blacklist.includes(listing._id.toString()))
-        // }
+        
+        const blacklist = req.body.blacklist
+        //console.log('blacklist: ', blacklist)
+        if(blacklist) {
+          record = record.filter((listing) => !blacklist.includes(listing._id.toString()))
+        }
 
         //res.status(200).send({ record, filters, hasMore });
         res.status(200).send({ record, filters});
@@ -192,7 +194,7 @@ router.post('/saveFilter', async (req, res) => {
   const tkrFilter = new TkrFilter({name, filters: filter})
   const data = await tkrFilter.save()
   console.log('saved filter: ', data)
-  res.send({label: data.name})
+  res.send({label: data.name, _id: data._id})
 })
 
 // @route: get /api/marketPlace/ops/filters
@@ -208,6 +210,17 @@ router.get('/savedFilters', async (req, res) => {
 
   console.log(data)
   res.send(data)
+})
+
+// @route: get /api/scanner/blacklist
+// @desc: blacklist record from saved filter
+// @ access: Public 
+router.put('/blacklist', async (req, res) => {
+  const {filter_id, item_id} = req.body
+  const savedFilter = await TkrFilter.findById(filter_id)
+  savedFilter.blacklist.push(item_id)
+  const rec = await savedFilter.save()
+  res.status(200).send(rec)
 })
 
 

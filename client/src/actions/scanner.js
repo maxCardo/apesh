@@ -84,20 +84,15 @@ export const submitSaveFilter = (name, filter) => async dispatch =>{
     }
 }
 
-export const removeItem = (id) => async dispatch => {
+export const removeItem = (data) => async dispatch => {
     try {
-        console.log('running remove', id);
-        // dispatch({
-        //     type: SET_LOADING
-        // })
-        //const res = await axios.put(`/api/watchlist/removeItem/${id}`);
-        //console.log(res.data)
-        dispatch(createErrorAlert('what the fulkjlkjfd'))
         dispatch({
             type: REMOVE_SCANNER_ITEM,
-            payload: id
+            payload: data.item_id
         })
-        
+        console.log('running remove', data);
+        const res = await axios.put(`/api/scanner/blacklist`, data);
+        console.log(res.data)
     } catch (err) {
         console.error(err);
     }

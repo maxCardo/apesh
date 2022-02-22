@@ -13,7 +13,7 @@ const FilterdToolbar = ({checkbox, numSelected, filterActive, showFilterModal, f
     console.log('label: ', label)
     console.log('filters: ', filters)
     console.log('blacklist: ', blacklist)
-    onChange(e.value , {label: e.label})    
+    onChange(e.value , {label: e.label, _id: e.value._id})    
   }
 
   const clearFilter = () => {

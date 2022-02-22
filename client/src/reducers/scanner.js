@@ -47,7 +47,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 list: payload.record, 
-                filter: payload.filters,
+                activeFilter: payload.filters,
                 loading: false
             }
         

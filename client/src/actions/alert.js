@@ -1,15 +1,23 @@
 import { ALERT_FAILURE, ALERT_SUCCESS, REMOVE_ALERT } from './type';
 
-export const setAlert = (msg, location) => dispatch => {
-   // const id = uuid.v4();
+//@desc set alert from component
+export const setAlert = (msg, location, type, heading = 'Server Error', timeout) => dispatch => {
     dispatch({
-      type: ALERT_FAILURE,
+      type: type === 'success' ? ALERT_SUCCESS : ALERT_FAILURE,
       payload: {
-          heading: "Server Error",
+          heading: heading,
           msg: msg,
           location: location
       }
     });
+
+    if (timeout) {
+      console.log('running time out')
+        setTimeout(() => {
+          console.log('running clear alerts')
+          dispatch({type: REMOVE_ALERT});
+      }, 2000)
+    }
 }
 
 export const clearAlerts = () => (dispatch) => {

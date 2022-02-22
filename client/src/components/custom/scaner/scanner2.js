@@ -5,6 +5,7 @@ import IconButton from '../../common/IconButton/_IconButton'
 import Table from './_Table'
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
 import {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem} from '../../../actions/scanner'
+import {setAlert} from '../../../actions/alert'
 import FilterModal from './filterModel/FilterModal'
 import VarifyMod from './VerifyMod';
 import { LegendOrientations } from '@carbon/charts/interfaces';
@@ -55,7 +56,7 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, activeFilter, selected}, getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem}) => {
+const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, activeFilter, selected}, getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem, setAlert}) => {
   
 
   const headers = [
@@ -110,7 +111,7 @@ const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, active
             id='property-details-tooltip'
             iconClass='fas fa-trash'
             variant='action-button'
-            onClickFunc={() => removeItem(item._id)}
+            onClickFunc={() => removeListItem(item._id)}
           />
         </div>
       )
@@ -150,12 +151,14 @@ const  Scanner2 = ({scanner: {loading, list, savedFilters, filterOptions, active
     setSelectedCompany({});
   }
 
-  // const removeItem = (res) => {
-  //   console.log('running remove item')
-  //   console.log(res)
-  //   console.log('hit: ', hit)
-  //   punch(res)
-  // }
+  const removeListItem = (res) => {
+    if (!selected) {
+      const msg = 'You must have a saved active filter engaged in order to blacklist a record'
+      setAlert(msg, 'scanner2', 'fail', 'Error', true)
+    }else {
+      removeItem({item_id: res, filter_id: selected._id})
+    }
+  }
   
   return loading ? (<div>loading...</div>) : (
     <div>
@@ -197,4 +200,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem})(Scanner2)
+export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem, setAlert})(Scanner2)
