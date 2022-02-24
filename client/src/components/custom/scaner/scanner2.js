@@ -21,15 +21,57 @@ const FILTERFIELDS = {
   //   dataType: "number",
   //   accessor: "price"
   // },
-  Exchange: {
+  //filter by date is not yet incorperated 
+  // Reporting: {
+  //   type: {
+  //     label: "Don't Filter",
+  //     value: "noFilter"
+  //   },
+  //   value: "",
+  //   name: "Reporting",
+  //   dataType: "date",
+  //   accessor: "nextReporting.daysTo"
+  // },
+  Cash_Dept: {
     type: {
       label: "Don't Filter",
       value: "noFilter"
     },
     value: "",
-    name: "Exchange",
+    name: "Cash to Debt",
+    dataType: "number",
+    accessor: "cashDebtRatio"
+  },
+  PE_Ratio: {
+    type: {
+      label: "Don't Filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Price to Earnings",
+    dataType: "number",
+    accessor: "peRatio"
+  },
+  Price: {
+    type: {
+      label: "Don't Filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Price",
+    dataType: "number",
+    accessor: "price"
+  },
+  Industry: {
+    type: {
+      label: "Don't Filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Industry",
     dataType: "array",
-    accessor: "exchangeShortName"
+    accessor: "industry",
+    dependency: 'sector'
   },
   Sector: {
     type: {
@@ -41,18 +83,16 @@ const FILTERFIELDS = {
     dataType: "array",
     accessor: "sector"
   },
-  // Industry: {
-  //   type: {
-  //     label: "Don't Filter",
-  //     value: "noFilter"
-  //   },
-  //   value: "",
-  //   name: "Industry",
-  //   dataType: "array",
-  //   accessor: "industry",
-  //   dependency: 'exchangeShortName'
-  // },
-
+  Exchange: {
+    type: {
+      label: "Don't Filter",
+      value: "noFilter"
+    },
+    value: "",
+    name: "Exchange",
+    dataType: "array",
+    accessor: "exchangeShortName"
+  },
 }
 
 
