@@ -8,9 +8,12 @@ import VarifyMod from './VerifyMod'
 import {getData, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem} from '../../../actions/filteredData'
 
 
-const FilterWrapper = ({children, dataModel, filterActive, filterFields, filteredData: {loading, savedFilters, filterOptions, activeFilter, selected}, getData, getSavedFilters, getFilterOptions, fetchFilteredData }) => {
+const FilterWrapper = ({children, dataModel, filterActive, filterFields, filteredData, getData, getSavedFilters, getFilterOptions, fetchFilteredData, submitSaveFilter }) => {
  
+    const {loading, savedFilters, filterOptions, activeFilter, selected} = filteredData
+    
     const [showFilterModal, setShowFilterModal] = useState(false)
+    const [showSaveModal, setShowSaveModal] = useState(false)
 
     useEffect(() => {
         console.log('running use effect on filterwrapper')
@@ -30,6 +33,7 @@ const FilterWrapper = ({children, dataModel, filterActive, filterFields, filtere
                 selected= {selected}
                 showFilterModal = {() => setShowFilterModal(true)}
                 clearFilter = {() => getData(dataModel)}
+                saveFilter = {() => setShowSaveModal(true)}
             />
             {children}
             <FilterModal
@@ -39,11 +43,11 @@ const FilterWrapper = ({children, dataModel, filterActive, filterFields, filtere
                 handleClose={() => setShowFilterModal(false)}
                 onSubmit={(e) => fetchFilteredData(dataModel, {filters: e})}
             />
-            {/* <VarifyMod
-            //   show={showVarMod}
-            //   handleClose={() => setShowVarMod(false)}
-            //   handleSubmit={(name) => submitSaveFilter(name, activeFilter)}
-            /> */}
+            <VarifyMod
+                show={showSaveModal}
+                handleClose={() => setShowSaveModal(false)}
+                handleSubmit={(name) => submitSaveFilter(dataModel, name, activeFilter)}
+            />
 
         </div>
     )
@@ -54,4 +58,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getData, getSavedFilters, getFilterOptions, fetchFilteredData})(FilterWrapper)
+export default connect(mapStateToProps, {getData, getSavedFilters, getFilterOptions, fetchFilteredData, submitSaveFilter})(FilterWrapper)

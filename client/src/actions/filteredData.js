@@ -70,10 +70,11 @@ export const fetchFilteredData = (model, data, label) => async dispatch => {
     }
 }
 
-export const submitSaveFilter = (name, filter) => async dispatch =>{
+export const submitSaveFilter = (model,name, filter) => async dispatch =>{
     try {
+        console.log('running submit save filter')
         const data = {name, filter}
-        const res = await axios.post(`/api/scanner/saveFilter`, data);
+        const res = await axios.post(`/api/filteredData/saveFilter/${model}`, data);
         console.log('saveFilterRes: ', res.data)
         dispatch({
             type: SET_SELECTED_FILTER,

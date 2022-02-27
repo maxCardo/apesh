@@ -131,9 +131,10 @@ router.post('/loadFilter/:model', async (req, res) => {
 // @route: post /api/marketPlace/ops/filters
 // @desc: save new filter selected
 // @ access: Public 
-router.post('/saveFilter', async (req, res) => {
+router.post('/saveFilter/:model', async (req, res) => {
+  const collection = models[req.params.model].filters
   const {name, filter} = req.body
-  const tkrFilter = new TkrFilter({name, filters: filter})
+  const tkrFilter = new collection({name, filters: filter})
   const data = await tkrFilter.save()
   console.log('saved filter: ', data)
   res.send({label: data.name, _id: data._id})

@@ -1,6 +1,5 @@
 //@desc
 function createFilter(data, filterName) {
-    console.log('data in create:', data)
     //should not need this conditional statment ???
     if(filterName === 'listAge') {
       const dateOne = new Date();
