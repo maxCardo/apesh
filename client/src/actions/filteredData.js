@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS } from './type'
+import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS, SET_SELECTED_ITEM } from './type'
 import {createErrorAlert} from "./alert";
 import axios from 'axios'
 
@@ -99,6 +99,20 @@ export const removeItem = (model, data) => async dispatch => {
         console.error(err);
     }
 }
+
+//@desc add to selected array from table comp. Used for mass actions on checkbox selected recs
+export const setSelected = (data) => async dispatch => {
+    try {
+        dispatch({
+            type: SET_SELECTED_ITEM,
+            payload: data
+        })
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+
 
 
 

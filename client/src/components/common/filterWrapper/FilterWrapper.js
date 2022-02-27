@@ -10,7 +10,7 @@ import {getData, getFilterOptions, fetchFilteredData, submitSaveFilter, getSaved
 
 const FilterWrapper = ({children, dataModel, filterActive, filterFields, filteredData, getData, getSavedFilters, getFilterOptions, fetchFilteredData, submitSaveFilter }) => {
  
-    const {loading, savedFilters, filterOptions, activeFilter, selected} = filteredData
+    const {loading, savedFilters, filterOptions, activeFilter, selected, selectedData} = filteredData
     
     const [showFilterModal, setShowFilterModal] = useState(false)
     const [showSaveModal, setShowSaveModal] = useState(false)
@@ -26,6 +26,7 @@ const FilterWrapper = ({children, dataModel, filterActive, filterFields, filtere
         <div>
             <FilterdToolbar
                 dataModel = {dataModel}
+                numSelected = {selectedData.length}
                 filterActive={filterActive}
                 savedFilters = {savedFilters}
                 onChange = {fetchFilteredData}

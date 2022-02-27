@@ -1,4 +1,4 @@
-import { SET_LOADING ,SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS} from '../actions/type'
+import { SET_LOADING ,SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS, SET_SELECTED_ITEM} from '../actions/type'
 
 const initialState = {
     loading: true,
@@ -6,7 +6,8 @@ const initialState = {
     savedFilters: [],
     filterOptions: [],
     activeFilter: [],
-    selected: null
+    selected: null,
+    selectedData: []
 }
 
 export default function (state = initialState, action) {
@@ -61,6 +62,11 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 selected: payload, 
+            }
+        case SET_SELECTED_ITEM:
+            return {
+                ...state,
+                selectedData: payload, 
             }
                        
         default:

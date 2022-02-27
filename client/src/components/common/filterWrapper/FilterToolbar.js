@@ -67,11 +67,9 @@ const FilterdToolbar = ({checkbox = true, dataModel, numSelected, filterActive, 
                 <button onClick={clearFilter}>Clear filter</button>
             </Fragment>
             : null}
-            <button onClick={() => showFilterModal(true)}>
-                <i className="fas fa-filter"></i>
-            </button>
+           
             {
-                numSelected > 0 &&
+                numSelected > 0 ?
                 <Fragment>
                 <button onClick={exportCsv}>
                     <i className="fas fa-file-csv"></i>
@@ -80,6 +78,10 @@ const FilterdToolbar = ({checkbox = true, dataModel, numSelected, filterActive, 
                     <i className="fas fa-star"></i>
                 </button>
                 </Fragment>
+                :
+                <button onClick={() => showFilterModal(true)}>
+                <i className="fas fa-filter"></i>
+                </button>
             }
             {/* {!checkbox && (
                 <button onClick={toggleCheckFlow}>

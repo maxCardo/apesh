@@ -22,11 +22,6 @@ const FilterModal = ({show, handleClose, filterFields, onSubmit, options}) => {
         onSubmit(data, type);
     };
 
-    useEffect(() => {
-      console.log('options: ', options) 
-      
-    },[options])
-
     return (
       <Modal size='lg' show={show} onHide={()=> {handleClose(); setState(filterFields)}}>
         <Modal.Header closeButton>

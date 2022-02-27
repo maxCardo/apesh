@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {connect} from 'react-redux'
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,16 +12,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import {useStyles} from './styles'
 import {stableSort, getComparator, getData} from './scripts'
+import {setSelected} from '../../../actions/filteredData'
 import TableHeader from './TableHeader';
 
-const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _rowsPerPage = 10}) => {
+const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _rowsPerPage = 10, selected, setSelected}) => {
   
   //state for table comp
   const classes = useStyles();
   const [tableData, setTableData] = useState([]) 
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState(_orderBy ? _orderBy : headers[0].accessor);
-  const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(_rowsPerPage);
 
@@ -32,7 +33,7 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
   //funcs for table comp 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = tableData.map((n) => n.symbol);
+      const newSelecteds = tableData.map((n) => n._id);
       setSelected(newSelecteds);
       return;
     }
@@ -41,7 +42,6 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
 
   //@desc handle click for checkbox
   const handleClick = (event, name) => {
-    console.log('handle Click')
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
 
@@ -88,7 +88,6 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <TableContainer className={classes.container}>
-          {console.log('sticky: ',sticky)}
           <Table 
             stickyHeader = {sticky}
             // sticky header creating issues with dropdown 
@@ -111,7 +110,7 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
               {stableSort(tableData, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
-                  const isItemSelected = isSelected(row.symbol);
+                  const isItemSelected = isSelected(row._id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -127,7 +126,7 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
                         <Checkbox
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
-                          onChange={(event) => handleClick(event, row.symbol)}
+                          onChange={(event) => handleClick(event, row._id)}
                         />
                       </TableCell>
                       {
@@ -162,4 +161,8 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
   );
 }
 
-export default TableComp
+const mapStateToProps = state => ({
+  selected: state.scanner.selectedData
+})
+
+export default connect (mapStateToProps, {setSelected})(TableComp)
