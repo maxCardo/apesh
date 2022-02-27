@@ -140,14 +140,14 @@ router.post('/saveFilter/:model', async (req, res) => {
   res.send({label: data.name, _id: data._id})
 })
 
-
-
 // @route: get /api/scanner/blacklist
 // @desc: blacklist record from saved filter
 // @ access: Public 
-router.put('/blacklist', async (req, res) => {
+//ToDo : make user spacific
+router.put('/blacklist/:model', async (req, res) => {
+  const collection = models[req.params.model].filters
   const {filter_id, item_id} = req.body
-  const savedFilter = await TkrFilter.findById(filter_id)
+  const savedFilter = await collection.findById(filter_id)
   savedFilter.blacklist.push(item_id)
   const rec = await savedFilter.save()
   res.status(200).send(rec)

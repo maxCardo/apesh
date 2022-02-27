@@ -7,7 +7,7 @@ import Table from '../../common/newTable/Table'
 import IconButton from '../../common/IconButton/_IconButton'
 
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
-import {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem} from '../../../actions/scanner'
+import {removeItem} from '../../../actions/filteredData'
 import {setAlert} from '../../../actions/alert'
 
 
@@ -97,7 +97,7 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner = ({scanner: {loading, list, savedFilters, activeFilter, selected}, getScanner, getFilterOptions, fetchFilteredData, getSavedFilters, removeItem, setAlert}) => {
+const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, removeItem, setAlert}) => {
   
 
   const headers = [
@@ -183,7 +183,7 @@ const  Scanner = ({scanner: {loading, list, savedFilters, activeFilter, selected
       const msg = 'You must have a saved active filter engaged in order to blacklist a record'
       setAlert(msg, 'scanner2', 'fail', 'Error', true)
     }else {
-      removeItem({item_id: res, filter_id: selected._id})
+      removeItem('company',{item_id: res, filter_id: selected._id})
     }
   }
 
@@ -200,7 +200,6 @@ const  Scanner = ({scanner: {loading, list, savedFilters, activeFilter, selected
         //saveFilter= {() => setShowVarMod(true)}
         selected = {selected}
         savedFilters = {savedFilters}
-        onChange = {fetchFilteredData}
       >
 
         <div>
@@ -231,4 +230,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {getScanner, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem, setAlert})(Scanner)
+export default connect(mapStateToProps, {removeItem, setAlert})(Scanner)

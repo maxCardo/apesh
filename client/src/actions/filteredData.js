@@ -86,14 +86,14 @@ export const submitSaveFilter = (model,name, filter) => async dispatch =>{
     }
 }
 
-export const removeItem = (data) => async dispatch => {
+export const removeItem = (model, data) => async dispatch => {
     try {
         dispatch({
             type: REMOVE_SCANNER_ITEM,
             payload: data.item_id
         })
         console.log('running remove', data);
-        const res = await axios.put(`/api/scanner/blacklist`, data);
+        const res = await axios.put(`/api/filteredData/blacklist/${model}`, data);
         console.log(res.data)
     } catch (err) {
         console.error(err);
