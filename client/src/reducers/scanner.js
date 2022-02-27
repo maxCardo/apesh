@@ -22,6 +22,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 list: payload,
+                selected: null,
                 loading: false
             }
         case REMOVE_SCANNER_ITEM:
