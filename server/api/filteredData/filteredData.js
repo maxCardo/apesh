@@ -72,7 +72,6 @@ router.post('/loadFilter/:model', async (req, res) => {
         const collection = models[req.params.model].data
         //const PAGESIZE = req.body.pageSize;
         //console.log('PAGESIZE: ',PAGESIZE, req.body.page);
-        console.log('filter body', req.body)
         const data = req.body.filters
         let filters = []
         if(data.length) {

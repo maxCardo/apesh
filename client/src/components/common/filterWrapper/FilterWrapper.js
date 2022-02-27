@@ -26,8 +26,10 @@ const FilterWrapper = ({children, dataModel, filterActive, filterFields, filtere
                 filterActive={filterActive}
                 savedFilters = {savedFilters}
                 onChange = {fetchFilteredData}
+                filter = {activeFilter}
                 selected= {selected}
                 showFilterModal = {() => setShowFilterModal(true)}
+                clearFilter = {() => getData(dataModel)}
             />
             {children}
             <FilterModal
@@ -35,7 +37,7 @@ const FilterWrapper = ({children, dataModel, filterActive, filterFields, filtere
                 filterFields={filterFields}
                 options={filterOptions}
                 handleClose={() => setShowFilterModal(false)}
-                onSubmit={(e) => fetchFilteredData(dataModel, {filter: e})}
+                onSubmit={(e) => fetchFilteredData(dataModel, {filters: e})}
             />
             {/* <VarifyMod
             //   show={showVarMod}

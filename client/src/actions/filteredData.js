@@ -6,6 +6,9 @@ import axios from 'axios'
 //@desc: test call returns 10 records to fee table
 export const getData = (model) => async dispatch => {
     try {
+        dispatch({
+            type: SET_LOADING
+        })
         const res = await axios.get(`/api/filteredData/${model}`);
         dispatch({
             type: SET_SCANNER,

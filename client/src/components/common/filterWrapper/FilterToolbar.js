@@ -5,15 +5,11 @@ import Select from 'react-select'
 import './style.css'
 
 
-const FilterdToolbar = ({checkbox = true, dataModel, numSelected, filterActive, showFilterModal, filter=[], saveFilter, selected, savedFilters, onChange}) => {
+const FilterdToolbar = ({checkbox = true, dataModel, numSelected, filterActive, showFilterModal, filter, saveFilter, selected, savedFilters, onChange, clearFilter}) => {
 
   const handleFilterChange = (e) => {
     const {label, value: {filters, blacklist}} = e
     onChange(dataModel, e.value , {label: e.label, _id: e.value._id})    
-  }
-
-  const clearFilter = () => {
-    console.log('clearFilter')
   }
 
   //checkbar
@@ -36,6 +32,7 @@ const FilterdToolbar = ({checkbox = true, dataModel, numSelected, filterActive, 
     console.log('selected test')
     filterActive()
   }
+
   
 
 
