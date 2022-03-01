@@ -8,7 +8,7 @@ import VarifyMod from './VerifyMod'
 import {getData, getFilterOptions, fetchFilteredData, submitSaveFilter, getSavedFilters, removeItem} from '../../../actions/filteredData'
 
 
-const FilterWrapper = ({children, dataModel, filterActive, filterFields, filteredData, getData, getSavedFilters, getFilterOptions, fetchFilteredData, submitSaveFilter }) => {
+const FilterWrapper = ({children, dataModel, filterActive, filterFields, filteredData, getData, getSavedFilters, getFilterOptions, fetchFilteredData, submitSaveFilter, bulkActions }) => {
  
     const {loading, savedFilters, filterOptions, activeFilter, selected, selectedData} = filteredData
     
@@ -26,7 +26,7 @@ const FilterWrapper = ({children, dataModel, filterActive, filterFields, filtere
         <div>
             <FilterdToolbar
                 dataModel = {dataModel}
-                numSelected = {selectedData.length}
+                selectedData = {selectedData}
                 filterActive={filterActive}
                 savedFilters = {savedFilters}
                 onChange = {fetchFilteredData}
@@ -35,6 +35,7 @@ const FilterWrapper = ({children, dataModel, filterActive, filterFields, filtere
                 showFilterModal = {() => setShowFilterModal(true)}
                 clearFilter = {() => getData(dataModel)}
                 saveFilter = {() => setShowSaveModal(true)}
+                bulkActions= {bulkActions}
             />
             {children}
             <FilterModal

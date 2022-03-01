@@ -29,7 +29,7 @@ export default function (state = initialState, action) {
         case REMOVE_SCANNER_ITEM:
             return {
                 ...state,
-                list: state.list.filter(item => item._id != payload),
+                list: state.list.filter(item => payload.indexOf(item._id) === -1),
                 loading: false
             }
         case UPDATE_SCANNER_ITEM:

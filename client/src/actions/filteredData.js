@@ -90,10 +90,24 @@ export const removeItem = (model, data) => async dispatch => {
     try {
         dispatch({
             type: REMOVE_SCANNER_ITEM,
-            payload: data.item_id
+            payload: [data.item_id]
         })
         console.log('running remove', data);
         const res = await axios.put(`/api/filteredData/blacklist/${model}`, data);
+        console.log(res.data)
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+export const removeMultiItems = (model, data) => async dispatch => {
+    try {
+        dispatch({
+            type: REMOVE_SCANNER_ITEM,
+            payload: data.item_id
+        })
+        console.log('running multi remove', data);
+        const res = await axios.put(`/api/filteredData/blacklistMany/${model}`, data);
         console.log(res.data)
     } catch (err) {
         console.error(err);

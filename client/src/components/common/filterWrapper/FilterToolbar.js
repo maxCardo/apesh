@@ -1,11 +1,12 @@
 import React, {useState, Fragment} from 'react'
+import IconButton from '../IconButton/_IconButton'
 
 //dep for filter comp
 import Select from 'react-select'
 import './style.css'
 
 
-const FilterdToolbar = ({checkbox = true, dataModel, numSelected, filterActive, showFilterModal, filter, saveFilter, selected, savedFilters, onChange, clearFilter}) => {
+const FilterdToolbar = ({checkbox = true, dataModel, selectedData, filterActive, showFilterModal, filter, saveFilter, selected, savedFilters, onChange, clearFilter, bulkActions=[]}) => {
 
   const handleFilterChange = (e) => {
     const {label, value: {filters, blacklist}} = e
@@ -33,9 +34,7 @@ const FilterdToolbar = ({checkbox = true, dataModel, numSelected, filterActive, 
     filterActive()
   }
 
-  
-
-
+  const numSelected = selectedData.length
 
     return (
         <div className='searchContainer agentsSearchContainer'>
@@ -71,12 +70,11 @@ const FilterdToolbar = ({checkbox = true, dataModel, numSelected, filterActive, 
             {
                 numSelected > 0 ?
                 <Fragment>
-                <button onClick={exportCsv}>
-                    <i className="fas fa-file-csv"></i>
-                </button>
-                <button onClick={recommendBatch}>
-                    <i className="fas fa-star"></i>
-                </button>
+                  {bulkActions.map((elem, i) => 
+                    <button key = {i} title = {elem.action} onClick={() => elem.function(selectedData)}>
+                      <i className={elem.icon}></i>
+                    </button>
+                  )}
                 </Fragment>
                 :
                 <button onClick={() => showFilterModal(true)}>

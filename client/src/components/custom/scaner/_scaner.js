@@ -7,7 +7,7 @@ import Table from '../../common/newTable/Table'
 import IconButton from '../../common/IconButton/_IconButton'
 
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
-import {removeItem} from '../../../actions/filteredData'
+import {removeItem, removeMultiItems} from '../../../actions/filteredData'
 import {setAlert} from '../../../actions/alert'
 
 
@@ -97,7 +97,7 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, removeItem, setAlert}) => {
+const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, removeItem, setAlert, removeMultiItems}) => {
   
 
   const headers = [
@@ -159,6 +159,8 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
     }
   ]
 
+
+
   //details model onselect cell
   const [selectedCompany, setSelectedCompany] = useState({});
   const [showModal, setShowModal] = useState({show: false, load: false});
@@ -187,6 +189,42 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
     }
   }
 
+  const removeMultiListItems = (res) => {
+    console.log('runnig remove multu items', res)
+    if (!selected) {
+      const msg = 'You must have a saved active filter engaged in order to blacklist a record'
+      setAlert(msg, 'scanner2', 'fail', 'Error', true)
+    }else {
+      removeMultiItems('company',{item_id: res, filter_id: selected._id})
+    }
+  }
+
+  const addToWatchList = () => {
+    console.log('multi add to watchlist')
+  }
+  
+  const exportToCSV = () => {
+    console.log('export to CSV')
+  }
+  
+  const bulkActions = [
+    {
+      Action: 'Add To Watchlist',
+      icon: 'far fa-eye',
+      function: () => addToWatchList()
+    },
+    {
+      Action: 'Export to CSV',
+      icon: 'fas fa-file-csv',
+      function: () => exportToCSV()
+    },
+    {
+      Action: 'Delete',
+      icon: 'fas fa-trash-alt',
+      function: (e) => removeMultiListItems(e)
+    } 
+  ]
+
   
   return (
     <div>
@@ -200,6 +238,7 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
         //saveFilter= {() => setShowVarMod(true)}
         selected = {selected}
         savedFilters = {savedFilters}
+        bulkActions = {bulkActions}
       >
 
         <div>
@@ -230,4 +269,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {removeItem, setAlert})(Scanner)
+export default connect(mapStateToProps, {removeItem, setAlert, removeMultiItems})(Scanner)
