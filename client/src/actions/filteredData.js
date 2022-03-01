@@ -90,7 +90,7 @@ export const removeItem = (model, data) => async dispatch => {
     try {
         dispatch({
             type: REMOVE_SCANNER_ITEM,
-            payload: [data.item_id]
+            payload: data.item_id
         })
         console.log('running remove', data);
         const res = await axios.put(`/api/filteredData/blacklist/${model}`, data);

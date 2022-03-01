@@ -152,7 +152,7 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
             id='property-details-tooltip'
             iconClass='fas fa-trash'
             variant='action-button'
-            onClickFunc={() => removeListItem(item._id)}
+            onClickFunc={() => removeListItem([item._id])}
           />
         </div>
       )
@@ -189,16 +189,6 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
     }
   }
 
-  const removeMultiListItems = (res) => {
-    console.log('runnig remove multu items', res)
-    if (!selected) {
-      const msg = 'You must have a saved active filter engaged in order to blacklist a record'
-      setAlert(msg, 'scanner2', 'fail', 'Error', true)
-    }else {
-      removeMultiItems('company',{item_id: res, filter_id: selected._id})
-    }
-  }
-
   const addToWatchList = () => {
     console.log('multi add to watchlist')
   }
@@ -221,7 +211,7 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
     {
       Action: 'Delete',
       icon: 'fas fa-trash-alt',
-      function: (e) => removeMultiListItems(e)
+      function: (e) => removeListItem(e)
     } 
   ]
 
