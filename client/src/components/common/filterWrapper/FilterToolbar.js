@@ -13,24 +13,8 @@ const FilterdToolbar = ({checkbox = true, dataModel, selectedData, filterActive,
     onChange(dataModel, e.value , {label: e.label, _id: e.value._id})    
   }
 
-  //checkbar
-  const [checkFlowActive, setCheckFlowActice] = useState(false)
 
-  const exportCsv = () => {
-    console.log('exportCsv')
-  }
-
-      //component spacific
-  const recommendBatch = () => {
-    console.log('recomend batch')
-  }
-
-  const toggleCheckFlow = () => {
-    console.log('toggle check flow')
-  }
-
-  const selectedTest = () => {
-    console.log('selected test')
+  const selectedFilterBar = () => {
     filterActive()
   }
 
@@ -42,8 +26,8 @@ const FilterdToolbar = ({checkbox = true, dataModel, selectedData, filterActive,
             <Select
                 className="marketplace__filter-select"
                 onChange={e => handleFilterChange(e)}
-                onFocus={selectedTest}
-                onBlur={selectedTest}
+                onFocus={selectedFilterBar}
+                onBlur={selectedFilterBar}
                 defaultValue="All"
                 options={savedFilters}
                 placeholder='Select Filter'

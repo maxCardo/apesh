@@ -136,7 +136,6 @@ router.post('/saveFilter/:model', async (req, res) => {
   const {name, filter} = req.body
   const tkrFilter = new collection({name, filters: filter})
   const data = await tkrFilter.save()
-  console.log('saved filter: ', data)
   res.send({label: data.name, _id: data._id})
 })
 
