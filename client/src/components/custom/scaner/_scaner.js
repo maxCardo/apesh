@@ -7,8 +7,10 @@ import Table from '../../common/newTable/Table'
 import IconButton from '../../common/IconButton/_IconButton'
 
 import DetailsModal from '../reporting/detailsModal/DetailsModal';
-import {removeItem, removeMultiItems} from '../../../actions/filteredData'
+import {removeItem} from '../../../actions/filteredData'
+import {exportCSV} from '../../../actions/scanner'
 import {setAlert} from '../../../actions/alert'
+import { getData } from '../../common/newTable/scripts';
 
 
 const FILTERFIELDS = {
@@ -97,7 +99,7 @@ const FILTERFIELDS = {
 }
 
 
-const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, removeItem, setAlert, removeMultiItems}) => {
+const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, removeItem, setAlert, exportCSV}) => {
   
 
   const headers = [
@@ -159,7 +161,34 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
     }
   ]
 
-
+  const csvFormat = [
+    {
+      label: 'Company',
+      accessor: 'companyName'
+    },
+    {
+      label: 'symbol',
+      accessor: 'symbol'
+    },
+    {
+      label: 'Sector',
+      accessor: 'sector'
+    },
+    {
+      label: 'Industry',
+      accessor: 'industry'
+    },
+    {
+      label: 'value',
+      accessor: 'value',
+      mapper: 'money'
+    },
+    {
+      label: 'Current Price',
+      accessor: 'lastClose.price',
+      mapper: 'money'
+    },
+  ]
 
   //details model onselect cell
   const [selectedCompany, setSelectedCompany] = useState({});
@@ -185,18 +214,30 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
       const msg = 'You must have a saved active filter engaged in order to blacklist a record'
       setAlert(msg, 'scanner2', 'fail', 'Error', true)
     }else {
-      removeItem('company',{item_id: res, filter_id: selected._id})
+      const ids = res.map(x => x._id)
+      removeItem('company',{item_id: ids, filter_id: selected._id})
     }
   }
 
   const addToWatchList = () => {
     console.log('multi add to watchlist')
   }
-  
-  const exportToCSV = () => {
-    console.log('export to CSV')
+
+  const exportToCSV = async (data) => {
+    console.log('running export csv', data)
+    const dataFormated = data.map(async record => {
+      let dataObj ={}
+      csvFormat.forEach(key => {
+        dataObj[key.label] = getData(record, key)    
+      })
+      
+      return dataObj
+    })
+    const promise = await Promise.all(dataFormated)
+    exportCSV(promise)
   }
   
+   
   const bulkActions = [
     {
       Action: 'Add To Watchlist',
@@ -206,7 +247,7 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
     {
       Action: 'Export to CSV',
       icon: 'fas fa-file-csv',
-      function: () => exportToCSV()
+      function: (e) => exportToCSV(e)
     },
     {
       Action: 'Delete',
@@ -237,13 +278,6 @@ const  Scanner = ({scanner: {list, savedFilters, activeFilter, selected}, remove
             list = {list}
             handleClickRow={startShowDetailFlow}
             sticky = {sticky}
-            // removeItem={removeItem}
-            // showFilterModal = {(x) => setShowFilterModal(x)}
-            // savedFilters = {savedFilters}
-            // activeFilter = {activeFilter}
-            // saveFilter = {() => setShowVarMod(true)}
-            // selectedFilter = {selected}
-            // onFilterSelect={fetchFilteredData}
           />
           {selectedCompany && (
             <DetailsModal showModal={showModal.show} load={showModal.load} closeModal={closeModal} company={selectedCompany} />
@@ -259,4 +293,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, {removeItem, setAlert, removeMultiItems})(Scanner)
+export default connect(mapStateToProps, {removeItem, setAlert,exportCSV})(Scanner)

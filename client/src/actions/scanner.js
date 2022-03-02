@@ -1,6 +1,7 @@
 import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS } from './type'
 import {createErrorAlert} from "./alert";
 import axios from 'axios'
+import FileDownload from 'js-file-download'
 
 
 //@desc: test call returns 10 records to fee table
@@ -98,8 +99,6 @@ export const removeItem = (data) => async dispatch => {
     }
 }
 
-
-
 //CALLS FROM WATCHLIST COMP ALL COMMENTED OUT
 export const likeItem = (id) => async dispatch => {
     // try {
@@ -167,3 +166,20 @@ export const addCompanyData = (company) => async dispatch => {
     //     console.error(err);
     // }
 }
+
+
+//new customr componenet actions
+
+//@desc Export data to CSV
+export const exportCSV = (data) => async dispatch => {
+    try {
+        // dispatch({
+        //     type: SET_LOADING
+        // })
+        const res = await axios.post(`/api/scanner/exportCSV`, data);
+        FileDownload(res.data, 'export.csv')    
+    } catch (err) {
+        console.error(err);
+    }
+}
+

@@ -34,7 +34,7 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelecteds = tableData.map((n) => n._id);
-      setSelected(newSelecteds);
+      setSelected(tableData);
       return;
     }
     setSelected([]);
@@ -75,8 +75,7 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
-
+  const isSelected = (name) => selected.map(x => x._id).indexOf(name) !== -1;
 
 //ToDo: work on dynamic function to determain amonnt of space needed: is this neccecery??
   //const emptyRows = rowsPerPage - Math.min(rowsPerPage, list.length - page * rowsPerPage);
@@ -126,7 +125,7 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
                         <Checkbox
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
-                          onChange={(event) => handleClick(event, row._id)}
+                          onChange={(event) => handleClick(event, row)}
                         />
                       </TableCell>
                       {

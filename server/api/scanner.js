@@ -1,4 +1,5 @@
 const express = require('express')
+const {parse} = require('json2csv')
 
 
 const Company = require('../db/models/company')
@@ -221,6 +222,15 @@ router.put('/blacklist', async (req, res) => {
   savedFilter.blacklist.push(item_id)
   const rec = await savedFilter.save()
   res.status(200).send(rec)
+})
+
+// @route: post /api/marketPlace/ops/filters
+// @desc: save new filter selected
+// @ access: Public 
+router.post('/exportCSV', async (req, res) => {
+  const data = req.body
+  const csv = parse(data)
+  res.status(200).send(csv)
 })
 
 
