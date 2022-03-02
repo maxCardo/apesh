@@ -161,7 +161,7 @@ const  TableComp = ({headers, list, handleClickRow, sticky, dense, _orderBy, _ro
 }
 
 const mapStateToProps = state => ({
-  selected: state.scanner.selectedData
+  selected: state.filteredData.selectedData
 })
 
 export default connect (mapStateToProps, {setSelected})(TableComp)

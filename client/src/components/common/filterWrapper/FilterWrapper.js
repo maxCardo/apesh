@@ -56,7 +56,7 @@ const FilterWrapper = ({children, dataModel, filterActive, filterFields, filtere
 }
 
 const mapStateToProps = state => ({
-    filteredData: state.scanner
+    filteredData: state.filteredData
 })
 
 

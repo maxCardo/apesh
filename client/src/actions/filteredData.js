@@ -1,4 +1,4 @@
-import { SET_LOADING, SET_SCANNER, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS, SET_SELECTED_ITEM } from './type'
+import { SET_LOADING, SET_FILTERED_DATA, REMOVE_SCANNER_ITEM, UPDATE_SCANNER_ITEM, SET_FILTER_OPTIOINS, SET_FILTER, SET_SELECTED_FILTER, SET_SAVED_FILTERS, SET_SELECTED_ITEM } from './type'
 import {createErrorAlert} from "./alert";
 import axios from 'axios'
 
@@ -11,7 +11,7 @@ export const getData = (model) => async dispatch => {
         })
         const res = await axios.get(`/api/filteredData/${model}`);
         dispatch({
-            type: SET_SCANNER,
+            type: SET_FILTERED_DATA,
             payload: res.data
         })
     } catch (err) {
@@ -49,13 +49,11 @@ export const getFilterOptions = (model, data) => async dispatch => {
 
 //@desc: reload component with filterd data set on selcted of saved or new filter
 export const fetchFilteredData = (model, data, label) => async dispatch => {
-    console.log('the data: ', data, label)
     try {
             dispatch({
             type: SET_LOADING
         })
         const res = await axios.post(`/api/filteredData/loadFilter/${model}`, data);
-        console.log('filterRes: ', res.data)
         dispatch({
             type: SET_FILTER,
             payload: res.data

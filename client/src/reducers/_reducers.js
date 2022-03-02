@@ -3,7 +3,7 @@ import auth from './auth'
 import alert from './alert';
 import watchlist from './watchlist'
 import market from './market'
-import scanner from './scanner';
+import filteredData from './filteredData';
 
 
-export default combineReducers({auth, alert, watchlist, market, scanner});
+export default combineReducers({auth, alert, watchlist, market, filteredData});
