@@ -53,8 +53,8 @@ const DetailsModal = ({closeModal, showModal,load, company, selectedCompany:{det
                                 <br/>
                                 <li>Last Earnings: {company.lastReporting ? dayjs(company.lastReporting.date).format('MM/DD/YYYY'): 'n/a'}</li>
                                 <li>EPS Expected: {company.lastReporting && `${company.lastReporting.estEPS.toFixed(2)} | Actual: ${company.lastReporting.actEPS.toFixed(2)} `} </li>
-                                <li>Next Earnings: {dayjs(company.nextReporting.date).format('MM/DD/YYYY')}</li>
-                                <li>Expectations: {company.nextReporting.estEPS ? company.nextReporting.estEPS.toFixed(2): 'n/a'}</li>
+                                <li>Next Earnings: {company.nextReporting && dayjs(company.nextReporting.date).format('MM/DD/YYYY')}</li>
+                                <li>Expectations: {company.nextReporting && company.nextReporting.estEPS ? company.nextReporting.estEPS.toFixed(2): 'n/a'}</li>
                                 <br/>
                                 <li>Growth (3 yr Avg): {(company.growth*100).toFixed(1)}%</li>
                                 <li>peRatio (3 yr Avg): {company.peRatio.toFixed(1)}</li>

@@ -19,6 +19,8 @@ app.get('/test', (req, res) => {
 
 app.use('/api/user', require ('./api/user'))
 app.use('/api/watchlist', require('./api/watchlist'))
+app.use('/api/scanner', require('./api/scanner'))
+app.use('/api/filteredData', require('./api/filteredData/filteredData'))
 app.use('/api/company', require('./api/company'))
 app.use('/api/market', require('./api/market'))
 
