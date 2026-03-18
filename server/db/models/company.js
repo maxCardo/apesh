@@ -59,6 +59,7 @@ const companySchema = new mongoose.Schema({
   website: String,
   description: String,
   ceo: String, 
+  coutry: String, 
   fullTimeEmployees: Number,
   image: String,
   lastEarnings: Date, //depricated: replace by lastReporting.date
