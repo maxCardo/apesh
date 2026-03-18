@@ -97,23 +97,27 @@ const sandbox = async() => {
     //     //console.log('new: ',idx.history[0]);
     // })
 
-    //search watchlist for records that are not liked and greater then 3 days old
-    //const today = moment().subtract(21,'days').format('MM/DD/YYYY')
-    //console.log('date: ', today);
+    //search watchlist for records that are not liked and greater then 3 weeks old
+    const today = moment().subtract(21,'days').format('MM/DD/YYYY')
+    console.log('date: ', today);
     //const watchlist = await WatchList.deleteMany({$and: [{'dateAdded': {$lt: today }}, {hot: false}]})
-    //const watchlist = await WatchList.find()
-    //console.log(watchlist.length);
+    const watchlist = await WatchList.find()
+    console.log(watchlist.length);
 
 
     //run upcoming earnings
     //getUpcomingEarnings()
-    const record = await getValueReporting()
-    console.log(record);
-    const test = await Company.find({symbol: 'PDPTF'})
-    console.log('test: ', test);
-    record.forEach(co => {
-        console.log(`Running update for ${co.symbol} reporting ${co.date}`);
-    });
+    // const record = await getValueReporting()
+    // console.log(record);
+    // const test = await Company.find({symbol: 'PDPTF'})
+    // console.log('test: ', test);
+    // record.forEach(co => {
+    //     console.log(`Running update for ${co.symbol} reporting ${co.date}`);
+    // });
+
+
+    //const data = await WatchList.find({hot: true}).countDocuments()
+    //console.log(data)
 
 }
 
