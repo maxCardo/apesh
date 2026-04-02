@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@carbon/charts": "^0.41.14",
-    "@carbon/charts-react": "^0.41.14",
+    "@carbon/charts": "^1.27.3",
+    "@carbon/charts-react": "^1.27.3",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@testing-library/jest-dom": "^4.2.4",
